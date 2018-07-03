@@ -11,6 +11,9 @@ git branch -d new_feature
 /**** after git initialization i.e. 'git init' command, use following ****/
 git remote add origin https://github.com/jitendrakyadav/hello-world.git
 
+/**** If origin is not updated after firing above command again and again, then remove origin first & then use above command ****/
+git rm origin
+
 /**** output: origin ****/
 git remote
 
@@ -32,7 +35,6 @@ git revert <commit-id> -m 1   //or 2 [1 or 2 is parent to which we want to retur
 /**** revert to just previous(last) commit ****/
 git revert HEAD
 
-/**** Take the branch(into past really) to a previous commit and update the same remote branch also.
-Make a branch from prev branch and do all these things there and remain safe the prev branch ****/
+/**** Take the branch(into past really) to a previous commit and update the same remote branch also. Make a branch from prev branch and do all these things there and remain safe the prev branch ****/
 git reset --hard <commit-id>
 git push origin -f <branch-name>
