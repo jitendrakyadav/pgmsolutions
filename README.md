@@ -12,17 +12,20 @@ Following will create both directories i.e. trainingapp directory along with it'
 <br>**sudo vim index.html**
 
 /*** Change owner from one to another ***/
-<br>**sudo chown -R jitendray:www-data /var/www/html/jitendray**        /*** chown username:groupname directory ***/
+<br>**sudo chown -R jitendray:www-data /var/www/html/jitendray**        
+/*** chown username:groupname directory ***/
 
 /*** Get username using currently ***/
 <br>**whoami**
 
 /*** Get groups for a username ***/
-<br>**groups username**       /*** first word after : is your primary group ***/
+<br>**groups username**       
+/*** first word after : is your primary group ***/
 
 /*** Change mode of a file/directory ***/
 <br>**chmod -R 777 /var/www/html/2018/magento2/public_html/var**
-<br>**chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub**     /*** R for recursively, f for forcefully ***/
+<br>**chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub**     
+/*** R for recursively, f for forcefully ***/
 
 /*** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ***/
 <br>**cp xyz.php jitendray.php**
@@ -35,24 +38,32 @@ Following will create both directories i.e. trainingapp directory along with it'
 
 /*** Remove all files and directories recursively from a directory trainingapp ***/
 <br>**rm -R /var/www/html/jitendray/trainingapp/'*'**
-<br>**rm -R .**        /*** remove recursively from current directory  ***/
+<br>**rm -R .**        
+/*** remove recursively from current directory  ***/
 
 /*** Switch user from current to other for ex. 'jitendray' ***/
 <br>**su jitendray**
 
 /*** View log file ***/
-<br>**tail error.log**               /*** last 10 lines by default ***/
-<br>**tail -f 15 error.log**         /*** last 15 lines, if file-content grows dynamically, would show dynamically latest 15 lines ***/
-<br>**tail -n 15 error.log**         /*** last 15 lines, statically i.e. just opposite of above ***/
-<br>**head error.log**               /*** first 10 lines by default ***/
-<br>**head -n 15 error.log**         /*** first 15 lines ***/
+<br>**tail error.log**               
+/*** last 10 lines by default ***/
+<br>**tail -f 15 error.log**         
+/*** last 15 lines, if file-content grows dynamically, would show dynamically latest 15 lines ***/
+<br>**tail -n 15 error.log**         
+/*** last 15 lines, statically i.e. just opposite of above ***/
+<br>**head error.log**               
+/*** first 10 lines by default ***/
+<br>**head -n 15 error.log**         
+/*** first 15 lines ***/
 
 /*** To know about OS on machine ***/
 <br>**cat /etc/os-release**
 
 /*** To know about your machine IP ***/
-<br>**ifconfig**         /* Linux */
-<br>**ipconfig**         /* Dos */
+<br>**ifconfig**         
+/*** Linux ***/
+<br>**ipconfig**         
+/*** Dos ***/
 
 
 # Ubuntu Commands
