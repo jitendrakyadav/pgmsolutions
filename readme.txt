@@ -1,7 +1,11 @@
 /*** Linux Commands ***/
 
 /**** Get help related to a linux command for ex. 'tail' ****/
+man tail         /* manual 'tail' */
 tail --help
+
+/*** Short command to move into their home directory ***/
+cd ~       /* Now you would find yourself in directory /home/jitendra for me as I had logined with username 'jitendra' */
 
 /**** Create a directory and any parents(-p argument) that don't already exist
 Following will create both directories i.e. trainingapp directory along with it's parent directory jitendray ****/
@@ -11,6 +15,13 @@ sudo mkdir -p /var/www/html/jitendray/trainingapp
 /*** Update a file or create a file with provided extension if it doesn't exist: ***/ 
 //vim is different editor from vi and better while updating/editing a record/file 
 sudo vim index.html
+
+/*** Unzip a zip file ***/
+unzip /home/jitendra/Downloads/Magento-CE-2.2.5_sample_data-2018-06-26-09-35-44.zip
+
+/*** Zip a recursive directory  ***/
+zip -r hello.zip hi      /* Here zipped a directory 'hi' with another name 'hello', when you run 'unzip hello.zip', you will get a directory 'hi' with all files recursively existing inside it as there was while zipping dirctory 'hi' */
+zip hello 1.txt 2.txt 3.txt        /* created a hello.zip file having files 1.txt, 2.txt, 3.txt:  when unzipping hello.zip, parellel to hello.zip, we would get 1.txt, 2.txt, 3.txt without any wrapper folder */
 
 /**** Get username using currently ****/
 whoami
