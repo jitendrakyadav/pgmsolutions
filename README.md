@@ -11,47 +11,47 @@ Following will create both directories i.e. trainingapp directory along with it'
 <br>//vim is different editor from vi and better while updating/editing a record/file
 <br>**sudo vim index.html**
 
-/**** Change owner from one to another ****/
-<br>**sudo chown -R jitendray:www-data /var/www/html/jitendray**    /* chown username:groupname directory */
+/*** Change owner from one to another ***/
+<br>**sudo chown -R jitendray:www-data /var/www/html/jitendray**        /* chown username:groupname directory */
 
-/**** Get username using currently ****/
+/*** Get username using currently ***/
 <br>**whoami**
 
-/**** Get groups for a username ****/
-<br>**groups username**     /* first word after : is your primary group */
+/*** Get groups for a username ***/
+<br>**groups username**       /* first word after : is your primary group */
 
-/**** Change mode of a file/directory ****/
+/*** Change mode of a file/directory ***/
 <br>**chmod -R 777 /var/www/html/2018/magento2/public_html/var**
 <br>**chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub**     /* R for recursively, f for forcefully */
 
-/**** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ****/
+/*** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ***/
 <br>**cp xyz.php jitendray.php**
 
-/**** move some files from one place to another  ****/
+/*** move some files from one place to another  ***/
 <br>**mv /home/jitendra/Downloads/* /var/www/html/2018/magento2/public_html/**
 
-/**** Rename a file xyz.txt by abc.txt  ****/
+/*** Rename a file xyz.txt by abc.txt  ***/
 <br>**mv xyz.txt abc.txt**
 
-/**** Remove all files and directories recursively from a directory trainingapp ****/
+/*** Remove all files and directories recursively from a directory trainingapp ***/
 <br>**rm -R /var/www/html/jitendray/trainingapp/***
 
-/**** Switch user from current to other for ex. 'jitendray' ****/
+/*** Switch user from current to other for ex. 'jitendray' ***/
 <br>**su jitendray**
 
-/**** View log file ****/
+/*** View log file ***/
 <br>**tail error.log**               /* last 10 lines by default */
 <br>**tail -f 15 error.log**         /* last 15 lines, if file-content grows dynamically, would show dynamically latest 15 lines */
 <br>**tail -n 15 error.log**         /* last 15 lines, statically i.e. just opposite of above */
 <br>**head error.log**               /* first 10 lines by default */
 <br>**head -n 15 error.log**         /* first 15 lines */
 
-/**** To know about OS on machine ****/
+/*** To know about OS on machine ***/
 <br>**cat /etc/os-release**
 
-/**** To know about your machine IP ****/
-<br>**ifconfig**        /* Linux */
-<br>**ipconfig**        /* Dos */
+/*** To know about your machine IP ***/
+<br>**ifconfig**         /* Linux */
+<br>**ipconfig**         /* Dos */
 
 
 # Ubuntu Commands
@@ -69,7 +69,7 @@ Difference between apt and apt-get:
 /*** To uninstall Software Center(In left, there is orange bag with name 'Ubuntu Software'): ***/
 <br>**sudo apt remove software-center**
 
-/*** remove/unstall those packages which are no longer required. which were installed/used/having-dependency to install another package but after$ ***/
+/*** remove/unstall those packages which are no longer required. which were installed/used/having-dependency to install another package but after that no longer required, you may use this command after any software installation ***/
 <br>**sudo apt autoremove**
 
 /*** To re-install Software Center(In left, there is orange bag with name 'Ubuntu Software'): ***/
@@ -78,7 +78,7 @@ Difference between apt and apt-get:
 
 /*** some packages weren’t installed properly. To fix this problem: ***/
 <br>**sudo apt-get autoclean**
-<br>(clears out the local repository of retrieved package files, but unlike apt-get clean, it only removes package files that can no longer be dow$
+<br>(clears out the local repository of retrieved package files, but unlike apt-get clean, it only removes package files that can no longer be downloaded, and are largely useless.)
 
 /*** One of the most basic fixes to resolve dependencies problems is to run: ***/
 <br>**sudo apt-get -f install**
@@ -97,4 +97,4 @@ Difference between apt and apt-get:
 /*** Get installed php version: ***/
 <br>**php -v**
 
-*Note: For .md file on github, *Sentence between asterisk would be in italic*, **Sentence between two asterisk would be bold**,Sentence start with "hash with a space like '# ' would behave like '<h1>' tag", Sentence starts with "Hyphen with a space like '- ' would behave like '<li>' element"*
+Note: For .md file on github, *Sentence between asterisk would be in italic*, **Sentence between two asterisk would be bold**,Sentence start with "hash with a space", would behave like h1 tag", Sentence starts with "Hyphen with a space like '- ' would behave like li element"
