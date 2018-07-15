@@ -1,9 +1,9 @@
 # Linux Commands
-/**** Get help related to a linux command for ex. 'tail' ****/
+/*** Get help related to a linux command for ex. 'tail' ***/
 <br>**tail --help**
 
-/**** Create a directory and any parents(-p argument) that don't already exist
-Following will create both directories i.e. trainingapp directory along with it's parent directory jitendray ****/
+/*** Create a directory and any parents(-p argument) that don't already exist
+Following will create both directories i.e. trainingapp directory along with it's parent directory jitendray ***/
 <br>**mkdir -p /var/www/html/jitendray/trainingapp**
 <br>**sudo mkdir -p /var/www/html/jitendray/trainingapp**
 
@@ -34,7 +34,8 @@ Following will create both directories i.e. trainingapp directory along with it'
 <br>**mv xyz.txt abc.txt**
 
 /*** Remove all files and directories recursively from a directory trainingapp ***/
-<br>**rm -R /var/www/html/jitendray/trainingapp/***
+<br>**rm -R /var/www/html/jitendray/trainingapp/'*'**
+<br>**rm -R .**        /* remove recursively from current directory  */
 
 /*** Switch user from current to other for ex. 'jitendray' ***/
 <br>**su jitendray**
