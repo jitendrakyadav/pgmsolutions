@@ -12,14 +12,35 @@ sudo mkdir -p /var/www/html/jitendray/trainingapp
 //vim is different editor from vi and better while updating/editing a record/file 
 sudo vim index.html
 
-/**** Change owner from one to another ****/
-sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:groupname directory */
-
 /**** Get username using currently ****/
 whoami
 
 /**** Get groups for a username ****/
-groups username     /* first word after : is your primary group */
+groups <username>     /* first word after : is your primary group */
+
+/*** Create user in ubuntu 16.04: For detail browse https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-ubuntu-16-04 or look here into how-to-add-and-delete-users-on-ubuntu-16-04.png  ***/
+adduser <newuser>            /* If you are logined with 'root' user  */
+sudo adduser <newuser>       /* If you are logined with other than root user but that user is in sudo group */
+
+/*** Grant a user sudo privileges: firstly use 'groups <username>' command all groups of user, if it is already in sudo group, then don't need fire following command. By default, a user is in a group that has the same name as user's username ***/
+usermod -aG sudo <newuser>
+sudo usermod -aG sudo <newuser>     /* -aG: add into group */
+
+/*** Remove sudo privileges of a user ***/
+gpasswd -d <username> sudo
+sudo gpasswd -d <username> sudo
+
+/*** Provide sudo privileges to a user by just editing sudoers file i.e. /etc/sudoers (means no need to run above command) ***/
+sudo visudo         /* and add '<username>    ALL=(ALL:ALL) ALL' just below line 'root    ALL=(ALL:ALL) ALL'  */
+
+/*** Delete a user ***/
+deluser <username>            /* If you are root user */
+sudo deluser <username>       /* If you are other than root user, having sudo group */
+deluser --remove-home <username>          /* Delete the user's home directory as well when the user is deleted for ex: /home/jitu */
+sudo deluser --remove-home <username>
+
+/**** Change owner from one to another ****/
+sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:groupname directory */
 
 /**** Change mode of a file/directory ****/
 chmod -R 777 /var/www/html/2018/magento2/public_html/var
@@ -41,6 +62,10 @@ rm -R .        /* remove recursively from current directory */
 /**** Switch user from current to other for ex. 'jitendray' ****/
 su jitendray
 
+/*** Login as root user(or login with another user, just replace 'root' by any other <username>) ***/
+ssh root@<server-ip-address>
+su root      /* If you are already logined with another user  */
+
 /**** View log file ****/
 tail error.log               /* last 10 lines by default */
 tail -f 15 error.log         /* last 15 lines, if file-content grows dynamically, would show dynamically latest 15 lines */
@@ -55,6 +80,8 @@ cat /etc/os-release
 ifconfig        /* Linux */
 ipconfig        /* Dos */
 
+/*** To see all folders/files in current directory  ***/
+find .
 
 /*** Ubuntu Commands ***/
 
