@@ -6,3 +6,4 @@
 6. How we install Magento 2 in Ubuntu 16.04 => install_magento2_in_ubuntu_16.04
 7. Important files location in Ubuntu/Window => imp_files_location_ubuntu_windows
 8. Some basic programs for practise => some_basic_special_programs
+9. Install mysql workbench in Ubuntu 16.04 => install_mysql_workbench_etc_in_ubuntu_16.04
