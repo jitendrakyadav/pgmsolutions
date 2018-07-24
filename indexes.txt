@@ -1,0 +1,10 @@
+1. Git - Page No. 1
+2. Installing git extension on windows, Configure local system - Page No. 3
+3. Create repository, download/clone remote repository (from github) - Page No. 4
+4. Change a file in git repository & track operations - Page No. 5
+5. LF will be replaced by CRLF - Page No. 6
+6. Basic commands - Page No. 6
+7. Configure local git repository to connect remote git repository
+   or
+   Adding an existing project to github using the command line - Page No. 9
+8. Git revert command explanation - Page No. 14
