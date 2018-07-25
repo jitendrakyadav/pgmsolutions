@@ -18,3 +18,5 @@
    install_mysql_workbench_etc_in_ubuntu_16.04
 10. PHP concepts & programming:
     php_concepts_and_programming
+11. MySQL concepts & commands:
+    mysql_concepts_and_commands
