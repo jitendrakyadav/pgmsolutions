@@ -38,3 +38,27 @@ git revert HEAD
 /**** Take the branch(into past really) to a previous commit and update the same remote branch also. Make a branch from prev branch and do all these things there and remain safe the prev branch ****/
 git reset --hard <commit-id>
 git push origin -f <branch-name>
+
+/*** Show details of a commit-id: modified files list, changes made line by line, auther name  ***/
+git show <commit-id>
+git show --stat <commit-id>     /* Show less details of a commit-id: modified files list, author name */
+git show --stat <commit-id>     /* Show very less details of a commit-id: modified files list only */
+
+/*** cloning a remote repository ***/
+git clone <remote-repository-url>      
+/* for ex: git clone https://github.com/jitendrakyadav/ci226.git :It will create a directory(in your current directory) ci226 containing all files with master branch */
+git clone <remote-repository-url> <directory-path>    
+/* for ex: git clone https://github.com/jitendrakyadav/ci226.git /var/www/html/2018/myjitu/ :It will download all files for your repository in current directory without creating any new directory with master branch */
+git branch -a
+/* 
+1. Initially when you clone a repository on local, it shows all files with master branch by default.  
+2. "git branch" will show only master branch this time, but local repository contains all branches history as remote repository.
+3. As told, it contains only history, not contains all other branches with their files physically present there.
+4. "git branch -a" will show you all branches using their history, rather than showing only master
+5. "git checkout <any-other-branch-excluding-master>" git will create this branch and add/create files in appropriate folders related to this branch using their history for you.
+6. It means - on cloning, git only provides you master branch with master branch related files-only. Git does so to escape/remove unwanted files-overhead. But at the same time, git provides you history of all other branches as well. So when you need, just checkout to other branch, git will provide/generate all files related to that branch with branch itself using their local history present in .git directory without internet connection for now.  
+*/
+
+git fetch    
+/* update your local git history only from remote history, not create your absent branches and their files. But as history is updated, we can use "git branch -a" to see absent/hidden branches and just need to checkout to absent branches and let git create you absent branch and associated files with branch using their history */
+/* Difference between "git fetch" & "git pull": fetch update your local git history only but pull update local git history, update/merge/create files at the same time within your branch. Remember, use "git pull" only when your are within your branch and want to up-to-date that branch with remote-branch */
