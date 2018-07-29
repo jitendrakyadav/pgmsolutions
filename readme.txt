@@ -47,8 +47,10 @@ git show --stat <commit-id>     /* Show very less details of a commit-id: modifi
 /*** cloning a remote repository ***/
 git clone <remote-repository-url>      
 /* for ex: git clone https://github.com/jitendrakyadav/ci226.git :It will create a directory(in your current directory) ci226 containing all files with master branch */
+
 git clone <remote-repository-url> <directory-path>    
 /* for ex: git clone https://github.com/jitendrakyadav/ci226.git /var/www/html/2018/myjitu/ :It will download all files for your repository in current directory without creating any new directory with master branch */
+
 git branch -a
 /* 
 1. Initially when you clone a repository on local, it shows all files with master branch by default.  
@@ -62,3 +64,21 @@ git branch -a
 git fetch    
 /* update your local git history only from remote history, not create your absent branches and their files. But as history is updated, we can use "git branch -a" to see absent/hidden branches and just need to checkout to absent branches and let git create you absent branch and associated files with branch using their history */
 /* Difference between "git fetch" & "git pull": fetch update your local git history only but pull update local git history, update/merge/create files at the same time within your branch. Remember, use "git pull" only when your are within your branch and want to up-to-date that branch with remote-branch */
+
+/*** 
+There are 4 states for a file  
+1. Working Folder          [a file with new changes]
+2. Staging Area            [when "git add" command has been used for the file with their changes]
+3. Local Repository        [when "git commit" command has been used for changes, i.e. now changes has been recorded in local .git folder]
+4. Remote/Git Repository   [when "git push" command has been used, i.e. now commit has been recorded on github in remote .git folder]
+For visualation graphically the above 4 stages, look into drive for doc on git
+***/
+git checkout <file-name>
+git checkout .              /* For all modified files */
+/* This command is for a file in stage-1. This command sends a file from stage-1 to the same stage-1, but removes all changes made in file previously */
+
+git reset HEAD <file-name>
+git reset HEAD                 /* For all modified files */
+/* This command sends a file from stage-2 to stage-1, but preserves all changes made in file previously */
+/* Difference between "git reset --hard <commit-id>" and "git revert <commit-id>": revert ceates a new commit-id, preserves all previous commit-ids, take the application(files) exact to just previous commit-id state before the mentioned commit-id but under the new generated commit-id. While reset erases all previous commit-ids along with their history and points the git head exactally to mentioned commit-id */
+
