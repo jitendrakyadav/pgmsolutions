@@ -6,7 +6,14 @@ git checkout master  //or 'git checkout -b master' -b for forcefully
 git merge new_feature
 
 /**** After successful merging, delete new_feature branch ****/
-git branch -d new_feature
+git branch -d new_feature     [-d is an alias for --delete]
+git branch -D new_feature     [-D is an alias for --delete --force, use if branch new_feature is un-merged to it's upstream branch(for ex: master branch)]
+
+/*** Delete a branch from remote/github, totally independent of delete the same branch from local. 
+Means we can delete the branch from remote repository first then if we want, can delete the same branch from local as well. Vice versa is also true. ***/
+git push <remote-name> --delete <branch-name>           [If <branch-name> has been merged in in's upstream branch]
+git push <remote-name> --delete --force <branch-name>   [If <branch-name> is un-merged]
+/* For ex: git push origin --delete mybranch */
 
 /**** after git initialization i.e. 'git init' command, use following ****/
 git remote add origin https://github.com/jitendrakyadav/hello-world.git
@@ -81,4 +88,5 @@ git reset HEAD <file-name>
 git reset HEAD                 /* For all modified files */
 /* This command sends a file from stage-2 to stage-1, but preserves all changes made in file previously */
 /* Difference between "git reset --hard <commit-id>" and "git revert <commit-id>": revert ceates a new commit-id, preserves all previous commit-ids, take the application(files) exact to just previous commit-id state before the mentioned commit-id but under the new generated commit-id. While reset erases all previous commit-ids along with their history and points the git head exactally to mentioned commit-id */
+
 
