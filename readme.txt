@@ -1,5 +1,12 @@
+/*** Get help for any command in git: for ex: help for 'stash' command ***/
+git stash --help
+
 /**** Create new branch from 'master' branch: currently we are in 'master' branch ****/
-create branch new_feature
+git branch new_feature
+
+/*** Get what changes have been made in a file ***/
+git diff <file-name>
+git diff     /* It shows all files with their changes in current branch */
 
 /**** merge new_feature branch into master branch: for it, go to master branch and type the following command ****/
 git checkout master  //or 'git checkout -b master' -b for forcefully
@@ -80,13 +87,45 @@ There are 4 states for a file
 4. Remote/Git Repository   [when "git push" command has been used, i.e. now commit has been recorded on github in remote .git folder]
 For visualation graphically the above 4 stages, look into drive for doc on git
 ***/
-git checkout <file-name>
-git checkout .              /* For all modified files */
+git checkout -- <file-name>
+git checkout -- .              /* For all modified files */
 /* This command is for a file in stage-1. This command sends a file from stage-1 to the same stage-1, but removes all changes made in file previously */
 
 git reset HEAD <file-name>
 git reset HEAD                 /* For all modified files */
 /* This command sends a file from stage-2 to stage-1, but preserves all changes made in file previously */
-/* Difference between "git reset --hard <commit-id>" and "git revert <commit-id>": revert ceates a new commit-id, preserves all previous commit-ids, take the application(files) exact to just previous commit-id state before the mentioned commit-id but under the new generated commit-id. While reset erases all previous commit-ids along with their history and points the git head exactally to mentioned commit-id */
+/* Difference between "git reset --hard <commit-id>" and "git revert <commit-id>": revert ceates 
+a new commit-id, preserves all previous commit-ids, take the application(files) exact to just 
+previous commit-id state before the mentioned commit-id but under the new generated commit-id. 
+While reset erases all previous commit-ids along with their history and points the git head exactally 
+to mentioned commit-id */
 
+/*** Stash: छुपा कर रखना: Stashing takes the dirty state of your working directory i.e.your modified tracked 
+files and stashes changes, means saves it on a stack of unfinished changes that you can reapply at any time ***/
+git stash save "<stash-name>"
+git stash save -a "<stash-name>"     [Stashes all files including untracked(newly created) files, 
+tracked(modified) files and git-ignored files as well]
+git stash save -p                    [Provide option to stash in chunks of code]
 
+git stash list                       [List all stashes] 
+Ex: stash@{0}: On my-branch-name: <stash-name>
+
+git stash apply <stash-unique-id>    [re-create the older environment with modified/created files] 
+Ex: git stash apply stash@{0}
+
+git stash drop <stash-unique-id>     [To clear "git stash list" one by one]
+git stash clear                      [To clear all "git stash list" in one single command] 
+
+git stash pop                        
+/* 
+Important points:
+1. It re-creates your very-recent older environment with modified/newly-created fies in current branch
+2. Drop(or delete) the used stash here at the same time 
+3. "git stash" command saves changes from different-different branches in a stack
+4. So most recent-one is saved under stash@{0}, older in stash@{1}, more older in stash@{2} in stack, and so on.
+5. Here stash@{0} might be from branch-1, stash@{1} from branch-3 and stash@{2} from branch-n 
+   and all these stashes would be stored in single/same stack, as there is only one stack for one repository.
+6. It's possible to use "git stash save" in one branch and use "git stash pop" in another branch. 
+   This means "git stash" is movable from one branch to another in same repository.
+7. Video tutorial: https://youtu.be/KLEDKgMmbBI
+*/
