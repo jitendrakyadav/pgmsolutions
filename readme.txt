@@ -55,8 +55,8 @@ git push origin -f <branch-name>
 
 /*** Show details of a commit-id: modified files list, changes made line by line, auther name  ***/
 git show <commit-id>
-git show --stat <commit-id>     /* Show less details of a commit-id: modified files list, author name */
-git show --stat <commit-id>     /* Show very less details of a commit-id: modified files list only */
+git show --stat <commit-id>               /* Show less details of a commit-id: modified files list, author name */
+git show --stat --oneline <commit-id>     /* Show very less details of a commit-id: modified files list only */
 
 /*** cloning a remote repository ***/
 git clone <remote-repository-url>      
@@ -129,3 +129,45 @@ Important points:
    This means "git stash" is movable from one branch to another in same repository.
 7. Video tutorial: https://youtu.be/KLEDKgMmbBI
 */
+
+/*** There is each user-specific .gitconfig files, stored in user's home directory which contains user's git related global information, 
+like produced by commands "git config --global user.name" & "user.email" to be used in user's all repositories/projects globally ***/
+vim ~/.gitconfig         /* To view the user's personal global git-config file */
+
+/*** To ignore files in your repository, create a .gitignore file or modify already created .gitignore file, write rules there to ignore 
+files, one rule one separate line ***/
+vim .gitignore           
+/* Important points:
+1. Rules might be like "*.tmp" in one line to ignore all tmp files, in another line "*.log" or "*.txt" or "xyz.txt" to 
+   ignore all log or txt files or only xyz.txt file 
+2. Ignore files might be:
+   a. Related to your operating-system specific - for linux some .tmp files automatically created there, need to esclude from git repository.
+      In other collaborator case for same repository it might be windows & mac.
+   b. Environment specific - like .netbeans folder mainly created due to your editor Netbeans, in other collaborator case it might be Eclipse
+   c. Application specific - like .log files purely generated due to your unit-test/newly-developed-module newly-created log file or contents 
+      modified in your already generated log files
+3. A file/folder which is already part of your repository, could never be ignored through your .gitignore file; for ex: a file that is 
+   committed & pused to remote repository, or only committed or currently in staging area(means "git add" has fired for that file) but not 
+   committed yet.
+4. If still you want to ignore a file which is already part of your git repository - exclude/remove that file from your git repository i.e. 
+   use "git rm <file-name>", commit & then push normaly/forcefully, it would remove/delete that file from your remote repository. If you 
+   have not used "rm <file-name>" yet, that file will be still present in your project directory but in "working folder" area and now you may
+   ignore this file through your .gitignore file.
+*/
+
+/*** If you don't want to use or create .gitignore file to ignore files, there is another way to ignore files. Use following file already
+present in "local repository" has equally same effect as .gitignore ***/
+vim .git/info/exclude      /* write your rules here to ignore files just as in .gitignore file. Assume as "exclude" file is in 
+repository/project root directory and use relative path to write rules there to ignore files. For ex: a file xyz.txt present in repository/
+project root directory, write rule just "xyz.txt" in "exclude" file to ignore the same. */
+
+/*** 3rd way to ignore files, if you don't want to create .gitignore file or don't want to modify already created .gitignore file or don't
+want to use .git/info/exclude. Use following steps: ***/
+1. vim ~/.gitignore    /* create a .gitignore file in your(user's) home directory */
+2. git config --global core.excludesfile ~/.gitignore 
+/* Make this .gitignore file global/common to be used for every git-repository/project of that user */
+3. Here in ~/.gitignore, write your common rule like "*.txt" or "*.log" that would applicable equally for all your repositories. One 
+   tricky things we can do here, write a rule here to ignore .gitignore file and then create a .gitignore file in each repository and then 
+   you may create different-different rule for your different repositories. Remember, if you use your already created repository's .gitignore 
+   file, that must not be already part of your git-repository otherwise it will not work i.e. your repository's .gitignore file would not be 
+   ignored by your global ~/.gitignore file. 
