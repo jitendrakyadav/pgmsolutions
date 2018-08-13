@@ -1,4 +1,5 @@
 /*** What is OAuth ***/
+
 1. OAuth: open authorization
 2. OAuth is an open standard for access delegation.
 3. OAuth is not any authentication protocol.
@@ -11,7 +12,7 @@ It is commonly used as a way for internet users to grant websites or application
 websites but without giving them the passwords. This mechanism is used by companies such as Amazon, Google, Facebook, Microsoft 
 and Twitter to permit the users to share information about their accounts with third party applications or websites.
 
-OAuth 2.0 Grant Types:
+OAuth 2.0 Grant Types: (There are 2 versions are available of OAuth; OAuth 1 & OAuth 2)
 1. Authorization Code
 2. Implicit
 3. Password
@@ -19,10 +20,10 @@ OAuth 2.0 Grant Types:
 5. Device Code
 6. Refresh Token
 
-OAuth website: https://oauth.net/2/
+OAuth website: https://oauth.net/2/: To know about all grant-types-request and their parameters need to send to get response, go to section "OAuth 2.0 Core" > "OAuth 2.0 Grant Types" and click on any grant-type link to get information in detail about that particular grant-type. For ex. click on hyperlink "Client Credentials" and on another page again click on "Client Credentials (oauth.com)".
 Here go to heading "Code and Services" in footer and click on link "OAuth 2.0 Code and Services"
 For creating OAuth 2 server: Go to "Server Libraries" > PHP > "PHP OAuth2 Server" and "Demo"
-For detail, step by step instructions: https://bshaffer.github.io/oauth2-server-php-docs/cookbook/
+For creating OAuth 2 server, step by step instructions: https://bshaffer.github.io/oauth2-server-php-docs/cookbook/
 Using OAuth 2 as client: Go to Client Libraries > PHP > (Here choose any PHP OAuth Library to Access Any OAuth API)
 Already used library for client_credentials grant type: https://github.com/adoy/PHP-OAuth2
 Note: create a file like index.php as here (and put this file parallel to PHP-OAuth2/src/OAuth2/Client.php) and comment some lines in PHP-OAuth2/src/OAuth2/Client.php > "private function executeRequest" as following:
@@ -37,7 +38,5 @@ Note: create a file like index.php as here (and put this file parallel to PHP-OA
 https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
 
 Namespace concept came in PHP from 5.3 version (and autoloading concept in PHP 5.3+), so:
-1. If there is a suitable library(which uses internally curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can use OAuth 2 client from PHP 5.5/5.6 as well, no need 
-   essentially PHP 7 & no need of using PHP OAuth wrapper functions like OAuth::getAccessToken, OAuth::setToken, etc.
-2. If there is a suitable library(which uses internally curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can create OAuth 2 server from PHP 5.5/5.6 as well, no need 
-   essentially PHP 7.
+1. If there is a suitable library(ultimately any library internally uses curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can use OAuth 2 client from PHP 5.5/5.6 as well, no need essentially PHP 7 & no need of using PHP OAuth wrapper functions like OAuth::getAccessToken, OAuth::setToken, etc.(Clearly mentioned here: https://oauth.net/2/ > Code and Services > OAuth 2.0 Code and Services > Client Libraries > PHP > "league/oauth2-client"[click this]: OAuth 2.0 Client from the League of Extraordinary Packages: i.e. https://github.com/thephpleague/oauth2-client look here in README.md file under "Requirements" section)
+2. If there is a suitable library(ultimately any library internally uses curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can create OAuth 2 server from PHP 5.5/5.6 as well, no need essentially PHP 7(Clearly mentioned here in 3rd line: https://bshaffer.github.io/oauth2-server-php-docs/ under Requirements section).
