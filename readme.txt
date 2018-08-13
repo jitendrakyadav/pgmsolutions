@@ -4,8 +4,8 @@
 3. OAuth is not any authentication protocol.
 4. OAuth is not any language or software, by installing which you can start your work.
 5. OAuth is only a concept or (authorization) standards like PSR (PSR-0, PSR-2, PSR-4) i.e. PHP Standards Recommendations 
-   or a set of rules that allow you to share your data that you hold within an application with another application 
-   without revealing your user name and password that you hold within the first application with the second one.
+   or a set of rules that allow you to share your data (that you hold within an application) with another application 
+   without revealing your user name and password with the second application (i.e. any 3rd party application) that you hold within the first application.
 
 It is commonly used as a way for internet users to grant websites or applications access to their information on other 
 websites but without giving them the passwords. This mechanism is used by companies such as Amazon, Google, Facebook, Microsoft 
@@ -25,10 +25,19 @@ For creating OAuth 2 server: Go to "Server Libraries" > PHP > "PHP OAuth2 Server
 For detail, step by step instructions: https://bshaffer.github.io/oauth2-server-php-docs/cookbook/
 Using OAuth 2 as client: Go to Client Libraries > PHP > (Here choose any PHP OAuth Library to Access Any OAuth API)
 Already used library for client_credentials grant type: https://github.com/adoy/PHP-OAuth2
+Note: create a file like index.php as here (and put this file parallel to PHP-OAuth2/src/OAuth2/Client.php) and comment some lines in PHP-OAuth2/src/OAuth2/Client.php > "private function executeRequest" as following:
+      case self::HTTP_METHOD_GET:
+            /*if (is_array($parameters) && count($parameters) > 0) {
+                $url .= '?' . http_build_query($parameters, null, '&');
+            } elseif ($parameters) {
+                $url .= '?' . $parameters;
+            }*/
+            break;
+
 https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
 
 Namespace concept came in PHP from 5.3 version (and autoloading concept in PHP 5.3+), so:
-1. If there is a suitable library supported PHP 5.5/5.6 then we can use OAuth 2 client from PHP 5.5/5.6 as well, no need 
+1. If there is a suitable library(which uses internally curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can use OAuth 2 client from PHP 5.5/5.6 as well, no need 
    essentially PHP 7 & no need of using PHP OAuth wrapper functions like OAuth::getAccessToken, OAuth::setToken, etc.
-2. If there is a suitable library supported PHP 5.5/5.6 then we can create OAuth 2 server from PHP 5.5/5.6 as well, no need 
+2. If there is a suitable library(which uses internally curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can create OAuth 2 server from PHP 5.5/5.6 as well, no need 
    essentially PHP 7.
