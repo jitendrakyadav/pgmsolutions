@@ -20,3 +20,5 @@
     php_concepts_and_programming
 11. MySQL concepts & commands:
     mysql_concepts_and_commands
+12. OAuth (Open Authorization)
+    use_oauth_as_client_and_server
