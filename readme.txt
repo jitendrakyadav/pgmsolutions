@@ -37,6 +37,16 @@ Note: create a file like index.php as here (and put this file parallel to PHP-OA
 
 https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
 
+Curl request ex: Here is how can you make curl http request to get token through CLI:
+curl -k --data "client_id=XXXXXXX&client_secret=XXXXXXXXXX&scope=read&grant_type=client_credentials" -X POST https://XYZ.com/connect/token
+/* 
+-k: allow insecure mode http as well with secure mode https  
+--data: data whch you are going to submit to a URL i.e. a web-page
+-X: emphasize to provide a request type GET, POST, PUT, etc.
+You might make above curl request by using PHP wrapper function as well in a php program, which internally uses curl's libcurl library as our above command do
+For more detaile, use command "curl --help"
+*/
+
 Namespace concept came in PHP from 5.3 version (and autoloading concept in PHP 5.3+), so:
 1. If there is a suitable library(ultimately any library internally uses curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can use OAuth 2 client from PHP 5.5/5.6 as well, no need essentially PHP 7 & no need of using PHP OAuth wrapper functions like OAuth::getAccessToken, OAuth::setToken, etc.(Clearly mentioned here: https://oauth.net/2/ > Code and Services > OAuth 2.0 Code and Services > Client Libraries > PHP > "league/oauth2-client"[click this]: OAuth 2.0 Client from the League of Extraordinary Packages: i.e. https://github.com/thephpleague/oauth2-client look here in README.md file under "Requirements" section).
 2. If there is a suitable library(ultimately any library internally uses curl http/https request to get token & output-response) supported PHP 5.5/5.6 then we can create OAuth 2 server from PHP 5.5/5.6 as well, no need essentially PHP 7(Clearly mentioned here in 3rd line: https://bshaffer.github.io/oauth2-server-php-docs/ under Requirements section).
