@@ -15,17 +15,40 @@
 curl --help
 
 /*** A website that provides fake online REST API for testing and prototyping: http://jsonplaceholder.typicode.com/. We can test here GET, POST, PUT, DELETE API requests. ***/
-curl http://jsonplaceholder.typicode.com/posts            /* A curl GET request to show 100 posts */
-curl http://jsonplaceholder.typicode.com/posts/3          /* A curl GET request to show 1 post with id=3 */
-curl -i http://jsonplaceholder.typicode.com/posts/3       /* It includes header information as well to show along with post-data */
-curl --head http://jsonplaceholder.typicode.com/posts/3   /* It shows only header information & excludes post-data */
+/* A curl GET request to show 100 posts */
+curl http://jsonplaceholder.typicode.com/posts 
+
+/* A curl GET request to show 1 post with id=3 */           
+curl http://jsonplaceholder.typicode.com/posts/3 
+
+/* It includes header information as well to show along with post-data */         
+curl -i http://jsonplaceholder.typicode.com/posts/3 
+      
+/* It shows only header information & excludes post-data */
+curl --head http://jsonplaceholder.typicode.com/posts/3   
 or
-curl -I http://jsonplaceholder.typicode.com/posts/3       /* It shows only header information & excludes post-data */
-curl -o post-data.txt http://jsonplaceholder.typicode.com/posts  /* It gets all 100 posts data and output/put into a newly created file post-data.txt in current directory */
-curl -O http://jsonplaceholder.typicode.com/posts         /* It gets all 100 posts data and output/put into a newly created file posts(i.e. last part of URL; with no extension) in current directory */
-curl -O https://i.imgur.com/2LDiENb.png                   /* Go to web-page, right click on image and choose "Copy image address" and put here in command. It will download 2LDiENb.png file into current directory */
-curl --data "title=Hello&body=Hello World" -X POST http://jsonplaceholder.typicode.com/posts /* It makes a HTTP POST request; "-X" option to provide a request type */
-curl --data "title=Hello" -X PUT http://jsonplaceholder.typicode.com/posts/3 /* A PUT request to update record for id=3; here in place of "--data", we can use "-d", means "--data"="-d" */
-curl -X DELETE http://jsonplaceholder.typicode.com/posts/3 /* A DELETE request to delete record with id=3 */
-curl -L http://google.com                                  /* -L flag is used to follow the redirection; http://google.com redirects to it's www version i.e. https://www.google.com */
-curl -u jitendray@ajindra.com:123456! -T test.txt ftp://ajindra.com /* Upload a file to server through ftp protocol using curl */
+curl -I http://jsonplaceholder.typicode.com/posts/3
+   
+/* It gets all 100 posts data and output/put into a newly created file post-data.txt in current directory */    
+curl -o post-data.txt http://jsonplaceholder.typicode.com/posts  
+
+/* It gets all 100 posts data and output/put into a newly created file posts(i.e. last part of URL; with no extension) in current directory */
+curl -O http://jsonplaceholder.typicode.com/posts
+
+/* Go to web-page, right click on image and choose "Copy image address" and put here in command. It will download 2LDiENb.png file into current directory */         
+curl -O https://i.imgur.com/2LDiENb.png                   
+
+/* It makes a HTTP POST request; "-X" option to provide a request type */
+curl --data "title=Hello&body=Hello World" -X POST http://jsonplaceholder.typicode.com/posts 
+
+/* A PUT request to update record for id=3; here in place of "--data", we can use "-d", means "--data"="-d" */
+curl --data "title=Hello" -X PUT http://jsonplaceholder.typicode.com/posts/3 
+
+/* A DELETE request to delete record with id=3 */
+curl -X DELETE http://jsonplaceholder.typicode.com/posts/3 
+
+/* -L flag is used to follow the redirection; http://google.com redirects to it's www version i.e. https://www.google.com */
+curl -L http://google.com
+
+/* Upload a file to server through ftp protocol using curl */                                  
+curl -u jitendray@ajindra.com:123456! -T test.txt ftp://ajindra.com 
