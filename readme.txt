@@ -91,39 +91,90 @@ libcurl currently supports the http, https, ftp, gopher, telnet, dict, file, and
 libcurl also supports HTTPS certificates, HTTP POST, HTTP PUT, FTP uploading (this can also be done with PHP's ftp extension that provides many ftp functions, for ex: ftp_put(), ftp_fput(), etc. in PHP), HTTP form based upload, proxies, cookies, and user+password authentication.
 
 /* Example 1: using cURL in PHP */
-$url            = 'http://XXXXXX.com/XXXX';      //some HTTP URL
+/* some HTTPS/HTTP URL; HTTPS recommended; But if you supply HTTP URL here don't forgot to set CURLOPT_SSL_VERIFYPEER and CURLOPT_SSL_VERIFYHOST as FALSE. */
+$url            = 'https://XXXXXX.com/XXXX';
+/* For security, curl does HTTPS securely by default. Just make sure you do not disable certificate verification with CURLOPT_SSL_VERIFYPEER and CURLOPT_SSL_VERIFYHOST */
+
+/* Initialize a cURL session: returns a cURL handle for use with other functions */
 $ch             = curl_init($url);
 $data_string    = json_encode($data);  //$data is an array having input data
 
+/* Set options for cURL session: Look all these constants(like CURLOPT_CUSTOMREQUEST) detail in http://php.net/manual/en/function.curl-setopt.php i.e. under curl_setopt() manual. */
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+/* CURLOPT_RETURNTRANSFER: TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it directly. */
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-Type: application/json', 'Accept-Language: application/json'));
+/* When you request a URL, you can sometimes be redirected to some other URL. In PHP it would be done with: header('Location: http://example.com/'); This directive instructs CURL to load that URL(means redirected URL) instead of the original one. There's normally no good reason to disable it. */
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+/* It is the maximum amount of time in seconds that is allowed to make the connection to the server(curl_init()). It can be set to 0 to disable this limit, but this is inadvisable in a production environment. */
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+/* It is the maximum amount of time in seconds to which a curl session consumes for total execution: i.e. make cURL connection to server(curl_init()), send input request to server and receive response from server(curl_exec()). It can be set to 0 to disable this limit for ex: when downloading a large file from server but this is inadvisable in a production environment. Thus CURLOPT_CONNECTTIMEOUT is only a part/segment of CURLOPT_TIMEOUT. */
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+/* It is equivalent to set header "Accept-Encoding:" (as Key/Value section under Headers in Postman). It supports encoding-values "identity", "deflate", and "gzip" for CURLOPT_ENCODING. If value of CURLOPT_ENCODING is set as empty string i.e. "" It sends a clear message for server that requester/http-client is ok to receive response in any one encoding-form of the 3 supported encodings. */
 curl_setopt($ch, CURLOPT_ENCODING, "");
+/* It is set TRUE to automatically set the Referer: field in requests where it follows a Location: redirect. Look CURLOPT_FOLLOWLOCATION and CURLOPT_MAXREDIRS comments as well to clear your concept for this option.*/
 curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+/* The maximum amount of HTTP redirections to follow if CURLOPT_FOLLOWLOCATION is set as TRUE. Suppose your curl requesting to a URL for response, but that redirects to another URL for response and this URL again finally redirects to another URL for response - here, means this type of redirection. */
 curl_setopt($ch, CURLOPT_MAXREDIRS, 15);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 
+/* Execute cURL: It returns the result on success, FALSE on failure */
 $response_json = curl_exec($ch);
+/* Close cURL session */
 curl_close($ch);
 $response_array = json_decode($response_json, TRUE);
 
 /* Example 2: using cURL in PHP */
-$ch             = curl_init($url);
-$url            = 'http://XXXXXX.com/XXXX?id=456';      //some HTTP URL
+/* Initialize a cURL session: returns a cURL handle for use with other functions */
+$ch             = curl_init();
+/* some HTTPS/HTTP URL; HTTPS recommended; But if you supply HTTP URL here don't forgot to set CURLOPT_SSL_VERIFYPEER and CURLOPT_SSL_VERIFYHOST as FALSE. */
+$url            = 'http://XXXXXX.com/XXXX?id=456';
+/* For security, curl does HTTPS securely by default. Just make sure you do not disable certificate verification with CURLOPT_SSL_VERIFYPEER and CURLOPT_SSL_VERIFYHOST */
 
+/* Set options for cURL session: Look all these constants(like CURLOPT_CUSTOMREQUEST) detail in http://php.net/manual/en/function.curl-setopt.php i.e. under curl_setopt() manual. */
 curl_setopt($ch, CURLOPT_URL, $url);
+/* CURLOPT_RETURNTRANSFER: TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it directly. */
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('client-id:XXXXXXXX'));
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+/* When you request a URL, you can sometimes be redirected to some other URL. In PHP it would be done with: header('Location: http://example.com/'); This directive instructs CURL to load that URL(means redirected URL) instead of the original one. There's normally no good reason to disable it. */
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+/* FALSE to stop cURL from verifying the peer's certificate; Having value TRUE by default. */
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+/*
+ * Value 1 to check the existence of a common name in the SSL peer certificate. 
+ * 2 to check the existence of a common name and also verify that it matches the hostname provided.
+ * 0 to not check the names.
+ * In production environments the value of this option should be kept at 2 (default value).
+ * This option has been removed in cURL version 7.28.1
+ */
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
+/* Execute cURL: It returns the result on success, FALSE on failure */
 $response_json  = curl_exec($ch);
+/**
+ * Return a string containing the last error for the current session
+ * 
+ * Example:
+ * $ch = curl_init('http://404.php.net/');
+ * curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+ * if(curl_exec($ch) === FALSE) {
+ *     echo 'Curl error: ' . curl_error($ch);
+ * } else {
+ *     echo 'Operation completed without any errors';
+ * }
+ * curl_close($ch);
+ * 
+ * int curl_errno(resource $ch) => Return the last error number or 0 (zero) if no error occurred
+ * To check if any error occurred in last cURL session or not
+ * if(curl_errno($ch)) {
+ *     echo 'Curl error: ' . curl_error($ch);
+ * }
+ * or
+ * if(curl_exec($ch) === FALSE) //As above
+ */
 $error          = curl_error($ch);
+/* Close cURL session */
 curl_close($ch);
 
 if ($error) {
@@ -131,6 +182,3 @@ if ($error) {
 }
 $response_array = json_decode($response_json, TRUE);
 return $response_array;
-
-
-
