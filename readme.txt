@@ -84,7 +84,7 @@ curl -u letsdodevelopment@hytechdev.com:let@tn=j! -O ftp://letsdodevelopment.com
 /*** Get your public-ip-address: ip address provided by your ISP(internet service provider), not your local address ***/
 curl ifconfig.me/ip
 
-
+/* -------------------------------------------------------------------------------------------------- */
 /*** PHP uses cURL ***/
 PHP supports libcurl, a library created by Daniel Stenberg, that allows you to connect and communicate to many different types of servers with many different types of protocols.
 libcurl currently supports the http, https, ftp, gopher, telnet, dict, file, and ldap protocols.
@@ -123,7 +123,7 @@ $response_json = curl_exec($ch);
 /* Close cURL session */
 curl_close($ch);
 $response_array = json_decode($response_json, TRUE);
-
+/* -------------------------------------------------------------------------------------------------- */
 /* Example 2: using cURL in PHP */
 /* Initialize a cURL session: returns a cURL handle for use with other functions */
 $ch             = curl_init();
