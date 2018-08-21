@@ -73,13 +73,13 @@ curl -X DELETE http://jsonplaceholder.typicode.com/posts/3
 curl -L http://google.com
 
 /* Upload file/files to server through ftp protocol using curl */                                  
-curl -u letsdodevelopment@hytechdev.com:let@tn=j! -T test.txt ftp://letsdodevelopment.com
-curl -u letsdodevelopment@hytechdev.com:let@tn=j! -T "{test.txt,test2.txt}" ftp://letsdodevelopment.com
-/* -T => Transfer file to destination; "letsdodevelopment@hytechdev.com" is ftp-username, "let@tn=j!" is ftp-password and "letsdodevelopment.com" is ftp-host-name */
+curl -u jitendraLDD:123456! -T test.txt ftp://letsdodevelopment.com
+curl -u jitendraLDD:123456! -T "{test.txt,test2.txt}" ftp://letsdodevelopment.com
+/* -T => Transfer file to destination; "jitendraLDD" is ftp-username, "123456!" is ftp-password and "letsdodevelopment.com" is ftp-host-name */
 
 /* Download a file from server through ftp protocol using curl */
-curl -u letsdodevelopment@hytechdev.com:let@tn=j! -O ftp://letsdodevelopment.com/index.php
-/* Here "letsdodevelopment@hytechdev.com" is ftp-username, "let@tn=j!" is ftp-password and "letsdodevelopment.com" is ftp-host-name */
+curl -u jitendraLDD:123456! -O ftp://letsdodevelopment.com/index.php
+/* Here "jitendraLDD" is ftp-username, "123456!" is ftp-password and "letsdodevelopment.com" is ftp-host-name */
 
 /*** Get your public-ip-address: ip address provided by your ISP(internet service provider), not your local address ***/
 curl ifconfig.me/ip
