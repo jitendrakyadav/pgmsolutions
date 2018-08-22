@@ -159,7 +159,7 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 1. Two developers using same branch ldap_upgrade_work. 
 2. First developer added 3 commits one by one commit-1, commit-2, commit-3 and push the same on remote repository.
 3. second developer before starting their work pull branch for latest update and got all 3 commits added by first developer.
-4. First developer realizes their mistakes and remove last 2 commits and push forcefully the same on branch.
+4. First developer realizes their mistakes(suppose he added live ftp-credential in commit-2) and remove last 2 commits and push forcefully the same on branch.
 5. Now for 1st developer and remote repository, the last commit on this branch is commit-1.
 6. Now again second developer got pull and see conflicts, he resolves the conflict and commit the code with commit-id commit-4
 7. For second developer commits on branch are commit-1, commit-2, commit-3, commit-4
