@@ -166,3 +166,13 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 8. Second developer pushes their new commits on remote repository and same pulled by first developer.
 9. Now remote repository and first developer have the same commits as second developer i.e. commit-1, commit-2, commit-3, commit-4.
 10. So conclusion is, to remove their mistakes what first developer did, again trapped in the same situation.
+
+/*** Important facts about Git ***/
+1. Every repository/project has a default status/position of files situated within it.
+2. This default status/position of files in a repository/project, is called "default branch".
+3. Github/Git, by default, set master branch(the first branch created automatically by Git in any repository) as their default branch.
+4. master branch is the default branch in git and could never be deleted.
+5. Steps to delete the master branch: create another branch, make it default branch on github, and then you may delete the master.
+6. Each branch in repository shows the status of all files present in repository independently.
+7. Even not dependent on master, from which it has been created. 
+8. Even if you delete master branch it will not affect in any form to the newly created branch from master.
