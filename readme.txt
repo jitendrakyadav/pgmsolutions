@@ -153,4 +153,16 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 1. vim ~/.gitignore    /* create a .gitignore file in your(user's) home directory */
 2. git config --global core.excludesfile ~/.gitignore 
 /* Make this .gitignore file global/common to be used for every git-repository/project of that user */
-3. Here in ~/.gitignore, write your common rule like "*.txt" or "*.log" that would applicable equally for all your repositories. One tricky things we can do here, write a rule here to ignore .gitignore file and then create a .gitignore file in each repository and then you may create different-different rule for your different repositories. Remember, if you use your already created repository's .gitignore file, that must not be already part of your git-repository otherwise it will not work i.e. your repository's .gitignore file would not be ignored by your global ~/.gitignore file. 
+3. Here in ~/.gitignore, write your common rule like "*.txt" or "*.log" that would applicable equally for all your repositories. One tricky things we can do here, write a rule here to ignore .gitignore file and then create a .gitignore file in each repository and then you may create different-different rule for your different repositories. Remember, if you use your already created repository's .gitignore file, that must not be already part of your git-repository otherwise it will not work i.e. your repository's .gitignore file would not be ignored by your global ~/.gitignore file.
+
+/*** Don't use same branch for 2 developers: case study ***/
+1. Two developers using same branch ldap_upgrade_work. 
+2. First developer added 3 commits one by one commit-1, commit-2, commit-3 and push the same on remote repository.
+3. second developer before starting their work pull branch for latest update and got all 3 commits added by first developer.
+4. First developer realizes their mistakes and remove last 2 commits and push forcefully the same on branch.
+5. Now for 1st developer and remote repository, the last commit on this branch is commit-1.
+6. Now again second developer got pull and see conflicts, he resolves the conflict and commit the code with commit-id commit-4
+7. For second developer commits on branch are commit-1, commit-2, commit-3, commit-4
+8. Second developer pushes their new commits on remote repository and same pulled by first developer.
+9. Now remote repository and first developer have the same commits as second developer i.e. commit-1, commit-2, commit-3, commit-4.
+10. So conclusion is, to remove their mistakes what first developer did, again trapped in the same situation.
