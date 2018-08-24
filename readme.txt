@@ -4,9 +4,18 @@ git stash --help
 /**** Create new branch from 'master' branch: currently we are in 'master' branch ****/
 git branch new_feature
 
-/*** Get what changes have been made in a file ***/
+/*** Get what changes have been made in files from last commit which are in stage-1 i.e. working folder in current branch. Newly created files(i.e. "Untracked files" from git repository, means those who were never part of git repository yet) would be excluded from this list(as the files are new, so need not to use "git diff" to get differences from previous version of the same files). ***/
+git diff
+/* Get what changes have been made in a file from last commit, where <file-name> is in stage-1 i.e. working folder. Newly created files(i.e. "Untracked files" from git repository, means those who were never part of git repository yet) would not be eligible for this command(as the whole file is new, so need not to use "git diff" to get difference from previous version of the same file). */
 git diff <file-name>
-git diff     /* It shows all files with their changes in current branch */
+/* Shows only file names, not code differences */
+git diff --name-only
+/* Get what changes have been made in files from last commit which are in stage-2 i.e. staging area in current branch. Newly created files which are going to be introduced to git repository now and are in stage-2, would be listed hear as well. */
+git diff --cached
+/* Get what changes have been made in a file from last commit which are in stage-2 i.e. staging area in current branch. Newly created files which are going to be introduced to git repository now and are in stage-2, would be eligible for this command. */     
+git diff --cached <file-name>
+/* Shows only file names, not code differences */
+git diff --cached --name-only
 
 /**** merge new_feature branch into master branch: for it, go to master branch and type the following command ****/
 git checkout master  //or 'git checkout -b master' -b for forcefully
