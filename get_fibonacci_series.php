@@ -12,13 +12,13 @@ function getFibonacciSeries($n)
 {
     $a = 0;
     $b = 1;
-    $d = $a.' '.$b.' ';
+    $c = $a.' '.$b;
     for ($i = 2; $i < $n; $i++) {
-        $c = $a + $b;
-        $d .= $c . ' ';
+        $d = $a + $b;
+        $c .= ' '.$d;
         $a = $b;
-        $b = $c;
+        $b = $d;
     }
-    return $d;
+    return $c;
 }
 echo getFibonacciSeries(8);

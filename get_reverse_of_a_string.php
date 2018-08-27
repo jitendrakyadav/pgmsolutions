@@ -9,8 +9,8 @@
  */
 function getReverseOfString2($x)
 {
-    for ($i = strlen($x) - 1, $j = 0; $j < $i; $i--, $j++) {
-        list($x[$j], $x[$i]) = array($x[$i], $x[$j]);
+    for ($i = 0, $j = strlen($x) - 1; $i < $j; $i++, $j--) {
+        list($x[$i], $x[$j]) = array($x[$j], $x[$i]);
     }
     return $x;
 }
@@ -24,8 +24,7 @@ echo getReverseOfString2('Hello Jitendra!') . "\n";
   */
 function getReverseOfString($x)
 {
-    $l = strlen($x);
-    for ($i = $l; $i > 0; $i--) {
+    for ($i = strlen($x); $i > 0; $i--) {
         echo $x[$i-1];
     }
 }
