@@ -200,7 +200,7 @@ git log -S "Hello World!" --source --all
 gitk <file-name>   /* gitk is a very powerful GUI tool of git. It actually does really useful things that just cannot be done in a CLI. */
 /** Get a particular file change-log/history through out all branches, present in repository **/
 gitk --all <file-name>
-/** If a file renamed for ex: from about.php to about_current.php then "gitk about_current.php" will show logs only about about_current.php, not about.php. So to get log of about_current.php and about.php (i.e. all logs of same file even with it's previous names as well) as well, we need to use following commands: **/
-gitk --follow <file-name>     /* gitk --follow about_current.php: will provide change-log for it and all it's renamed files i.e. about.php */
+/** If a file renamed for ex: from about.php to about_current.php then "gitk about_current.php" will show logs only about about_current.php, not about.php. So to get log of about_current.php and about.php (i.e. all logs of same file with current name and with all previous-names as well) as well, we need to use following commands: **/
+gitk --follow <file-name>     /* gitk --follow about_current.php: will provide change-log for it and also about about.php(the same file but with it's all previous names) */
 or
 gitk --follow --all <file-name>
