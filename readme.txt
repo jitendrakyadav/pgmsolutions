@@ -1,7 +1,7 @@
 /*** Get help for any command in git: for ex: help for 'stash' command ***/
 git stash --help
 
-/**** Create new branch from 'master' branch: currently we are in 'master' branch ****/
+/*** Create new branch from 'master' branch: currently we are in 'master' branch ***/
 git branch new_feature
 
 /*** Get what changes have been made in files from last commit which are in stage-1 i.e. working folder in current branch. Newly created files(i.e. "Untracked files" from git repository, means those who were never part of git repository yet) would be excluded from this list(as the files are new, so need not to use "git diff" to get differences from previous version of the same files). ***/
@@ -17,11 +17,11 @@ git diff --cached <file-name>
 /* Shows only file names, not code differences */
 git diff --cached --name-only
 
-/**** merge new_feature branch into master branch: for it, go to master branch and type the following command ****/
+/*** merge new_feature branch into master branch: for it, go to master branch and type the following command ***/
 git checkout master  //or 'git checkout -b master' -b for forcefully
 git merge new_feature
 
-/**** After successful merging, delete new_feature branch ****/
+/*** After successful merging, delete new_feature branch ***/
 git branch -d new_feature     [-d is an alias for --delete]
 git branch -D new_feature     [-D is an alias for --delete --force, use if branch new_feature is un-merged to it's upstream branch(for ex: master branch)]
 
@@ -31,34 +31,34 @@ git push <remote-name> --delete <branch-name>           [If <branch-name> has be
 git push <remote-name> --delete --force <branch-name>   [If <branch-name> is un-merged]
 /* For ex: git push origin --delete mybranch */
 
-/**** after git initialization i.e. 'git init' command, use following ****/
+/*** after git initialization i.e. 'git init' command, use following ***/
 git remote add origin https://github.com/jitendrakyadav/hello-world.git
 
-/**** If origin is not updated after firing above command again and again, then remove origin first & then use above command ****/
+/*** If origin is not updated after firing above command again and again, then remove origin first & then use above command ***/
 git rm origin
 
-/**** output: origin ****/
+/*** output: origin ***/
 git remote
 
-/**** Pull from server readme-edits to local machine readme-edits, execute following command, when you are in readme-edits branch ****/
+/*** Pull from server readme-edits to local machine readme-edits, execute following command, when you are in readme-edits branch ***/
 git pull origin readme-edits
 
-/**** Push from local machine readme-edits to server readme-edits, execute following command, when you are in readme-edits branch ****/
+/*** Push from local machine readme-edits to server readme-edits, execute following command, when you are in readme-edits branch ***/
 git push origin readme-edits
 
-/**** Display commits log [last 6] ****/
+/*** Display commits log [last 6] ***/
 git log -6
 
-/**** revert(पूर्वस्थिति में लौटना) to a particular commit in middle i.e. there are some commits above and below ****/
+/*** revert(पूर्वस्थिति में लौटना) to a particular commit in middle i.e. there are some commits above and below ***/
 git revert <commit-id>
 
-/**** revert to a merge commit ****/
+/*** revert to a merge commit ***/
 git revert <commit-id> -m 1   //or 2 [1 or 2 is parent to which we want to return while preserving afterwards commits. Look into Git copy and print-screens on github]
 
-/**** revert to just previous(last) commit ****/
+/*** revert to just previous(last) commit ***/
 git revert HEAD
 
-/**** Take the branch(into past really) to a previous commit and update the same remote branch also. Make a branch from prev branch and do all these things there and remain safe the prev branch ****/
+/*** Take the branch(into past really) to a previous commit and update the same remote branch also. Make a branch from prev branch and do all these things there and remain safe the prev branch ***/
 git reset --hard <commit-id>
 git push origin -f <branch-name>
 
