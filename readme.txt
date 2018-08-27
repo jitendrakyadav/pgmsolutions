@@ -185,3 +185,22 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 6. Each branch in repository shows the status of all files present in repository independently.
 7. Even not dependent on master, from which it has been created. 
 8. Even if you delete master branch it will not affect in any form to the newly created branch from master.
+
+9. A branch consists of a no. of commits. But when you use "git log" to view current branch commits, It shows not only current branch commits but also it's parent branches commits as well (till "master" branch).
+10. "master" branch is the base/top-most-parent branch of all branches available in the repository.
+
+/*** Find the git commits, that introduced a string or removed the string in current branch ***/
+git log -S "Hello World!"
+/** Find the git commits, that introduced a string or removed the string in any branch of repository **/
+git log -S "Hello World!" --all           /* --all option: search all branches of repository */
+or
+git log -S "Hello World!" --source --all
+
+/*** Get a particular file change-log/history in current branch (current branch includes current-branch-commits & it's parent branches commits as well) ***/
+gitk <file-name>   /* gitk is a very powerful GUI tool of git. It actually does really useful things that just cannot be done in a CLI. */
+/** Get a particular file change-log/history through out all branches, present in repository **/
+gitk --all <file-name>
+/** If a file renamed for ex: from about.php to about_current.php then "gitk about_current.php" will show logs only about about_current.php, not about.php. So to get log of about_current.php and about.php (i.e. all logs of same file even with it's previous names as well) as well, we need to use following commands: **/
+gitk --follow <file-name>     /* gitk --follow about_current.php: will provide change-log for it and all it's renamed files i.e. about.php */
+or
+gitk --follow --all <file-name>
