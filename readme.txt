@@ -205,3 +205,23 @@ gitk --all <file-name>
 gitk --follow <file-name>     /* gitk --follow about_current.php: will provide change-log for it and also about about.php(the same file but with it's all previous names) */
 or
 gitk --follow --all <file-name>
+
+/*** About .git directory ***/
+Git does not use delta storage, It uses snapshot storage. Each commit takes a full snapshot of your entire working directory. If a file is unchanged in a commit then git stores the previous commit reference only for that file, not the whole file.
+In .git folder, there are 5 main sub-folders:(use unix command "find .git" to see each and every file/folder inside .git)
+1. hooks
+2. info => contains "exclude" file to write git-ignore rules there to make files/folders gitignore.
+3. logs => store branches like refs/heads/master, refs/heads/branch_1, etc. 
+4. objects 
+   a. Here git stores their data in form of objects having unique ids. There are 4 object types of git - commit, tree, blob, tag. 
+   b. Please have a look on object_types_&_their_association_in_git.png to get more clarity on git object types and their association to one another.
+   c. blob => when you fire "git add <file-name>", git creates a blob(binary large object) object type with a unique-id, one blob object for one file, means if there are 3 files added then there would be generated 3 blob objects corresponding to each file. This blob object contains the file contents.
+   d. tree => This object type creates when you fire 'git commit -m ""' command. It contains directory listing information for all files and folders present in repository.
+   e. commit => This object type creates when you fire 'git commit -m ""' command. It contains commit information - it's unique-id, commit-message, commit-created date/time, author.
+5. refs => store branches information for local and remote both like heads/branch_1, heads/branch_2, remotes/origin/HEAD, etc.
+
+To get object type using object-type-id situated in .git/objects/ like .git/objects/e9/65047ad7c57865823c7d992b1d046ea66edf78, use following command:
+git cat-file -t <object-type-unique-id>    /* add folder-name & it's file-name to get object-type-id */     
+git cat-file -t e965047ad7c57865823c7d992b1d046ea66edf78   
+/* 'e9' + '65047ad7c57865823c7d992b1d046ea66edf78' = e965047ad7c57865823c7d992b1d046ea66edf78 */
+Output: blob
