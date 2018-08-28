@@ -187,7 +187,8 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 8. Even if you delete master branch it will not affect in any form to the newly created branch from master.
 
 9. A branch consists of a no. of commits. But when you use "git log" to view current branch commits, It shows not only current branch commits but also it's parent branches commits as well (till "master" branch).
-10. "master" branch is the base/top-most-parent branch of all branches available in the repository.
+10. "master" branch is the base/top-most-parent branch of all branches available in the repository. 
+11. To have more clarity on git branches and their commits flow, look into git_branches_and_their_commits_flow.pdf.
 
 /*** Find the git commits, that introduced a string or removed the string in current branch ***/
 git log -S "Hello World!"
