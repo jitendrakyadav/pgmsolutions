@@ -217,7 +217,7 @@ In .git folder, there are 5 main sub-folders:(use unix command "find .git" to se
    b. Please have a look on object_types_&_their_association_in_git.png to get more clarity on git object types and their association to one another.
    c. blob => when you fire "git add <file-name>", git creates a blob(binary large object) object type with a unique-id, one blob object for one file, means if there are 3 files added then there would be generated 3 blob objects corresponding to each file. This blob object contains the file contents.
    d. tree => This object type creates when you fire 'git commit -m ""' command. It contains directory listing information for all files and folders present in repository.
-   e. commit => This object type creates when you fire 'git commit -m ""' command. It contains commit information - it's unique-id, commit-message, commit-created date/time, author.
+   e. commit => This object type creates when you fire 'git commit -m ""' command. It contains commit information - it's unique-id, commit-message, parent-commit id, commit-created date/time, author, committer.
 5. refs => store branches information for local and remote both like heads/branch_1, heads/branch_2, remotes/origin/HEAD, etc.
 
 To get object type using object-type-id situated in .git/objects/ like .git/objects/e9/65047ad7c57865823c7d992b1d046ea66edf78, use following command:
