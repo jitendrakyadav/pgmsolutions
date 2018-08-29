@@ -22,3 +22,5 @@
     mysql_concepts_and_commands
 12. OAuth (Open Authorization)
     use_oauth_as_client_and_server
+13. What is cURL, wget, file_get_contents & differences among them
+    curl_wget_file_get_contents
