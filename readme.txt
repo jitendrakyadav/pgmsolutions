@@ -25,3 +25,5 @@ Windows:
    xampp\php\logs\php_error_log
 6. MySQL error log:
    xampp\mysql\data\mysql_error.log
+7. When you want rename/delete a file/folder but you are stopped by system with information "Device or resource busy". Then use following tool/software to make file/folder un-busy/un-used:
+   LockHunter
