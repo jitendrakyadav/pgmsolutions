@@ -246,8 +246,8 @@ Output: blob
 1. When you fire:
    git clone https://github.com/magento/magento2.git magento2    
    /* Here magento2 is a directory in your local machine where you want to clone the remote repository */
-2. Git clones magento2 repository in your local magento2 directory including .git directory as well.
-3. You see at remote, there are 6 branches on github - master(assumed only to understand, as there is no any physical branch exists there in real with name "master" for this particular repository; also considering here this "master" as default-branch instead of 2.2-develop for this repository), 2.0, 2.1-develop, 2.1, 2.2-develop(In real, this is the default-branch for this repository. As there is a trick to know the default branch for any repository: when you click on a repository means when you reside on a URL like https://github.com/<your-user-name>/<your-repository-name> then which branch in drop-down menu is shown as selected, that is the default-branch for that repository), 2.2, 2.3-develop.
+2. Git clones magento2 repository in your local magento2 directory that includes .git directory as well.
+3. You see at remote, there are 6 branches on github - master(assumed only to understand, as there is no any physical branch exists there in real with name "master" for this particular repository; also considering here this "master" as default-branch instead of 2.2-develop for this repository), 2.0, 2.1-develop, 2.1, 2.2-develop(In real, this is the default-branch for this repository. As there is a trick to know the default branch for any repository: when you click on a repository means when you reside on a URL like https://github.com/<your-user-name>/<your-repository-name> then which branch in drop-down menu is shown as selected, that is the default-branch for that repository), 2.2, 2.3-develop. Example: Laravel repository on github: https://github.com/laravel/laravel, in real, contains "master" branch as their default-branch.
 4. But when you fire: "git branch" locally, only master branch is shown. 
 5. Because clone(for first time, you must use clone command) brings history of all branches(stored in .git folder) but physically show only master branch with their files locally.
 6. With command "git branch -a" you can see all available branches which are hidden currently in .git folder.
@@ -264,7 +264,7 @@ Output: blob
 17. Fire "git push origin mydefaultbranch/master" to push your mydefaultbranch or master branch to your newly created remote repository.
 18. This initial/first branch which has been pushed to blank remote repository, would be considered/set as default-branch by remote repository.
    
-/*** Delete a branch from github.com ***/
+/*** Delete a repository from github.com ***/
 1. Go to github.com and login to your account.
 2. Now click on repository which you want to delete, means now your URL must be like https://github.com/<your-user-name>/<your-repository-name>
 3. In header section, click on "Settings" tab just after "Insights" tab.
@@ -272,10 +272,10 @@ Output: blob
 5. In under sub-section "Delete this repository" click on "Delete this repository" button
 6. In pop-up, put your repository name again to confirm the same and then press the button.
 
-/*** Get/Set default branch of a repository on github.com ***/
+/*** Get/Set default-branch of a repository on github.com ***/
 1. Go to github.com and login to your account.
 2. Now click on repository for which you want to know default-branch, means now your URL must be like https://github.com/<your-user-name>/<your-repository-name>
 3. In header section, click on "Settings" tab just after "Insights" tab.
-4. In the keft menu, click "Branches" tab.
+4. In the left menu, click "Branches" tab.
 5. Here you can see/set your repository default branch.
 
