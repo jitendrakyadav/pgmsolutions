@@ -225,3 +225,26 @@ git cat-file -t <object-type-unique-id>    /* add folder-name & it's file-name t
 git cat-file -t e965047ad7c57865823c7d992b1d046ea66edf78   
 /* 'e9' + '65047ad7c57865823c7d992b1d046ea66edf78' = e965047ad7c57865823c7d992b1d046ea66edf78 */
 Output: blob
+
+/*** What happens when you clone/pull a repository from github: let's take an example of magento2 repository - https://github.com/magento/magento2 ***/
+1. When you fire:
+   git clone https://github.com/magento/magento2.git magento2    /* Here magento2 is a directory in your local machine where you want to clone/pull the remote repository */
+2. Git clones magento2 repository in your local magento2 directory including .git directory as well.
+3. You see at remote, there are 5 branches on github - master, 2.0, 2.1-develop, 2.1, 2.2-develop, 2.2, 2.3-develop
+4. But when you fire: "git branch" locally, only master branch is shown. 
+5. Because clone/pull(for first time, you must use clone command) brings history of all branches(stored in .git folder) but physically show only master branch with their files locally.
+6. With command "git branch -a" you can see all available branches which are hidden currently in .git folder.
+7. Just checkout to branch which you want, like I checkout to 2.2 branch as I needed it, now your local magento2 folder contains all files and folders which must be for magento version 2.2.
+8. Now delete your local .git folder because you have achieved files/folders which you want.
+9. Again fire "git init" - It assumes/initializes/treats your project as as fresh repository not connected to any remote repository yet.
+9.1 If you fire "git branch", no any branch would shown here.
+10. Now fire command "git branch mydefaultbranch" if you don't want to make master as your default branch.
+11. Fire command "git add ." to add all your files to staging area. 
+11.1 If you fire "git branch", no any branch would shown here.
+12. Fire 'git commit -m ""' to send your files in stage-3 i.e. your local .git.
+13. You see now - If you have created any branch like mydefaultbranch then this commit would be shown under this branch otherwise git automatically creates master as your default branch and register this commit under it.
+14. Fire "git remote add origin https://github.com/<your-user-name>/<your-newly-created-remote-git-repository>.git" 
+15. Fire "git push origin mydefaultbranch/master" to push your mydefaultbranch or master branch to your newly created remote repository. 
+   
+      
+   
