@@ -179,16 +179,17 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 /*** Important facts about Git ***/
 1. Every repository/project has a default status/position of files situated within it.
 2. This default status/position of files in a repository/project, is called "default branch".
-3. Github/Git, by default, set master branch(the first branch created automatically by Git in any repository) as their default branch.
-4. master branch is the default branch in git and could never be deleted.
-5. Steps to delete the master branch: create another branch, make it default branch on github, and then you may delete the master.
-6. Each branch in repository shows the status of all files present in repository independently.
-7. Even not dependent on master, from which it has been created. 
-8. Even if you delete master branch it will not affect in any form to the newly created branch from master.
+3. The default branch is considered the “base” branch in your repository, against which all pull requests and code commits are automatically made when you don't specify a different branch.
+4. Github/Git, by default, set master branch(the first branch created automatically by Git in any repository) as their default branch.
+5. master branch is the default branch in git and could never be deleted.
+6. Steps to delete the master branch: create another branch, make it default branch on github, and then you may delete the master.
+7. Each branch in repository shows the status of all files present in repository independently.
+8. Even not dependent on master, from which it has been created. 
+9. Even if you delete master branch it will not affect in any form to the newly created branch from master.
 
-9. A branch consists of a no. of commits. But when you use "git log" to view current branch commits, It shows not only current branch commits but also it's parent branches commits as well (till "master" branch).
-10. "master" branch is the base/top-most-parent branch of all branches available in the repository. 
-11. To have more clarity on git branches and their commits flow, look into git_branches_and_their_commits_flow.pdf.
+10. A branch consists of a no. of commits. But when you use "git log" to view current branch commits, It shows not only current branch commits but also it's parent branches commits as well (till "master" branch).
+11. "master" branch is the base/top-most-parent branch of all branches available in the repository. 
+12. To have more clarity on git branches and their commits flow, look into git_branches_and_their_commits_flow.pdf.
 
 /*** Find the git commits, that introduced a string or removed the string in current branch ***/
 git log -S "Hello World!"
@@ -226,25 +227,55 @@ git cat-file -t e965047ad7c57865823c7d992b1d046ea66edf78
 /* 'e9' + '65047ad7c57865823c7d992b1d046ea66edf78' = e965047ad7c57865823c7d992b1d046ea66edf78 */
 Output: blob
 
-/*** What happens when you clone/pull a repository from github: let's take an example of magento2 repository - https://github.com/magento/magento2 ***/
+/*** What happens when you clone a repository from github: let's take an example of magento2 repository - https://github.com/magento/magento2 ***/
+1. Remember: If you want to contribute to a repository or make some development work for a repository, always use "git clone" command to get a copy of your remote repository to your local machine to start development work.
+2. Don't use "git pull" command here in this particular case.
+   case study:
+   a. create a folder "test2" on my local machine.
+   b. Enter inside the directory using cd command and fire command "git init".
+   c. Fire command "git remote add origin https://github.com/<your-user-name>/test2.git"
+   d. For information: test2 is a remote repository having four branches - mybranch, jitu2, jitu3, jitu4. Here, in this repository no any branch with name "master" and jitu2 is the default branch in this repository.
+   e. Fire command "git pull origin jitu3" instead of "git clone" having a purpose to make a copy of remote on my local machine to start my development work for this repository.
+   f. It creates a "master" branch on my local and put all files inside it which are available in branch jitu3 in my remote repository and not showing other branches even I fired command "git branch -a"[For this command, only showing master and 1 more branch i.e. jitu3].
+   g. Fire command "git checkout jitu3", having same no of files with same changes as in master branch.
+   h. Fire command "git fetch" to get any additional branch in between, as usually do in a collaboration development in git. 
+   i. Fire command "git branch -a", it lists here now all branches available on remote for this repository including mybranch, jitu2, jitu4.
+   j. Disadvantages of using "git pull" over "git clone" for first time to get a copy of remote repository to start their development work: Local repository created an extra useless branch named "master" while no any branch exist there on remote for this repository. If we leave this point, after doing this extra effort, local repository position are equivalent to a local repository position created by "git clone". For collaboration work, all branches must be there at local as on remote; this concept is wrong to keep only some branches on their local repository instead of all and even if you think this, this is not possible as "git fetch" would bring all branches(history) in your local repository as "git clone does initially".
+
+/*** Download a-software/magento repository from github, choose version and make your own fresh/new github/remote repository to start their development work for magento ***/
 1. When you fire:
-   git clone https://github.com/magento/magento2.git magento2    /* Here magento2 is a directory in your local machine where you want to clone/pull the remote repository */
+   git clone https://github.com/magento/magento2.git magento2    
+   /* Here magento2 is a directory in your local machine where you want to clone the remote repository */
 2. Git clones magento2 repository in your local magento2 directory including .git directory as well.
-3. You see at remote, there are 5 branches on github - master, 2.0, 2.1-develop, 2.1, 2.2-develop, 2.2, 2.3-develop
+3. You see at remote, there are 6 branches on github - master(assumed only to understand, as there is no any physical branch exists there in real with name "master" for this particular repository; also considering here this "master" as default-branch instead of 2.2-develop for this repository), 2.0, 2.1-develop, 2.1, 2.2-develop(In real, this is the default-branch for this repository. As there is a trick to know the default branch for any repository: when you click on a repository means when you reside on a URL like https://github.com/<your-user-name>/<your-repository-name> then which branch in drop-down menu is shown as selected, that is the default-branch for that repository), 2.2, 2.3-develop.
 4. But when you fire: "git branch" locally, only master branch is shown. 
-5. Because clone/pull(for first time, you must use clone command) brings history of all branches(stored in .git folder) but physically show only master branch with their files locally.
+5. Because clone(for first time, you must use clone command) brings history of all branches(stored in .git folder) but physically show only master branch with their files locally.
 6. With command "git branch -a" you can see all available branches which are hidden currently in .git folder.
 7. Just checkout to branch which you want, like I checkout to 2.2 branch as I needed it, now your local magento2 folder contains all files and folders which must be for magento version 2.2.
 8. Now delete your local .git folder because you have achieved files/folders which you want.
 9. Again fire "git init" - It assumes/initializes/treats your project as as fresh repository not connected to any remote repository yet.
-9.1 If you fire "git branch", no any branch would shown here.
-10. Now fire command "git branch mydefaultbranch" if you don't want to make master as your default branch.
-11. Fire command "git add ." to add all your files to staging area. 
-11.1 If you fire "git branch", no any branch would shown here.
-12. Fire 'git commit -m ""' to send your files in stage-3 i.e. your local .git.
-13. You see now - If you have created any branch like mydefaultbranch then this commit would be shown under this branch otherwise git automatically creates master as your default branch and register this commit under it.
-14. Fire "git remote add origin https://github.com/<your-user-name>/<your-newly-created-remote-git-repository>.git" 
-15. Fire "git push origin mydefaultbranch/master" to push your mydefaultbranch or master branch to your newly created remote repository. 
+10.1 If you fire "git branch", no any branch would shown here.
+11. Now fire command "git branch -b mydefaultbranch" if you don't want to make master as your default branch.
+12. Fire command "git add ." to add all your files to staging area. 
+13.1 If you fire "git branch", no any branch would shown here.
+14. Fire 'git commit -m ""' to send your files in stage-3 i.e. your local .git.
+15. You see now - If you have created any branch like mydefaultbranch then this commit would be shown under this branch otherwise git automatically creates master as your default branch and register this commit under it.
+16. Fire "git remote add origin https://github.com/<your-user-name>/<your-newly-created-remote-git-repository>.git" 
+17. Fire "git push origin mydefaultbranch/master" to push your mydefaultbranch or master branch to your newly created remote repository.
+18. This initial/first branch which has been pushed to blank remote repository, would be considered/set as default-branch by remote repository.
    
-      
-   
+/*** Delete a branch from github.com ***/
+1. Go to github.com and login to your account.
+2. Now click on repository which you want to delete, means now your URL must be like https://github.com/<your-user-name>/<your-repository-name>
+3. In header section, click on "Settings" tab just after "Insights" tab.
+4. Scroll the page to get the bottom of page - here the section "Danger Zone".
+5. In under sub-section "Delete this repository" click on "Delete this repository" button
+6. In pop-up, put your repository name again to confirm the same and then press the button.
+
+/*** Get/Set default branch of a repository on github.com ***/
+1. Go to github.com and login to your account.
+2. Now click on repository for which you want to know default-branch, means now your URL must be like https://github.com/<your-user-name>/<your-repository-name>
+3. In header section, click on "Settings" tab just after "Insights" tab.
+4. In the keft menu, click "Branches" tab.
+5. Here you can see/set your repository default branch.
+
