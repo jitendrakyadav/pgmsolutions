@@ -28,26 +28,26 @@ package-version is optional.
 Fired this command in a blank(projects's root) directory & observed following points:
 
 It will download and install package "symfony/process" for you:
-1. Creates composer.json & composer.lock files. Both files are always created/updated when a new package is installed(like "composer require symfony/process" as above).
-2. Creates a vendor directory
-3. Creates a directory vendor/symfony (i.e. vendor name)
-4. Download vendor/symfony/process package (i.e. vendor symfony's package)
-5. Creates vendor/composer directory having various autoload files like autoload_psr4.php, autoload_namespaces.php, autoload_classmap.php, etc. All these files present in composer directory, are always created/updated when a new package is installed(like "composer require symfony/process" as above). 
-6. Creates vendor/autoload.php: For all dependencies(libraries) downloaded through composer in vendor directory, composer creates a file vendor/autoload.php in last(autoload.php, everytime created/updated, when a new package is installed); By including this single file in your code, you can use all composer-downloaded-library-classes present in vendor as following:
+a. Creates composer.json & composer.lock files. Both files are always created/updated when a new package is installed(like "composer require symfony/process" as above).
+b. Creates a vendor directory
+c. Creates a directory vendor/symfony (i.e. vendor name)
+d. Download vendor/symfony/process package (i.e. vendor symfony's package)
+e. Creates vendor/composer directory having various autoload files like autoload_psr4.php, autoload_namespaces.php, autoload_classmap.php, etc. All these files present in composer directory, are always created/updated when a new package is installed(like "composer require symfony/process" as above). 
+f. Creates vendor/autoload.php: For all dependencies(libraries) downloaded through composer in vendor directory, composer creates a file vendor/autoload.php in last(autoload.php, everytime created/updated, when a new package is installed); By including this single file in your code, you can use all composer-downloaded-library-classes present in vendor as following:
 require vendor/autoload.php;
 
 use Symfony\Component\Process\Pipes\UnixPipes;  
-/** Actually, these namespaces are mapped to exact source-file going to use, in vendor/composer/autoload_psr4.php and other autoload-files present in same directory as this file. autoload_psr4.php is updated with reference from newly installed package > composer.json > "autoload" section > "psr-4" sub-section **/
-/** Now you can access/create UnixPipes object by writing simply "new UnixPipes($x, $y,..)" as usual. **/
-7. For any composer's package, you may get the full information from packagist.org. Just search in header search-box the package name like "psr/log" and you can get information about it like: installation-command, it's source on github i.e. github-url, what requires for it's installation, what it's purpose, etc.
-8. Second way to get information about a composer's package(as above) is, just type a command on your terminal "composer show --all psr/log". This pulls information about "psr/log" from Packagist and display on your terminal.
-9. Remember: "psr/log" is composer's package name only. This does not ensures you that you can get the package on github at url https://github.com/psr/log. composer's package may not be at github and if it is on github then source-url might be different. As in case of "psr/log", it's source-url is https://github.com/php-fig/log.git.
+	i. Actually, these namespaces are mapped to exact source-file going to use, in vendor/composer/autoload_psr4.php and other autoload-files present in same directory as this file. autoload_psr4.php is updated with reference from newly installed package > composer.json > "autoload" section > "psr-4" sub-section.
+	ii.Now you can access/create UnixPipes object by writing simply "new UnixPipes($x, $y,..)" as usual.
+g. For any composer's package, you may get the full information from packagist.org. Just search in header search-box the package name like "psr/log" and you can get information about it like: installation-command, it's source on github i.e. github-url, what requires for it's installation, what it's purpose, etc.
+h. Second way to get information about a composer's package(as above) is, just type a command on your terminal "composer show --all psr/log". This pulls information about "psr/log" from Packagist and display on your terminal.
+i. Remember: "psr/log" is composer's package name only. This does not ensures you that you can get the package on github at url https://github.com/psr/log. composer's package may not be at github and if it is on github then source-url might be different. As in case of "psr/log", it's source-url is https://github.com/php-fig/log.git.
 
 /* In-short, what happens when composer installs any package like above "composer require symfony/process" */
-1. Package downloads in vendor directory having a directory with package's vendor name like for "symfony/process" in vendor/symfony/process directory.
-2. Composer updates all autoload files present in vendor/composer directory.
-3. Composer updates both composer.json & composer.lock files present in project's root-directory.
-4. In last, composer updates vendor/autoload.php.
+a. Package downloads in vendor directory having a directory with package's vendor name like for "symfony/process" in vendor/symfony/process directory.
+b. Composer updates all autoload files present in vendor/composer directory.
+c. Composer updates both composer.json & composer.lock files present in project's root-directory.
+d. In last, composer updates vendor/autoload.php.
 */
 
 4. composer search <keyword-you-want-to-search>
@@ -59,7 +59,8 @@ use Symfony\Component\Process\Pipes\UnixPipes;
 /* Composer shows all information about package like name, description, version, source on github i.e. github-url if hosted on github, etc. the same we can get on packagist.org by searching the package with it's name */
 
 6. composer install
-/* This command reads the composer.lock file from the current directory, processes it, and downloads and installs all the libraries and dependencies outlined in that file. If the file does not exist it will look for composer.json, creates composer.lock file with it's help and do the same. 
+/* 
+This command reads the composer.lock file from the current directory, processes it, and downloads and installs all the libraries and dependencies outlined in that file. If the file does not exist it will look for composer.json and do the same(i.e. reads composer.json file & do the installation process); in this process, in last, it also creates composer.lock file using composer.json file so that next-time "install" command can use composer.lock instead of composer.json. 
    Case Study:
    	a. create a blank directory with name "test".
 	b. Go to test directory and create composer.json file with content:
@@ -70,15 +71,18 @@ use Symfony\Component\Process\Pipes\UnixPipes;
 	}
 	c. Use command "composer install"
 	d. What happened: 
-		i. Composer creates composer.lock file using composer.json as "install" command starts their work from composer.lock file.
+		i. Composer looks for composer.lock file, but finds that it is missing, so it reads composer.json file and starts their installation process.
 		ii. Composer creates "vendor" directory, then package's vendor directory inside vendor i.e. "psr" and then download the package inside it. Means created directory structure is vendor/psr/log.
 		iii. Composer creates vendor/composer directory and put all autoloading files inside it.
-		iv. Create vendor/autoload.php file(including which any php file can use downloaded library classes by mentioning corresponding classes namespace only in php file)
+		iv. Composer create vendor/autoload.php file(including which any php file can use downloaded library classes, just by mentioning corresponding classes-namespace in php file)
+		v. In-last, Composer creates composer.lock file using composer.json so that next-time "install" command can use composer.lock instead of composer.json.
 */
 
 7. composer update [package-name] [package-name] [package-name].. 
    composer update symfony/process
-/* package-name is optional. This command reads the composer.json file from the current directory, processes it, and updates, removes or installs all the dependencies. 
+/* 
+package-name is optional. 
+This command reads the composer.json file from the current directory, processes it, and updates, removes or installs all the dependencies. 
    Case Study:
    	a. create a blank directory with name "test".
 	b. Go to test directory and create composer.json file with content:
@@ -88,8 +92,12 @@ use Symfony\Component\Process\Pipes\UnixPipes;
     		}
 	}
 	c. Use command "composer update"
-	d. If nothing is present to update then what happened: This command behaves like "composer install" and done all those things which "composer install" command do.
-If possible, don't update composer.json file at your own to install/remove a package, use "composer require" and "composer remove" command for the same and let composer modify composer.json and other related files. */
+	d. If nothing is present to update then what happened: This command behaves like "composer install" and done all those things which "composer install" command do i.e. explained in 6(d) as above.
+	e. Deleted manually "composer.lock" file.
+	f. Use again command "composer update".
+	g. Now what happens where all dependencies are already downloaded just few minutes ago & there is nothing remains to do with this command: This command tries to do update all dependencies/previously-downloaded-packages but all are updated already then it finds "composer.lock" file is missing so it re-creates the same using composer.json file.
+
+If possible, don't update composer.json file at your own to install/remove a package, use "composer require" and "composer remove" command for the same and let composer modify composer.json and other related files.
 
 /* Difference between "composer update" & "composer install" */
 composer update:
@@ -107,13 +115,14 @@ composer update:
 composer install:
 	"composer install" will not update anything; it will just install all the dependencies as specified in the  composer.lock file.
 	In detail:
-		i. Check if composer.lock file exists (if not, Composer itself creates it)
-		ii.Read composer.lock file
-		iii.Install the packages specified in the composer.lock file
+		i. Check if composer.lock file exists (if not, use composer.json to start their process of installation)
+		ii.Install the packages specified in the composer.json file
+		iii.Creates composer.lock file using composer.json so that next-time "install" command can use composer.lock instead of composer.json. Example: https://github.com/magento/magento2 contains already composer.lock(and obviously composer.json), so after "git clone" when you use "composer install", Composer would use composer.lock to install all dependencies here.  
 
 When to install and when to update:
 	a. "composer update" is mostly used in the 'development phase', to upgrade our project packages according to what we have specified in the composer.json file.
-	b. "composer install" is primarily used in the 'deploying phase' to install our application on a production server or on a testing environment, using the same dependencies stored in the composer.lock file created by "composer update".
+	b. "composer install" is primarily used in the 'deployment phase' to install our application on a production server or on a testing environment, using the same dependencies stored in the composer.lock file created by "composer update".
+*/
 
 8. composer remove <package-name>
    composer remove symfony/process
@@ -121,6 +130,26 @@ When to install and when to update:
 
 9. composer clear-cache
 /* Composer removes their local machine cache from where all these commands are fired. When you install any package, composer downloads it and stores the same in their cache after installation completes for further use. If you removed the package and want to install the same again, this time, composer would not download, but install the package from their cache. */
+
+10. composer create-project <package-name> <directory-path-in-which-you-want-to-install> [version]
+/* 
+a. This command creates a new project from a given package into a new directory. In other words, It does 2 things - first, downloads your repository and second it installs all dependencies using composer.lock file on same time. Means just fire this command and then start set-up it's db and others by firing URL like http://localhost/magento2 in your browser as usual.
+b. We can use this command to bootstrap/create new projects or setup a clean version-controlled installation for developers of our project.
+c. We can also specify the version with the package name using = or : as separator.
+   composer create-project vendor/project:version target-directory   
+   /** Reference of information: "composer --help create-project" command **/
+d. This command is combindly equivalent to following 6 commands(if you are doing your set-up using any private repository like client's github private repository, need not to use steps iii, iv, and v. But if you are doing your set-up using any public-repository like magento/community-edition i.e. also available on packagist.org then follow all steps from i to vi):
+	i. Suppose a package is not published on packagist.org(for ex: client private github repository/package/project): To setup the project at our local machine, firstly we will use "git clone" command.
+	ii. "git checkout" to reach to our required version at our local machine.
+	iii. delete ".git" directory as we have achieved all files/directories for required version.
+	iv. use "git init"
+	v. use "git remote add origin" to connect to our fresh github remote repository URL.
+	vi. use "composer install" while you are in project's root directory, to install all dependencies/packages.
+*/
+    composer create-project magento/community-edition magento2
+/* magento/community-edition is the package name available on packagist.org for magento 2 & for onward versions(from packagist.org, we can see the source-url i.e. github url for the same, it is: https://github.com/magento/magento2), magento2 is the directory-name in which you want to install, version-no.-not-provided-here: in my opinion, actually a good practise, then composer downloads the highest-version of the package for which your environment is elligible. */
+    composer create-project laravel/laravel laravel
+/* laravel/laravel is the package name available on packagist.org for laravel(from packagist.org, we can see the source-url i.e. github url for the same, it is: https://github.com/laravel/laravel), laravel is the directory-name in which you want to install, version-no.-not-provided-here: in my opinion, actually a good practise, then composer downloads the highest-version of the package for which your environment is elligible. */
 
 /*** Publish a package to Packagist ***/
 
