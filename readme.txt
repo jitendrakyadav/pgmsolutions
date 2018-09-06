@@ -151,6 +151,89 @@ d. This command is combindly equivalent to following 6 commands(if you are doing
     composer create-project laravel/laravel laravel
 /* laravel/laravel is the package name available on packagist.org for laravel(from packagist.org, we can see the source-url i.e. github url for the same, it is: https://github.com/laravel/laravel), laravel is the directory-name in which you want to install, version-no.-not-provided-here: in my opinion, actually a good practise, then composer downloads the highest-version of the package for which your environment is elligible. */
 
+11. composer self-update
+    composer self-update [options] [--] [<version>]  
+/* In more detail, optionally you can supply the version to update to. "composer self-update" command checks getcomposer.org for newer versions of composer and if found, installs the latest. */
+
+12. composer dump-autoload -o
+    composer dump-autoload [options]
+/*
+This command dumps(i.e. creates & stores) autoload file in vendor directory. Use this command always when you have added any new class or interface or trait, to make entries of these class/interface/trait to vendor/composer/autoload_classmap.php & in other files of same directory to enjoy composer's autoloading functionality.
+-o => optimized (Optimizes PSR0 and PSR4 packages to be loaded with classmaps too, good for production.)
+What it does exactly: This command looks into composer.json > "autoload" object of composer.json > "classmap" section and checks:
+a. whether any new class-or-interface-or-traits-containing directory has been added, if yes, then makes maps of classname-to-it's-file-with-it's-full-path in vendor/composer/autoload_classmap.php and might be modify all other files present in same directory as well, for all those files whose directory mentioned under "classmap" section in composer.json.
+2. whether any new class-or-interface-or-trait containing file has been added for already mentioned directories under "classmap" section in composer.json, if yes, then makes map-of-classname-to-it's-file-with-it's-full-path in vendor/composer/autoload_classmap.php and might be modify all other files present in same directory as well.
+Now just add vendor/autoload.php in your newly created php file present in project's root folder and enjoy of composer's autoloading functionality by accessing all classes or interfaces or traits of all directories mentioned under "classmap" section in composer.json as following:
+require_once 'vendor/autoload.php';
+
+$obj = new XYZ();
+
+Cae Study: 
+	a. Go to inside a blank directory i.e. project's root directory
+	b. create a file with directories app/models/User.php with content:
+		class User
+		{
+    			public function __construct()
+    			{
+        			echo "I am inside app/models/User.php";
+    			}
+		}
+	c. create a file app/start.php with content:
+		require_once 'models/User.php';
+	d. create index.php in root directory with content:
+		require 'app/start.php';
+
+		$userObj = new User();
+	e. Run command "php index.php"
+	f. Got output as we were expecting i.e.: I am inside app/models/User.php
+	g. In older days, this coding style was ok but now a days, It would be funny to make coding like this. Now it's time to use composer's autoloading which everyone uses in present time for the same.
+	h. create a file composer.json in root directory with content:
+		{
+    			"autoload": {
+				"classmap": [
+					"app/models"
+				]			    
+    			}
+		}
+	i. Fire command "composer self-update" and then "composer dump-autoload -o"
+	j. It creates vendor directory, vendor/composer directory & many autoload files inside it like autoload_classmap.php having some part of content like:
+		return array(
+    			'User' => $baseDir . '/app/models/User.php'
+    		);
+	k. It also creates one more file i.e. vendor/autoload.php
+	l. Modify start.php with following content:
+		require_once __DIR__.'/../vendor/autoload.php';
+	m. Run command "php index.php" again
+	n. Got same outout as previously i.e.: I am inside app/models/User.php
+	o. Create another file app/models/Employee.php with content:
+		class Employee
+		{
+    			public function __construct()
+    			{
+        			echo "\nI am inside app/models/Employee.php";
+    			}
+		}
+	p. Modify index.php with following content:
+		require 'app/start.php';
+
+		$userObj = new User();
+		$employeeObj = new Employee();
+	q. Run command "php index.php" and got fatal error "Employee class not found"
+	r. Run command "composer dump-autoload -o"  (what it does: It modify vendor/composer/autoload_classmap.php file to add 1 more line there as following:
+		return array(
+    			'User' => $baseDir . '/app/models/User.php',
+			'Employee' => $baseDir . '/app/models/Employee.php'
+    		);
+	   It also obviously modifies all other files in same directory and vendor/autoload.php as well.
+	   It does this so that this class-map-files mentioned in vendor/composer/autoload_classmap.php could be got through vendor/autoload.php, included in start.php to get self-included both files i.e. app/models/User.php & app/models/Employee.php only by writing the statement "require_once __DIR__.'/../vendor/autoload.php';" only.)
+	s. Run command "php index.php" again
+	t. Got the expected output i.e.:
+		I am inside app/models/User.php
+		I am inside app/models/Employee.php
+
+	Remember here: composer.lock file is created/re-created when there presents object "require" or "require-dev" in composer.json. So here, composer.lock file is not created automatically.	
+*/
+
 /*** Publish a package to Packagist ***/
 
 
