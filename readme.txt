@@ -4,12 +4,12 @@
 3. It also provides autoload capabilities for libraries that makes usage of third-party code easy.
 4. It also allows users to install PHP applications that are available on Packagist which is its main repository containing available packages.
 5. Composer uses their commands with reference for Packagist:https://packagist.org/.
-6. Packagist: It is the main repository for Composer which contains available packages to serve Composer.
+6. Packagist: It is the main/official repository for Composer which contains available packages to serve Composer.
 7. Actually/In-fact all project/package/library files are physically resides on GitHub and Packagist only keeps short-information/references-of-github about these project/package/library requested by Composer.
 8. When Composer fires any command, It hits to Packagist and then Packagist uses their reference-of-github and let Composer pull all physical files from GitHub. That means, when Composer fires command and expecting project/package/library from Packagist, Packagist does not give any project/package/library to Composer in return but It gives reference-of-github and tell Composer to download all those from github.
 9. composer.json: Composer is a dependency manager for PHP. Composer allows developers to specify project dependencies in a composer.json file and then Composer automatically handles the rest(means Composer downloads all package/library as per mentioned in composer.json through packagist and which in turn uses github for their purpose).
 
-/*** Composer commands ***/
+/*** Composer commands: https://getcomposer.org/ > Documentation > Book > Command-line interface / Commands ***/
 1. composer
 /* Show usage, options and all available commands */
 
@@ -159,15 +159,17 @@ d. This command is combindly equivalent to following 6 commands(if you are doing
     composer dump-autoload [options]
 /*
 Dump-फेंकना ,डालना ,गिराना 
-This command dumps(i.e. creates & stores) autoload file in vendor directory. Use this command always when you have added any new class or interface or trait, to make entries of these class/interface/trait to vendor/composer/autoload_classmap.php & in other files of same directory to enjoy composer's autoloading functionality.
--o => optimized (Optimizes PSR0 and PSR4 packages to be loaded with classmaps too, good for production.)
-What it does exactly: This command looks into composer.json > "autoload" object of composer.json > "classmap" section and checks:
-a. whether any new class-or-interface-or-traits-containing directory has been added, if yes, then makes maps of classname-to-it's-file-with-it's-full-path in vendor/composer/autoload_classmap.php and might be modify all other files present in same directory as well, for all those files whose directory mentioned under "classmap" section in composer.json.
-2. whether any new class-or-interface-or-trait containing file has been added for already mentioned directories under "classmap" section in composer.json, if yes, then makes map-of-classname-to-it's-file-with-it's-full-path in vendor/composer/autoload_classmap.php and might be modify all other files present in same directory as well.
-Now just add vendor/autoload.php in your newly created php file present in project's root folder and enjoy of composer's autoloading functionality by accessing all classes or interfaces or traits of all directories mentioned under "classmap" section in composer.json as following:
-require_once 'vendor/autoload.php';
+a. This command dumps(i.e. creates & stores) autoload file in vendor directory. 
+b. Use this command always when you have added any new class or interface or trait, to make entries of these class/interface/trait to vendor/composer/autoload_classmap.php & in other files of same directory to enjoy composer's autoloading functionality. 
+c. This command creates/modifies/affects only file/files of vendor/composer directory and vendor/autoload.php file.
+d. -o => optimized (Optimizes PSR0 and PSR4 packages to be loaded with classmaps too, good for production.)
+e. What it does exactly: This command looks into composer.json > "autoload" object of composer.json > "classmap" section and checks (This command works for other sections of "autoload" object as well like "psr-4", etc.):
+	i. whether any new class-or-interface-or-traits-containing directory has been added, if yes, then makes maps of classname-to-it's-file-with-it's-full-path in vendor/composer/autoload_classmap.php and might be modify all other files present in same directory as well, for all those files whose directory mentioned under "classmap" section in composer.json.
+	ii. whether any new class-or-interface-or-trait containing file has been added for already mentioned directories under "classmap" section in composer.json, if yes, then makes map-of-classname-to-it's-file-with-it's-full-path in vendor/composer/autoload_classmap.php and might be modify all other files present in same directory as well.
+	    Now just add vendor/autoload.php in your newly created php file(might be present in project's root folder) and enjoy of composer's autoloading functionality by accessing all classes or interfaces or traits of all directories mentioned under "classmap" section in composer.json as following:
+	require_once 'vendor/autoload.php';
 
-$obj = new XYZ();
+	$obj = new XYZ();
 
 Case Study: 
 	a. Go to inside a blank directory i.e. project's root directory
@@ -226,7 +228,7 @@ Case Study:
 			'Employee' => $baseDir . '/app/models/Employee.php'
     		);
 	   It also obviously modifies all other files in same directory and vendor/autoload.php as well.
-	   It does this so that this class-map-files mentioned in vendor/composer/autoload_classmap.php could be got through vendor/autoload.php, included in start.php to get self-included both files i.e. app/models/User.php & app/models/Employee.php only by writing the statement "require_once __DIR__.'/../vendor/autoload.php';" only.)
+	   It does this so that this class-map-files mentioned in vendor/composer/autoload_classmap.php could be got through vendor/autoload.php, included in start.php to get self-included both files i.e. app/models/User.php & app/models/Employee.php, by writing the statement "require_once __DIR__.'/../vendor/autoload.php';" only.)
 	s. Run command "php index.php" again
 	t. Got the expected output i.e.:
 		I am inside app/models/User.php
@@ -349,7 +351,7 @@ Case Study:
 		i. For autoloading, while specifying namespace for a class in a php file, always include all parent directories name with separator('\').
 		ii. Directories name used in namespace are case-sensitive, means, use exactlly same directory name while specifying namespace for a class in a php file.
 		iii. Why this "class not found" fatal error outputted here: 
-			A. Look carefully in composer.json in "autoload" object under section "psr-4", here instruction given for control to look for namespace App\Controllers into app/controllers directory. 
+			A. Look carefully in composer.json in "autoload" object under section "psr-4", here instruction given to look for namespace App\Controllers into app/controllers directory. 
 			B. See, here "Controllers" in namespace is not same as directory name "controllers" but still control does not create any problem in index.php while creating object for class App\Controllers\Ctl. It is because, it's clearly mentioned in vendor/composer/autoload_psr4.php as obove that always use "app/controllers" directory for namespace "App\Controllers".
 			C. Actually when "composer dump-autoload" runs then composer copy this "psr-4" section instruction from composer.json and put the same in vendor/composer/autoload_psr4.php and control always looks into vendor/composer/autoload_psr4.php file for any namespace instruction, not in composer.json while executing index.php.
 			D. But while creating object for App\Controllers\Controllerstwo\Ctltwo & App\Controllers\Controllerstwo\Ctlthree in index.php: Actually control looks into vendor/composer/autoload_psr4.php for namespace instruction & finds only for "App\Controllers" to map to "app/controllers", now for namespace App\Controllers\Controllerstwo\Ctltwo control expect a directory app/controllers/Controllerstwo with filename Ctltwo.php inside it but actually there is directory "controllerstwo" instead of "Controllerstwo". This is the reason for fatal error.
@@ -383,12 +385,23 @@ Case Study:
 		control always looks in vendor/composer/autoload_classmap.php to search a file while accessing a class and then vendor/composer/autoload_psr4.php(for psr-4 namespace classes only). Here in vendor/composer/autoload_classmap.php file, control gets full path with filename for classes App\Controllers\Controllerstwo\Ctltwo & App\Controllers\Controllerstwo\Ctlthree, so now no any fatal error occurs in index.php while creating objects for these classes.     
 	k. For reference: Look here in same directory the whole "composer" folder having all files/code mentioned as above.
 	l. YouTube video to understand autoloading as explained above(reference): https://youtu.be/VGSerlMoIrY
-
+	m. That's all; This is the whole concept of autoloading(for classs/interface/trait/and-other-similar-structure) in PHP which has been clearly explained under the current section i.e. composer command no.(12. "composer dump-autoload").
 */
+
+13. composer validate
+/* This command will check if our composer.json(i.e. project root directory's composer.json) is valid. It would tell us about syntax-error and suggest about mandatory fields/objects of composer.json. We should always run the validate command before commit our composer.json file and before tag a release. */
+
+14. composer status -v    (-v => verbose)
+/* If we often need to modify the code of our dependencies(i.e. like inside vendor directory) and they are installed from source, the status command presents us the list of files(like from vendor directory) in which we have made changes. */
+
+15. composer init
+/* When fired this command, it interactively ask you about composer.json fields/objects value, and after providing answer of all mandatory questions/fields/objects it would generate composer.json file for you. */
+
+16. composer diagnose
+/* If you think you found a bug, or something is behaving strangely, you might want to run the diagnose command to perform automated checks for many common problems. */
 
 /*** Publish a package to Packagist ***/
 
 
-/*** composer.json ***/
-https://getcomposer.org/ > Documentation > The composer.json Schema
+/*** composer.json: https://getcomposer.org/ > Documentation > Book > The composer.json Schema ***/
 
