@@ -158,6 +158,7 @@ d. This command is combindly equivalent to following 6 commands(if you are doing
 12. composer dump-autoload -o
     composer dump-autoload [options]
 /*
+Dump-फेंकना ,डालना ,गिराना 
 This command dumps(i.e. creates & stores) autoload file in vendor directory. Use this command always when you have added any new class or interface or trait, to make entries of these class/interface/trait to vendor/composer/autoload_classmap.php & in other files of same directory to enjoy composer's autoloading functionality.
 -o => optimized (Optimizes PSR0 and PSR4 packages to be loaded with classmaps too, good for production.)
 What it does exactly: This command looks into composer.json > "autoload" object of composer.json > "classmap" section and checks:
@@ -168,7 +169,7 @@ require_once 'vendor/autoload.php';
 
 $obj = new XYZ();
 
-Cae Study: 
+Case Study: 
 	a. Go to inside a blank directory i.e. project's root directory
 	b. create a file with directories app/models/User.php with content:
 		class User
@@ -232,6 +233,157 @@ Cae Study:
 		I am inside app/models/Employee.php
 
 	Remember here: composer.lock file is created/re-created when there presents object "require" or "require-dev" in composer.json. So here, composer.lock file is not created automatically.	
+
+/** Difference between "composer dump-autoload" & "composer dump-autoload -o" **/
+Case Study:
+	a. Create a blank directory "composer" i.e. It's project root directory.
+	b. Go to inside "composer" directory
+	c. Create following files with their directories:
+		i. app/models/User.php:
+		   class User
+		   {
+		        public function __construct()
+        		{	
+                		echo "\nI am inside app/models/User.php";
+        		}
+		   }
+		ii. app/models/modelstwo/Usertwo.php:
+		    class Usertwo
+		    {
+        		public function __construct()
+        		{
+                		echo "\nI am inside app/models/modelstwo/Usertwo.php";
+        		}
+		    }	
+		iii. app/models/modelstwo/Userthree.php:
+		     class Userthree
+		     {
+        		public function __construct()
+        		{
+                		echo "\nI am inside app/models/modelstwo/Userthree.php";
+        		}
+		     }
+		iv. app/controllers/Ctl.php:
+		    namespace App\Controllers;
+
+		    class Ctl
+		    {
+        		public function __construct()
+        		{
+                		echo "\nI am inside app/controllers/Ctl.php";
+        		}
+		    }
+		v. app/controllers/controllerstwo/Ctltwo.php:
+		   namespace App\Controllers\Controllerstwo;
+
+		   class Ctltwo
+		   {
+        		public function __construct()
+        		{
+                		echo "\nI am inside app/controllers/controllerstwo/Ctltwo.php";
+        		}
+		   }
+		vi. app/controllers/controllerstwo/Ctlthree.php:
+		    namespace App\Controllers\Controllerstwo;
+
+		    class Ctlthree
+		    {
+        		public function __construct()
+        		{
+                		echo "\nI am inside app/controllers/controllerstwo/Ctlthree.php";
+        		}
+		    }
+		vii. app/start.php:
+		     require_once __DIR__.'/../vendor/autoload.php';			
+		viii. index.php:
+		      require_once 'app/start.php';
+
+		      $user  = new User();
+		      $user2 = new Usertwo();
+		      $user3 = new Userthree();
+
+		      $ctl   = new App\Controllers\Ctl();
+		      $ctl2  = new App\Controllers\Controllerstwo\Ctltwo();
+		      $ctl3  = new App\Controllers\Controllerstwo\Ctlthree();
+		ix. composer.json:
+		    {
+        		"autoload": {
+                		"psr-4": {
+                        		"App\\Controllers\\": "app/controllers"
+                		},
+                		"classmap": [
+                        		"app/models"
+                		]
+        		}
+		    }
+	d. Fire command "php index.php"
+	e. Got output: vendor/autoload.php not exist in app/start.php
+	f. Fire command "composer dump-autoload" 
+	g. It creates the whole vendor directory with autoload.php fie and vendor/composer directory with other autoload files like:
+		i. vendor/composer/autoload_classmap.php with some content like:
+			return array(
+    				'User' => $baseDir . '/app/models/User.php',
+    				'Userthree' => $baseDir . '/app/models/modelstwo/Userthree.php',
+    				'Usertwo' => $baseDir . '/app/models/modelstwo/Usertwo.php',
+			); 
+		ii.vendor/composer/autoload_static.php with some content like:
+			public static $classMap = array (
+        			'User' => __DIR__ . '/../..' . '/app/models/User.php',
+        			'Userthree' => __DIR__ . '/../..' . '/app/models/modelstwo/Userthree.php',
+        			'Usertwo' => __DIR__ . '/../..' . '/app/models/modelstwo/Usertwo.php',
+			); 
+			public static $prefixDirsPsr4 = array (
+        			'App\\Controllers\\' =>
+        				array (
+            					0 => __DIR__ . '/../..' . '/app/controllers',
+        				),
+    			);
+		iii.vendor/composer/autoload_psr4.php with some content like:
+			return array(
+    				'App\\Controllers\\' => array($baseDir . '/app/controllers'),
+			); 
+		etc. as well.
+	h. Fire command "php index.php" again
+	i. Got output: App\Controllers\Controllerstwo\Ctltwo, App\Controllers\Controllerstwo\Ctlthree classes not found in index.php(while creating objects for these classes)
+	   Remember: According to PSR-4 autoloading specifications(https://www.php-fig.org/psr/psr-4/):
+		i. For autoloading, while specifying namespace for a class in a php file, always include all parent directories name with separator('\').
+		ii. Directories name used in namespace are case-sensitive, means, use exactlly same directory name while specifying namespace for a class in a php file.
+		iii. Why this "class not found" fatal error outputted here: 
+			A. Look carefully in composer.json in "autoload" object under section "psr-4", here instruction given for control to look for namespace App\Controllers into app/controllers directory. 
+			B. See, here "Controllers" in namespace is not same as directory name "controllers" but still control does not create any problem in index.php while creating object for class App\Controllers\Ctl. It is because, it's clearly mentioned in vendor/composer/autoload_psr4.php as obove that always use "app/controllers" directory for namespace "App\Controllers".
+			C. Actually when "composer dump-autoload" runs then composer copy this "psr-4" section instruction from composer.json and put the same in vendor/composer/autoload_psr4.php and control always looks into vendor/composer/autoload_psr4.php file for any namespace instruction, not in composer.json while executing index.php.
+			D. But while creating object for App\Controllers\Controllerstwo\Ctltwo & App\Controllers\Controllerstwo\Ctlthree in index.php: Actually control looks into vendor/composer/autoload_psr4.php for namespace instruction & finds only for "App\Controllers" to map to "app/controllers", now for namespace App\Controllers\Controllerstwo\Ctltwo control expect a directory app/controllers/Controllerstwo with filename Ctltwo.php inside it but actually there is directory "controllerstwo" instead of "Controllerstwo". This is the reason for fatal error.
+	j. To remove the error:
+		i. Either change your directory name from "controllerstwo" to "Controllerstwo" as namespace contains "Controllerstwo" not "controllerstwo".
+		ii. or execute command "composer dump-autoload -o" instead of "composer dump-autoload": It add also classmap for every psr-4 namespace classes in following files:
+			A. vendor/composer/autoload_classmap.php with some content like:
+                           return array(
+				'App\\Controllers\\Controllerstwo\\Ctlthree' => $baseDir . '/app/controllers/controllerstwo/Ctlthree.php',
+    				'App\\Controllers\\Controllerstwo\\Ctltwo' => $baseDir . '/app/controllers/controllerstwo/Ctltwo.php',
+    				'App\\Controllers\\Ctl' => $baseDir . '/app/controllers/Ctl.php',
+                                'User' => $baseDir . '/app/models/User.php',
+                                'Userthree' => $baseDir . '/app/models/modelstwo/Userthree.php',
+                                'Usertwo' => $baseDir . '/app/models/modelstwo/Usertwo.php',
+                           );
+                	B. vendor/composer/autoload_static.php with some content like:
+                           public static $classMap = array (
+				'App\\Controllers\\Controllerstwo\\Ctlthree' => __DIR__ . '/../..' . '/app/controllers/controllerstwo/Ctlthree.php',
+        			'App\\Controllers\\Controllerstwo\\Ctltwo' => __DIR__ . '/../..' . '/app/controllers/controllerstwo/Ctltwo.php',
+        			'App\\Controllers\\Ctl' => __DIR__ . '/../..' . '/app/controllers/Ctl.php',
+                                'User' => __DIR__ . '/../..' . '/app/models/User.php',
+                                'Userthree' => __DIR__ . '/../..' . '/app/models/modelstwo/Userthree.php',
+                                'Usertwo' => __DIR__ . '/../..' . '/app/models/modelstwo/Usertwo.php',
+                           );
+                           public static $prefixDirsPsr4 = array (
+                                'App\\Controllers\\' =>
+                                        array (
+                                                0 => __DIR__ . '/../..' . '/app/controllers',
+                                        ),
+                           );
+		control always looks in vendor/composer/autoload_classmap.php to search a file while accessing a class and then vendor/composer/autoload_psr4.php(for psr-4 namespace classes only). Here in vendor/composer/autoload_classmap.php file, control gets full path with filename for classes App\Controllers\Controllerstwo\Ctltwo & App\Controllers\Controllerstwo\Ctlthree, so now no any fatal error occurs in index.php while creating objects for these classes.     
+	k. For reference: Look here in same directory the whole "composer" folder having all files/code mentioned as above.
+	l. YouTube video to understand autoloading as explained above(reference): https://youtu.be/VGSerlMoIrY
+
 */
 
 /*** Publish a package to Packagist ***/

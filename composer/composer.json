@@ -1,0 +1,10 @@
+{
+	"autoload": {
+		"psr-4": {
+			"App\\Controllers\\": "app/controllers"
+		},
+		"classmap": [
+			"app/models"
+		]
+	}
+}
