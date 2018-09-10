@@ -9,7 +9,7 @@
 8. When Composer fires any command, It hits to Packagist and then Packagist uses their reference-of-github and let Composer pull all physical files from GitHub. That means, when Composer fires command and expecting project/package/library from Packagist, Packagist does not give any project/package/library to Composer in return but It gives reference-of-github and tell Composer to download all those from github.
 9. composer.json: Composer is a dependency manager for PHP. Composer allows developers to specify project dependencies in a composer.json file and then Composer automatically handles the rest(means Composer downloads all package/library as per mentioned in composer.json through packagist and which in turn uses github for their purpose).
 
-/*** Composer commands: https://getcomposer.org/ > Documentation > Book > Command-line interface / Commands ***/
+/*** Composer commands(including autoloading concept): https://getcomposer.org/ > Documentation > Book > Command-line interface / Commands ***/
 1. composer
 /* Show usage, options and all available commands */
 
@@ -404,4 +404,234 @@ Case Study:
 
 
 /*** composer.json: https://getcomposer.org/ > Documentation > Book > The composer.json Schema ***/
+1. "autoload" object/field:
+	a. "psr-4" section: PSR-4 is the recommended way since it offers greater ease of use (no need to regenerate the autoloader when you add classes). Because when you define, namespace mapped to a source-code directory, and later you add other directories having some source-code classes inside previously-defined source-code directory then namespace could be defined for these new defined source-code just by adding their directory name with backslash with previously defined namespace and no need to generate vendor/autoload.php again by "composer update/install" command.
+	Example: Suppose you have defined your "psr-4" section as following:
+		{
+			"autoload": {
+				"psr-4": {
+					"Magento\\Setup\\": "setup/src/Magento/Setup/"
+				}
+			}
+		}
+	Suppose if there is a file "Exception.php" in "setup/src/Magento/Setup" directory then it's namespace would be "Magento\Setup" with class-name "Exception". Means "Exception" class can be accessed by any other php file by using 2 following methods:
+	i. Just by mention it's full namespace in php file like:
+		$exception = new Magento\Setup\Exception();
+	ii. Mention "use namespace" in php file header and access just by writung only class name like:
+		use Magento\Setup\Exception;
 
+		$exception = new Exception();
+
+	Now you create another directory "setup/src/Magento/Setup/Log" inside previously defined "setup/src/Magento/Setup" directory and create a class file suppose "setup/src/Magento/Setup/Log/Biglog.php" with claas name "Biglog" then this file namespace would be "Magento\Setup\Log" i.e. that could be got just by adding it's directory name with previously-defined namespace "Magento\Setup\"; execution-control would understand this automatically by connecting it with previous defined namespace-mapped-to-source-code-directory and hence no need to generate vendor/autoload.php again.
+	All "psr-4" references(from composer.json in autoload object under psr-4 section) are combined during "composer install/update" command into a single key => value array which may be found in the generated file vendor/composer/autoload_psr4.php.
+	For above composer.json example, there would be entry in vendor/composer/autoload_psr4.php as following:
+		return array(
+			'Magento\\Setup\\' => array($baseDir . '/setup/src/Magento/Setup')
+		);
+	Here, no any extra entry would be happen for new namespace "Magento\Setup\Log" as it's no any new namespace but only a child of previously defined namespace "Magento\Setup\".
+	If you need to search for same prefix/namespace in multiple directories, you can specify them as following:
+		{
+    			"autoload": {
+        			"psr-4": { 
+					"Monolog\\": ["src/", "lib/"] 
+				}
+   			 }
+		}
+	If you want to have a directory where any namespace will be looked for, you can use an empty prefix/namespace like following:
+		{
+    			"autoload": {
+        			"psr-4": { 
+					"": "src/" 
+				}
+    			}
+		}
+	If php source file is also located in the root of the package then you might define your namespace as following:
+		{
+    			"autoload": {
+        			"psr-4": {
+            				"Monolog\\": "src/",
+            				"Vendor\\Namespace\\": ""
+        			}
+    			}
+		}
+		
+
+	b. "psr-0" section: Under the "psr-0" section, you define a mapping from namespaces to paths, relative to the package root(as in "psr-4"). Note that this also supports the PEAR-style non-namespaced convention(like Zend_, Zend_Acl, etc.). All "psr-0" references(from composer.json in autoload object under psr-0 section) are combined during "composer install/update" command into a single key => value array which may be found in the generated file vendor/composer/autoload_namespaces.php.
+	Example:
+		{
+    			"autoload": {
+        			"psr-0": {
+            				"Monolog\\": "src/",
+            				"Vendor\\Namespace\\": "src/",
+            				"Vendor_Namespace_": "src/"
+        			}				
+    			}
+		}
+	vendor/composer/autoload_namespaces.php entries:
+		return array(
+    			'Zend_' => array($vendorDir . '/magento/zendframework1/library'),
+			'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
+			'MagentoHackathon\\Composer\\Magento' => array($vendorDir . '/magento/magento-composer-installer/src'),
+			'' => array($baseDir . '/app/code'),
+		);
+		Here as from above:
+		i.  in "/magento/zendframework1/library" directory, there would be a directory with name "Zend"
+		ii. in "/phpspec/prophecy/src" directory, there would be a directory with name "Prophecy"
+		iii.in "/magento/magento-composer-installer/src" there would be a directory with name "MagentoHackathon", inside it another directory "Composer" and also inside it another directory with name "Magento".
+		iv. For any namespace, control would look into "/app/code" directory essentially.
+
+	c. "classmap" section: This section has been clearly explained in above section "Composer commands". We can explain this section in-short in following points:
+		i. All "classmap" references(from composer.json in autoload object under classmap section) are combined during "composer install/update" command into a single key => value array which may be found in the generated file vendor/composer/autoload_classmap.php.
+		ii. This map is built by scanning for classes in all .php and .inc files in the given directories/files.
+		iii. We can use the classmap generation support to define autoloading for all libraries that do not follow PSR-0/4.
+		iv. To configure this, we specify all directories or files to search for classes as following:
+			{
+    				"autoload": {
+        				"classmap": ["src/", "lib/", "Something.php"]
+    				}
+			}
+	
+	d. "files" section: If we want to require certain files explicitly on every request then you can use the files autoloading mechanism. This is useful if your package includes PHP functions(i.e. a php file having functions only) that cannot be autoloaded by PHP.
+	Case Study: i.   Create a blank directory "filesAutoloadingExample" & go inside this directory.
+		    ii.  Fire command "composer require pas/log".
+		    iii. It created/generated following files/folders:
+		 	 A. composer.json:
+				{
+    					"require": {
+        					"psr/log": "^1.0"
+    					}
+				}
+			 B. composer.lock
+			 C. vendor/psr package
+			 D. vendor/composer/(all autoload files)
+			 E. vendor/autoload.php
+		    iv.  create a file functions.php with content:
+		    		<?php
+				function factorial($n)
+				{
+    					if($n < 2) {
+        					return 1;
+    					} else {
+        					return $n * factorial($n-1);
+    					}
+				}
+		     v.   create another file index.php with content:
+		     		<?php
+				require_once 'vendor/autoload.php';
+
+				class Resource
+				{
+    					public function getResource($n)
+    					{
+        					return factorial($n);
+    					}
+				}
+				$object = new Resource();
+				echo 'I have got factorial of 6: '.$object->getResource(6);
+		     vi.  run command "php index.php"
+		     vii. Got Response as per expectation i.e.: call to undefined function factorial() in index.php
+		     viii.Modified/added-some-lines-in composer.json with content now as following:
+		     		{
+    					"require": {
+        					"psr/log": "^1.0"
+    					},
+    					"autoload": {
+	    					"files": ["functions.php"]
+    					}
+				}
+		     x.   run command "composer dump-autoload"
+		     xi.  What it does:
+		     	  A. It updated all autoload files under vendor/composer directory and created a new file autoload_files.php here having some content like:
+			  	return array(
+    					'41da55927f7e15e2e05566a733ef4ad4' => $baseDir . '/functions.php',
+				);
+			  B. It updated vendor/autoload.php as well.
+		     xii. run command "php index.php"
+		     xiii.Got Response with no any error: I have got factorial of 6: 720
+		          What happened now actually: composer's autoloading actually included file functions.php in index.php i.e. we can assume index.php treated as it has code-content like following instead of as mentioned above in index.php:
+			  	<?php
+				require_once 'functions.php';
+
+				class Resource
+				{
+    					public function getResource($n)
+    					{
+        					return factorial($n);
+    					}
+				}
+				$object = new Resource();
+				echo 'I have got factorial of 6: '.$object->getResource(6);
+		      xiv. Get/Access all code/files mentioned here in directory filesAutoloadingExample kept in same branch.
+	
+	e. "exclude-from-classmap" section: It's not related with "psr-4" or "psr-0" or "files" section. It's only related with "classmap" section. It works just oppsite of "classmap" section. Means, suppose if you have added "library" folder in "classmap" section under "autoload" object in composer.json to map all claases under "library" directory recursively to map, but you don't want to map all classes of a particular directory suppose "Test" directory inside "library" directory then you need to mention that directory in this section i.e. "exclude-from-classmap" section.
+	Case Study:
+		i.   Let's go to directory "filesAutoloadingExample" as used in "files" section case-study.
+		ii.  Add some files/folders as following:
+			A. library/User.php
+				class User
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/User.php";
+					}
+				}
+			B. library/Employee.php
+				class Employee
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/Employee.php";
+					}
+				}
+			C. library/library2/User2.php
+				class User2
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/library2/User2.php";
+					}
+				}
+			D. library/library2/Employee2.php
+				class Employee2
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/library2/Employee2.php";
+					}
+				}
+		iii. Modify your composer.json as following:
+			{
+    				"require": {
+        				"psr/log": "^1.0"
+    				},
+    				"autoload": {
+	    				"files": ["functions.php"],
+            				"classmap": ["library"]
+    				}
+			}
+		iv.  Look into files vendor/composer/autoload_classmap.php:
+			return array(
+			);
+		v.   run command "composer dump-autoload" and look into file vendor/composer/autoload_classmap.php again:
+			return array(
+    				'Employee' => $baseDir . '/library/Employee.php',
+    				'Employee2' => $baseDir . '/library/library2/Employee2.php',
+    				'User' => $baseDir . '/library/User.php',
+    				'User2' => $baseDir . '/library/library2/User2.php',
+			);
+		vi.  Add "exclude-from-classmap" section in composer.json as following:
+			{
+    				"require": {
+        				"psr/log": "^1.0"
+    				},
+    				"autoload": {
+	    				"files": ["functions.php"],
+            				"classmap": ["library"],
+            				"exclude-from-classmap": ["library/library2", "library/Employee.php"]
+    				}		
+			}
+		vii. run command "composer dump-autoload" and look into vendor/composer/autoload_classmap.php:
+			return array(
+    				'User' => $baseDir . '/library/User.php',
+			);
+		viii.This means "exclude-from-classmap" worked here and now library/User.php is accessible only(not library/Employee.php, library/library2/User2.php, library/library2/Employee2.php) from any other php file(like index.php) using composer's autoloading functionality.
