@@ -1,0 +1,7 @@
+{
+    "autoload": {
+	    "files": ["functions.php"],
+            "classmap": ["library"],
+            "exclude-from-classmap": ["library/library2", "library/Employee.php"]
+    }
+}

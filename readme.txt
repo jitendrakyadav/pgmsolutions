@@ -491,81 +491,66 @@ Case Study:
     				}
 			}
 	
-	d. "files" section: If we want to require certain files explicitly on every request then you can use the files autoloading mechanism. This is useful if your package includes PHP functions(i.e. a php file having functions only) that cannot be autoloaded by PHP.
-	Case Study: i.   Create a blank directory "filesAutoloadingExample" & go inside this directory.
-		    ii.  Fire command "composer require pas/log".
-		    iii. It created/generated following files/folders:
-		 	 A. composer.json:
-				{
-    					"require": {
-        					"psr/log": "^1.0"
-    					}
-				}
-			 B. composer.lock
-			 C. vendor/psr package
-			 D. vendor/composer/(all autoload files)
-			 E. vendor/autoload.php
-		    iv.  create a file functions.php with content:
-		    		<?php
-				function factorial($n)
-				{
-    					if($n < 2) {
-        					return 1;
-    					} else {
-        					return $n * factorial($n-1);
-    					}
-				}
-		     v.   create another file index.php with content:
-		     		<?php
-				require_once 'vendor/autoload.php';
-
-				class Resource
-				{
-    					public function getResource($n)
-    					{
-        					return factorial($n);
-    					}
-				}
-				$object = new Resource();
-				echo 'I have got factorial of 6: '.$object->getResource(6);
-		     vi.  run command "php index.php"
-		     vii. Got Response as per expectation i.e.: call to undefined function factorial() in index.php
-		     viii.Modified/added-some-lines-in composer.json with content now as following:
-		     		{
-    					"require": {
-        					"psr/log": "^1.0"
-    					},
-    					"autoload": {
-	    					"files": ["functions.php"]
-    					}
-				}
-		     x.   run command "composer dump-autoload"
-		     xi.  What it does:
-		     	  A. It updated all autoload files under vendor/composer directory and created a new file autoload_files.php here having some content like:
+	d. "files" section: If we want to require certain files explicitly on every request then you can use the files autoloading mechanism. This is useful if your package includes PHP functions(i.e. a php file having functions only) that can not be autoloaded by PHP.
+	Case Study: 
+		i.   Create a blank directory "filesAutoloading" & go inside this directory.
+		ii.  create a file functions.php with content:
+			<?php
+			function factorial($n)
+			{
+    				if($n < 2) {
+        				return 1;
+    				} else {
+        				return $n * factorial($n-1);
+    				}
+			}
+		iii. create another file index.php with content:
+			<?php
+			require_once 'vendor/autoload.php';
+			class Resource
+			{
+    				public function getResource($n)
+    				{
+        				return factorial($n);
+    				}
+			}
+			$object = new Resource();
+			echo 'I have got factorial of 6: '.$object->getResource(6);
+		iv.  run command "php index.php"
+		v.   Got Response as per expectation i.e.: call to undefined function factorial() in index.php
+		vi.  Created composer.json with content as following:
+			{
+    				"autoload": {
+	    				"files": ["functions.php"]
+    				}
+			}
+		vii. run command "composer dump-autoload"
+		viii.What it does:
+			A. It created vendor/composer directory with all autoload files in which one is vendor/composer/autoload_files.php having some content like:
 			  	return array(
     					'41da55927f7e15e2e05566a733ef4ad4' => $baseDir . '/functions.php',
 				);
-			  B. It updated vendor/autoload.php as well.
-		     xii. run command "php index.php"
-		     xiii.Got Response with no any error: I have got factorial of 6: 720
-		          What happened now actually: composer's autoloading actually included file functions.php in index.php i.e. we can assume index.php treated as it has code-content like following instead of as mentioned above in index.php:
-			  	<?php
-				require_once 'functions.php';
+			B. It created vendor/autoload.php as well.
+		ix.  run command "php index.php"
+		x.   Got Response with no any error: I have got factorial of 6: 720
+		     What happened now actually: composer's autoloading actually included file functions.php in index.php i.e. we can assume index.php treated as it has code-content like following instead of as mentioned above in index.php:
+			<?php
+			require_once 'functions.php';
 
-				class Resource
-				{
-    					public function getResource($n)
-    					{
-        					return factorial($n);
-    					}
-				}
-				$object = new Resource();
-				echo 'I have got factorial of 6: '.$object->getResource(6);
-		      xiv. Get/Access all code/files mentioned here in directory filesAutoloadingExample kept in same branch.
+			class Resource
+			{
+    				public function getResource($n)
+    				{
+        				return factorial($n);
+    				}
+			}
+			$object = new Resource();
+			echo 'I have got factorial of 6: '.$object->getResource(6);
+		xi.  Get/Access all code/files mentioned here in directory filesAutoloadingExample kept in same branch.
 	
 	e. "exclude-from-classmap" section: It's not related with "psr-4" or "psr-0" or "files" section. It's only related with "classmap" section. It works just oppsite of "classmap" section. Means, suppose if you have added "library" folder in "classmap" section under "autoload" object in composer.json to map all claases under "library" directory recursively to map, but you don't want to map all classes of a particular directory suppose "Test" directory inside "library" directory then you need to mention that directory in this section i.e. "exclude-from-classmap" section.
 	Case Study:
-		i.   Let's go to directory "filesAutoloadingExample" as used in "files" section case-study.
+		i.   Let's go to directory "filesAutoloading" as used in "files" section case-study.
 		ii.  Add some files/folders as following:
 			A. library/User.php
 				class User
@@ -601,10 +586,7 @@ Case Study:
 				}
 		iii. Modify your composer.json as following:
 			{
-    				"require": {
-        				"psr/log": "^1.0"
-    				},
-    				"autoload": {
+				"autoload": {
 	    				"files": ["functions.php"],
             				"classmap": ["library"]
     				}
@@ -621,9 +603,6 @@ Case Study:
 			);
 		vi.  Add "exclude-from-classmap" section in composer.json as following:
 			{
-    				"require": {
-        				"psr/log": "^1.0"
-    				},
     				"autoload": {
 	    				"files": ["functions.php"],
             				"classmap": ["library"],
@@ -634,4 +613,4 @@ Case Study:
 			return array(
     				'User' => $baseDir . '/library/User.php',
 			);
-		viii.This means "exclude-from-classmap" worked here and now library/User.php is accessible only(not library/Employee.php, library/library2/User2.php, library/library2/Employee2.php) from any other php file(like index.php) using composer's autoloading functionality.
+		viii.This means "exclude-from-classmap" worked here and now library/User.php is accessible only(not library/Employee.php, library/library2/Employee2.php, library/library2/User2.php) from any other php file(like index.php) using composer's autoloading functionality(as previously in "files" section in index.php).
