@@ -546,7 +546,7 @@ Case Study:
 			}
 			$object = new Resource();
 			echo 'I have got factorial of 6: '.$object->getResource(6);
-		xi.  Get/Access all code/files mentioned here in directory filesAutoloadingExample kept in same branch.
+		xi.  Get/Access all code/files mentioned here in directory filesAutoloading kept in same branch.
 	
 	e. "exclude-from-classmap" section: It's not related with "psr-4" or "psr-0" or "files" section. It's only related with "classmap" section. It works just oppsite of "classmap" section. Means, suppose if you have added "library" folder in "classmap" section under "autoload" object in composer.json to map all claases under "library" directory recursively to map, but you don't want to map all classes of a particular directory suppose "Test" directory inside "library" directory then you need to mention that directory in this section i.e. "exclude-from-classmap" section.
 	Case Study:
