@@ -791,3 +791,63 @@ Case Study:
 	Caution is advised when using replace for the sub-package purpose explained above. You should then typically only replace using "self.version" as a version constraint, to make sure the main package only replaces the sub-packages of that exact version, and not any other version, which would be incorrect.
 	Open "packagist.org" and search "symfony/symfony", you can see here at bottom-right all replaced-packages list for package "symfony/symfony". This means, if your application has mentioned this package i.e. "symfony/symfony" in their composer.json as dependency i.e. under "require" field and "symfony/asset" as well which is in replace-list of "symfony/symfony" package(that means "symfony/asset" is also present inside "symfony/symfony" package) then only "symfony/asset" that exists inside "symfony/symfony" package would be loaded by composer's autolod and not separate package "symfony/asset".
 	For best-understanding, read suggested URL, given in start of this topic.
+
+    Case Study: a. There are 2 packages available on packagist.org:
+			A. symfony/asset
+			B. symfony/symfony
+		   symfony/asset is listed in "replace" list of symfony/symfony package that means "symfony/asset" is also present inside "symfony/symfony" package.
+		b. create a blank directory "replaceExample" and go inside that directory.
+		c. run command "composer require symfony/asset".
+		d. It creates/downloads:
+			A. composer.json:
+				{
+					"require": {
+						"symfony/asset": "^3.4"
+					}
+				}
+			B. vendor/symfony/asset package
+			C. vendor/composer/(all autoload files)
+			D. vendor/autolad.php
+			E. composer.lock
+		e. run command "composer require symfony/symfony"
+		f. vendor/symfony/asset package is disappeared/removed. symfony/symfony package is installed and all it's dependency are installed as well.
+		g. composer.json is now:
+			{
+				"require": {
+					"symfony/asset": "^3.4",
+					"symfony/symfony": "^3.4"
+				}
+			}
+
+		Now consider a second case:
+		a. create a blank directory "replaceExample" and go inside that directory.
+		b. run command "composer require symfony/symfony".  
+		c. It creates/downloads:
+			A. composer.json:
+				{
+					"require": {
+						"symfony/symfony": "^3.4"
+					}
+				}
+			B. vendor/symfony/symfony package and all dependencies of symfony/symfony, but no any package like vendor/symfony/asset; might be symfony/asset present in symfony/symfony with another name.
+			C. vendor/composer/(all autoload files)
+			D. vendor/autolad.php
+			E. composer.lock
+		d. run command "composer require symfony/asset".
+		e. There displays a message "Nothing to install or update" and no any package created/installed there, like vendor/symfony/asset.
+		f. composer.json is now:
+			{
+				"require": {
+					"symfony/symfony": "^3.4",
+					"symfony/asset: "^3.4"
+				}
+			}
+
+6. "conflict" object/field: This object of composer.json, lists those packages which conflict with current version of your package. These packages, listed here, would not be allowed to be installed together with your package.
+   Note that when specifying ranges like <1.0 >=1.1 for any package in "conflict" object, this means listed package version less than 1.0 and equal or newer than 1.1 would conflict with current version of your package, so would not be allowed anywhere to be installed the listed package containing mentioned version with current version of your package.
+   Your package's composer.json might be look like:
+	{
+		"conflict": {
+			"any-vendor/any-package": "<1.0 >=1.1"	
+		}
+	}
