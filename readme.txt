@@ -614,3 +614,180 @@ Case Study:
     				'User' => $baseDir . '/library/User.php',
 			);
 		viii.This means "exclude-from-classmap" worked here and now library/User.php is accessible only(not library/Employee.php, library/library2/Employee2.php, library/library2/User2.php) from any other php file(like index.php) using composer's autoloading functionality(as previously in "files" section in index.php).
+
+2. "autoload-dev" object/field: 
+	a. This is identical to the "autoload" object.
+	b. Difference from "autoload" object is that - this section allows us to define autoload rules for development purposes only.
+	c. "composer dump-autoload" creates/updates vendor/composer/(all autoload files) and vendor/autoload.php for both object i.e. "autoload" and "autoload-dev", but we can force composer to ignore "autoload-dev" field as following:
+		composer dump-autoload --no-dev
+	d. Classes needed to run the test suite(might be unit-test suite) should not be included in the main autoload rules to avoid polluting the autoloader in production(as we need not to autoload test-classes on production and unwanted/unneeded autoloading of classes would increase response-time on production) and when other people use your package as a dependency(other people might not be want/need to use your package's test-suite). Therefore, it's a good idea to rely on a dedicated path for your unit tests and to add it within the "autoload-dev" field.
+		{
+    			"autoload": {
+        			"psr-4": { "MyLibrary\\": "src/" }
+    			},
+    			"autoload-dev": {
+        			"psr-4": { "MyLibrary\\Tests\\": "tests/" }
+    			}
+		}
+	e. Case Study:
+		i.    Create a blank directory "filesAutoloading" and go to inside it.
+		ii.   Create some files/folders as following:
+			A. library/User.php
+				class User
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/User.php";
+					}
+				}
+			B. library/Employee.php
+				class Employee
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/Employee.php";
+					}
+				}
+			C. library/library2/User2.php
+				class User2
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/library2/User2.php";
+					}
+				}
+			D. library/library2/Employee2.php
+				class Employee2
+				{
+					public function __construct()
+					{
+						echo "\nI am inside library/library2/Employee2.php";
+					}
+				}
+		iii.  Create composer.json as following:
+			{
+    				"autoload": {
+					"classmap": ["library/library2"]
+    				},
+    				"autoload-dev": {
+					"classmap": ["library/User.php", "library/Employee.php"]
+    				}
+			}
+		iv.   run command "composer dump-autoload --no-dev".
+		v.    This command would create vendor/composer/(all autoload files) and vendor/autoload.php. Now look into vendor/composer/autoload_classmap.php:
+			return array(
+    				'Employee2' => $baseDir . '/library/library2/Employee2.php',
+    		    		'User2' => $baseDir . '/library/library2/User2.php',
+			);
+		vi.   That means, as per expectation, only "autoload" field classes are autoloaded.
+		vii.  run command "composer dump-autoload" and look into vendor/composer/autoload_classmap.php again:
+			return array(
+    				'Employee' => $baseDir . '/library/Employee.php',
+    				'Employee2' => $baseDir . '/library/library2/Employee2.php',
+    				'User' => $baseDir . '/library/User.php',
+    				'User2' => $baseDir . '/library/library2/User2.php',
+			);
+		viii. This means, as per expectation, this time both fields classes i.e. "autoload" & "autoload-dev", are autoloaded as there "--no-dev" part is absent from command "composer dump-autoload".
+
+3. "require" object/field: Lists packages required by this package(i.e. current package; whose composer.json's "required" field we are talking currently).
+	{
+		"require": {
+			"psr/log": "1.0.2"
+		}
+	}
+   The package will not be installed(mentioned under "required" field) unless requirements for that package can be met. 
+   Means, as in above example, our package requirement is to download/contain package "psr/log" having version 1.0.2 but if this version of package having/mentioned PHP-7.2 as a requirement in their composer.json's "require" field and our system/machine/environment has PHP-7.0 then composer would not be able to download this package i.e. "psr/log" for your package. 
+
+4. "require-dev" object/field: Lists packages required for developing this package(i.e. current package; whose composer.json's "required" field we are talking currently), or running tests, etc.
+	{
+		"require": {
+			"psr/log": "1.0.2"
+		},
+		"require-dev": {
+        		"phpunit/phpunit": "~6.2.0"
+		}
+	}
+	The dev requirements of the root package(i.e. current package; whose composer.json's "required" field we are talking currently) are installed by default(means "composer install" installs all dependencies mentioned under "require" object as well as under "require-dev" object for root-package only, it does not installs root-package's dependency's composer.json's "require-dev" packages). 
+	Both "composer install" & "composer update" commands support "--no-dev" option that prevents dev-dependencies from being installed.
+	Case Study:
+		a. Create a blank directory "requireExp" and go inside this directory.
+		b. create file composer.json as following:
+			{
+				"require": {
+					"psr/log": "1.0.2"
+				}
+			}
+		c. run command "composer install"
+		d. This commands created some files/folders as following:
+			i.    Downloaded "psr/log" package in vendor/psr/log
+			ii.   Generated all autoload files under vendor/composer directory
+			iii.  Created composer.lock file using composer.json
+			iv.   Created vendor/autoload.php file
+		e. Modify composer.json(i.e. add "require-dev" object) as following:
+			{
+				"require": {
+					"psr/log": "1.0.2"
+				},
+				"require-dev": {
+        				"phpunit/phpunit": "~6.2.0"
+				}
+			}
+		f. run command "composer update"
+		g. This command does/affects following:
+			i.    It downloads dev-dependencies for root package only(i.e. packages listed under "require-dev") means it downloads package "phpunit/phpunit" and it's main-dependencies only(i.e. "require" packages only not "require-dev" packages) and this main-dependency's main-dependencies only and so on.
+			Example: This command downloaded "phpunit/phpunit" package and it's dependencies like "phpunit/php-code-coverage", "phpunit/php-timer", "sebastian/comparator", "phpspec/prophecy" etc. but not downloaded phpspec/prophecy's dev-dependency's i.e. package "phpspec/phpspec". This means:
+				A. A root-package's dev-dependencies can be downloaded by firing command "composer install/update".
+				B. root package's dev-dependency's dev-dependencies could not be downloaded, only main-dependencies(i.e. "require" field) could be downloaded and so on i.e. it's true recursively.
+				C. Even root package's dev-dependencies could be prevented to be downloaded by using command "composer install/update --no-dev".
+				D. This command updates vendor/composer/(all autoload files), composer.lock and vendor/autoload.php as usual.
+
+5. "replace" object/field: Best Reference: http://www.darwinbiler.com/how-does-the-replace-property-work-in-composer/
+   Let's understand this concept in following points:
+   	a. I have an application called "My App".
+	b. "My App" requires two packages as dependency, namely "original/library" and "other/package".
+	c. "other/package" has dependency on "original/library".
+	d. The maintainer of "original/library" is not updating it anymore, and there is a lot of bugs on it.
+	e. You want to fix the issues on "original/library" but they are not accepting your Pull Requests.
+	f. You forked the "original/library" instead, in a package called "yourfork/library".
+	g. You published the package "yourfork/library" on packagist.org as Packagist allows forked-repository as well.
+	h. You specify in your "My App" project to use "yourfork/library".
+	
+	composer.json might look like as following:
+	a. "My App" composer.json:
+		{
+			"require": {
+				"other/package": "x.y.z",
+				"yourfork/library": "x.y.z"
+			}
+		}
+	b. "yourfork/library" composer.json:
+		{
+			"name": "yourfork/library"
+		}
+	c. "original/library" composer.json:
+		{
+			"name": "original/library"
+		}
+	d. "other/package" composer.json:
+		{
+			"name": "other/package",
+			"require": {
+				"original/library": "x.y.z"
+			}
+		}
+	Now, the problem is, "other/package" has dependency on "original/library". Which results into having both copies loaded in your app! This is not good, since the buggy package ("original/library") is still loaded and can break your application.
+	There has something to be done, so that whenever there is a need to use "original/library", Composer knows that it should "replace it" by your fork, which is "yourfork/library".
+	Solution is - enter the "replace" object in your "yourfork/library" package, so that Composer knows that it can serve as a replacement for "original/library", whenever that package is being required.
+	So, modify "yourfork/library" composer.json as following:
+		{
+			"name": "yourfork/library",
+			"replace": {
+				"original/library": "x.y.z"
+			}
+		}
+	Now. even though you haven't "told" directly the "other/package" to stop using the "original/library", Composer will not load the "original/library" anymore, since you told him that it can be replaced by "yourfork/library".
+
+	This is also useful for packages that contain sub-packages, for example the main symfony/symfony package contains all the Symfony Components which are also available as individual packages. If you require the main package it will automatically fulfill any requirement of one of the individual components, since it replaces them.
+	Caution is advised when using replace for the sub-package purpose explained above. You should then typically only replace using "self.version" as a version constraint, to make sure the main package only replaces the sub-packages of that exact version, and not any other version, which would be incorrect.
+	Open "packagist.org" and search "symfony/symfony", you can see here at bottom-right all replaced-packages list for package "symfony/symfony". This means, if your application has mentioned this package i.e. "symfony/symfony" in their composer.json as dependency i.e. under "require" field and "symfony/asset" as well which is in replace-list of "symfony/symfony" package(that means "symfony/asset" is also present inside "symfony/symfony" package) then only "symfony/asset" that exists inside "symfony/symfony" package would be loaded by composer's autolod and not separate package "symfony/asset".
+	For best-understanding, read suggested URL, given in start of this topic.
