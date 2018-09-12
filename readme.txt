@@ -1,4 +1,4 @@
-/*** Composer:https://getcomposer.org ***/
+/*** Composer:https://getcomposer.org [Cheat-Sheet: https://composer.json.jolicode.com/] ***/
 1. Composer is a dependency manager or package manager in PHP that provides a standard format(composer.json) for managing dependencies of PHP software and required libraries.
 2. Composer runs through the command line and installs dependencies (e.g. libraries) for an application.
 3. It also provides autoload capabilities for libraries that makes usage of third-party code easy.
@@ -615,7 +615,7 @@ Case Study:
 			);
 		viii.This means "exclude-from-classmap" worked here and now library/User.php is accessible only(not library/Employee.php, library/library2/Employee2.php, library/library2/User2.php) from any other php file(like index.php) using composer's autoloading functionality(as previously in "files" section in index.php).
 
-2. "autoload-dev" object/field: 
+2. "autoload-dev" object/field (root-only): 
 	a. This is identical to the "autoload" object.
 	b. Difference from "autoload" object is that - this section allows us to define autoload rules for development purposes only.
 	c. "composer dump-autoload" creates/updates vendor/composer/(all autoload files) and vendor/autoload.php for both object i.e. "autoload" and "autoload-dev", but we can force composer to ignore "autoload-dev" field as following:
@@ -695,10 +695,32 @@ Case Study:
 			"psr/log": "1.0.2"
 		}
 	}
-   The package will not be installed(mentioned under "required" field) unless requirements for that package can be met. 
-   Means, as in above example, our package requirement is to download/contain package "psr/log" having version 1.0.2 but if this version of package having/mentioned PHP-7.2 as a requirement in their composer.json's "require" field and our system/machine/environment has PHP-7.0 then composer would not be able to download this package i.e. "psr/log" for your package. 
+   The package will not be installed(mentioned under "require" field) unless requirements for that package can be met. 
+   Means, as in above example, our package requirement is to download/contain package "psr/log" having version 1.0.2 but if this version of package having/mentioned PHP-7.2 as a requirement in their composer.json's "require" field and our system/machine/environment has PHP-7.0 then composer would not be able to download this package i.e. "psr/log" for your package.
+   what is meant by caret(^) and tilde(~) used with version-no: These could be explained by following example: Reference: https://getcomposer.org/doc/articles/versions.md#next-significant-release-operators
+   	{
+		"require": {
+    			"vendor/package": "1.3.2", // exactly 1.3.2
 
-4. "require-dev" object/field: Lists packages required for developing this package(i.e. current package; whose composer.json's "required" field we are talking currently), or running tests, etc.
+    			// >, <, >=, <= | specify upper / lower bounds
+    			"vendor/package": ">=1.3.2", // anything above or equal to 1.3.2
+    			"vendor/package": "<1.3.2", // anything below 1.3.2
+
+    			// * | wildcard
+    			"vendor/package": "1.3.*", // >=1.3.0 <1.4.0
+
+    			// ~ | allows last digit specified to go up
+    			"vendor/package": "~1.3.2", // >=1.3.2 <1.4.0
+    			"vendor/package": "~1.3", // >=1.3.0 <2.0.0
+
+    			// ^ | doesn't allow breaking changes (major version fixed - following semver)
+    			"vendor/package": "^1.3.2", // >=1.3.2 <2.0.0
+    			"vendor/package": "^0.3.2", // >=0.3.2 <0.4.0 // except if major version is 0
+		}
+	}
+	semver => Semantic Versioning => What is semantic versioning ? => Given a version number MAJOR.MINOR.PATCH, increment the: MAJOR version when you make incompatible API changes, MINOR version when you add functionality in a backwards-compatible manner, and PATCH version when you make backwards-compatible bug fixes.
+
+4. "require-dev" object/field (root-only): Lists packages required for developing this package(i.e. current package; whose composer.json's "required" field we are talking currently), or running tests, etc.
 	{
 		"require": {
 			"psr/log": "1.0.2"
@@ -848,6 +870,94 @@ Case Study:
    Your package's composer.json might be look like:
 	{
 		"conflict": {
-			"any-vendor/any-package": "<1.0 >=1.1"	
+			"any-vendor/any-package": "<1.0 >=1.1",
+			"any-vendor2/any-package2": "1.0.*"
 		}
 	}
+
+7. "repositories" object/field (root-only): By default Composer only uses the packagist repository. By specifying repositories you can get packages from elsewhere.
+	{
+		"repositories": [
+        		{
+            			"type": "composer",
+            			"url": "https://repo.magento.com/"
+        		}
+    		]
+	}
+    I have found this in magento-zip-downloaded-with-sample-data-from-magento-site-with-version-2.2.5 composer.json.
+    To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#repositories
+
+8. "scripts" object/field (root-only): Composer allows you to hook into various parts of the installation process through the use of scripts.
+   To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#scripts
+   You can view the cheat-sheet(whose URL mentioned in first-line of this page) for the same as well.
+
+9. "extra" object/field: This object of composer.json, is used to provide/supply some-data to "scripts" object.
+   To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#extra
+
+10."name" object/field: This field contains the name of your package. It consists of vendor name and project name, separated by "/". Example:
+	a. monolog/monolog
+	b. igorw/event-source
+   The name can contain any character, including white spaces, and it's case insensitive (foo/bar and Foo/Bar are considered the same package). In order to simplify its installation, it's recommended to define a short and lowercase name that doesn't include non-alphanumeric characters or white spaces. It's a required field for published packages.
+
+11."description" object/field: This field contains a short description of your package. Usually this is one line long. It's also a required field for published packages.
+
+12."version" object/field: This field contains the version of your package. In most cases, this is not required and should be omitted. This must follow the format of X.Y.Z or vX.Y.Z with an optional suffix of -dev, -patch (-p), -alpha (-a), -beta (-b) or -RC. The patch, alpha, beta and RC suffixes can also be followed by a number.
+   RC => A release candidate (RC), also known as "going silver", is a beta version with potential to be a final product, which is ready to release unless significant bugs emerge; [https://en.wikipedia.org/wiki/Software_release_life_cycle].
+   Example: 
+	a. 1.0.0
+   	b. 1.0.2
+	c. 1.1.0
+	d. 0.2.5
+	e. 1.0.0-dev
+	f. 1.0.0-alpha3
+	g. 1.0.0-beta2
+	h. 1.0.0-RC5
+	i. v2.0.4-p1
+   To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#version
+
+13."type" object/field: This field contains the information of your package-type. 
+   Out of the box, Composer supports four types:
+   	a. library: This is the default. It will simply copy the files to vendor.
+	b. project: This denotes a project rather than a library. For example application shells like https://github.com/symfony/symfony-standard or full fledged applications distributed as packages.
+	c. metapackage: An empty package that contains requirements and will trigger their installation, but contains no files and will not write anything to the filesystem.
+	d. composer-plugin: A package of type composer-plugin may provide an installer for other packages that have a custom type. 
+   Use/add this field in your composer.json only if your package-type is other than "library".
+   To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#type
+
+14."license" object/field: The license of the package can be either a string or an array of strings.
+   The recommended notation for the most common licenses is (alphabetical):
+   Example:
+   	a. Apache-2.0
+	b. BSD-4-Clause
+	c. GPL-3.0-only / GPL-3.0-or-later
+	d. LGPL-3.0-only / LGPL-3.0-or-later
+	e. MIT
+   In composer.json, might be as followings:
+   	{
+    		"license": "MIT"
+	}
+	{
+    		"license": [
+       			"LGPL-2.1-only",
+       			"GPL-3.0-or-later"
+    		]
+	}
+	{
+    		"license": "(LGPL-2.1-only or GPL-3.0-or-later)"
+	}
+   To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#license
+
+15."minimum-stability" object/field (root-only): This field decides, to which stability-level of packages you(your-package) want to download/install(remember dependencies/packages-need-to-install are mentioned under "require" & "require-dev" object/field). Available options (in order of stability) are dev, alpha, beta, RC, and stable; here "stable" is default.
+   All versions of each package are checked for stability, and those that are less stable than the minimum-stability setting will be ignored when resolving your project dependencies. 
+   It works/applies/applicable on/for your root-package's dependency only because your root-package's dependency's dependency minimum-stability is decided by your root-package's dependency's composer.json's minimum-stability field setting not the root-package's composer.json's minimum-stability field setting.
+   	{
+		"minimum-stability": "beta"
+	}
+   Note that we can also specify stability requirements on a per-package basis using stability flags in the version constraints that you specify in a "require" field as following:
+   	{
+    		"require": {
+        		"monolog/monolog": "1.0.*@beta",
+        		"acme/foo": "@dev"
+    		}
+	}
+   To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#minimum-stability
