@@ -962,12 +962,12 @@ Case Study:
 
 
 /*** Create and publish a package to Packagist ***/
-Using GitHub(github.com), Packagist(packagist.org), and composer one can contribute with PHP community by creating packages.
+Using GitHub(github.com), Packagist(packagist.org) and Composer one can contribute with PHP community by creating packages.
 Composer is a package manager for PHP. We can use packages the community developed and we can contribute with our packages too. Here, we will see, how to create a project/package, install Composer("install composer" means just to create composer.json file for the package) inside it and send to Packagist, from where others developers can use it inside their projects.
 
 1. Creating a package: 
 	a. Create a blabk hello-world directory & go to inside it.
-	b. We can keep our source-code files here but advised to create a directory "hello-world/src" here and put your code there.
+	b. We can keep our source-code files here but advised to create a directory "hello-world/src" and put our code there.
 	c. It makes our source-code organized, easier to understand and easier to maintain as well.
 	d. Create a file "hello-world/src/HelloWorld/SayHello.php":
 		<?php 
