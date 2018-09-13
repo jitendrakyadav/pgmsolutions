@@ -400,8 +400,6 @@ Case Study:
 16. composer diagnose
 /* If you think you found a bug, or something is behaving strangely, you might want to run the diagnose command to perform automated checks for many common problems. */
 
-/*** Publish a package to Packagist ***/
-
 
 /*** composer.json: https://getcomposer.org/ > Documentation > Book > The composer.json Schema ***/
 1. "autoload" object/field:
@@ -961,3 +959,54 @@ Case Study:
     		}
 	}
    To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#minimum-stability
+
+
+/*** Create and publish a package to Packagist ***/
+Using GitHub(github.com), Packagist(packagist.org), and composer one can contribute with PHP community by creating packages.
+Composer is a package manager for PHP. We can use packages the community developed and we can contribute with our packages too. Here, we will see, how to create a project/package, install Composer("install composer" means just to create composer.json file for the package) inside it and send to Packagist, from where others developers can use it inside their projects.
+
+1. Creating a package: 
+	a. Create a blabk hello-world directory & go to inside it.
+	b. We can keep our source-code files here but advised to create a directory "hello-world/src" here and put your code there.
+	c. It makes our source-code organized, easier to understand and easier to maintain as well.
+	d. Create a file "hello-world/src/HelloWorld/SayHello.php":
+		<?php 
+		namespace HelloWorld;
+
+		class SayHello
+		{
+    			public static function world()
+    			{
+        			return 'Hello World, Composer!';
+    			}
+		}
+	e. Now our project/package hello-world is ready(having just a single file "hello-world/src/HelloWorld/SayHello.php").
+
+2. Install composer inside project/package:
+	a. It means just to create composer.json file for our project/package in root-directory.
+	b. Create composer.json manually or let composer create it by running command "composer init"
+	c. Answer the questions which composer asks in interactive mode:
+		i.   Package name: <vendor-name>/<package-name>    (for me it's: jitendrayy/hello-world)
+		ii.  Description: My first Composer project
+		iii. Author: <your-name> <your-mail-id>  (for me it's: Jitendra Yadav <jitendray@cybage.com>)
+		iv.  Minimum Stability: dev
+		v.   Package Type: library
+		vi.  License: just press Enter key with blank
+		vii. Would you like to define your dependencies: no
+		viii.Would you like to define your dev dependencies: no
+		ix.  Confirm the json content created by composer by pressing Enter key with "yes"
+		x.   Composer created composer.json file for you based on your provided input.
+			{
+    				"name": "jitendrayy/hello-world",
+    				"description": "My first Composer project",
+    				"type": "library",
+    				"authors": [
+        				{
+            					"name": "jitendrayy",
+            					"email": "jitendray@cybage.com"
+        				}
+    				],
+    				"minimum-stability": "dev",
+    				"require": {}
+			}
+
