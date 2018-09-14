@@ -963,8 +963,7 @@ Case Study:
 
 /*** Create and publish a package to Packagist ***/
 Using GitHub(github.com), Packagist(packagist.org) and Composer one can contribute with PHP community by creating packages.
-Composer is a package manager for PHP. We can use packages the community developed and we can contribute with our packages too. Here, we will see, how to create a project/package, install Composer("install composer" means just to create composer.json file for the package) inside it and send to Packagist, from where others developers can use it inside their projects.
-
+Composer is a package manager for PHP. We can use packages the community developed and we can contribute with our packages too. Here, we will see, how to create a project/package, install Composer inside it("install composer inside it" means just to create composer.json file for the package) and send to Packagist, from where other developers can use it inside their projects.
 1. Creating a package: 
 	a. Create a blabk hello-world directory & go to inside it.
 	b. We can keep our source-code files here but advised to create a directory "hello-world/src" and put our code there.
@@ -981,14 +980,13 @@ Composer is a package manager for PHP. We can use packages the community develop
     			}
 		}
 	e. Now our project/package hello-world is ready(having just a single file "hello-world/src/HelloWorld/SayHello.php").
-
 2. Install composer inside project/package:
 	a. It means just to create composer.json file for our project/package in root-directory.
 	b. Create composer.json manually or let composer create it by running command "composer init"
 	c. Answer the questions which composer asks in interactive mode:
 		i.   Package name: <vendor-name>/<package-name>    (for me it's: jitendrayy/hello-world)
 		ii.  Description: My first Composer project
-		iii. Author: <your-name> <your-mail-id>  (for me it's: Jitendra Yadav <jitendray@cybage.com>)
+		iii. Author: <your-name> <your-mail-id>  (for me it's: Jitendra Yadav <jitendray@cybage.com>, but here some bug in composer, due to this reason it's not accepting it's own format, so just press Enter key with blank and let composer accept/keep their suggested value, later we would modify composer.json file)
 		iv.  Minimum Stability: dev
 		v.   Package Type: library
 		vi.  License: just press Enter key with blank
@@ -1009,4 +1007,68 @@ Composer is a package manager for PHP. We can use packages the community develop
     				"minimum-stability": "dev",
     				"require": {}
 			}
+		xi.  Now we have "composer.json" file saved in our root-directory. It's almost ready but we must do some changes:
+			{
+    				"name": "jitendrayy/hello-world",
+    				"description": "My first Composer project",
+    				"type": "library",
+    				"authors": [
+        				{
+            					"name": "Jitendra Yadav",
+            					"email": "jitendray@cybage.com"
+        				}
+    				],
+    				"minimum-stability": "dev",
+    				"require": {
+					"php": ">=5.3.0"
+				},
+				"autoload": {
+					"psr-0": {
+						"HelloWorld\\": "src/"	
+					}
+				}
+			}
+		     Here we have modified composer.json as following:
+		     	A. modify author name from "jitendrayy"(Composer's suggested value) to "Jitendra Yadav"
+			B. Added under "require" object/field - PHP 5.3 as minimum requirement
+			C. Added "autoload" object/field: Tell Composer to autoload(using psr-0) all files with "HelloWorld" namespace that are inside "src" directory.
+3. Testing our package: 
+   a. At this stage, we have files/folders as following:
+	hello-world
+	hello-world/src
+	hello-world/src/HelloWorld
+	hello-world/src/HelloWorld/SayHello.php
+	hello-world/composer.json
+   b. Go to inside your package's root-directory i.e. hello-world/ and run command "composer dump-autoload" as there is no any package needs to download(only classes-autoloading creation needed here) as mentioned in composer.json otherwise "composer install".
+   c. It creates files/folders as following:
+	hello-world/vendor
+	hello-world/vendor/composer
+	hello-world/vendor/composer/(many autoload files - like autoload_namespaces.php, autoload_psr4.php, etc.)
+	hello-world/vendor/autoload.php
+	hello-world/composer.lock
+   d. Create another file hello-world/index.php:
+   	<?php
+	require_once 'vendor/autoload.php';
 
+	echo HelloWorld\SayHello::world();
+   e. run command "php index.php"
+   f. Got output as expected: Hello World, Composer!
+   g. Testing is successful. Now rever-back/bring/keep your-package to it's previous-stage i.e. just before testing.
+   h. Delete whole "vendor" directory and composer.lock file.
+4. Publish our package to Packagist(packagist.org)
+   a. Create a public repository with name "helloworld" on GitHub(github.com) using your github-account.
+   b. Go to inside your package i.e. hello-world:
+	i.   run command "git init"
+	ii.  run command "git remote add origin https://github.com/<your-github-user-name>/helloworld.git"
+	iii. run command "git add ." or add one-by-one all files to escape adding un-wanted files like environment files
+	iv.  run command 'git commit -m "First commit"'
+	v.   run command "git push origin master"
+   c. Your package's all files are now present in your github repository "helloworld".
+   d. Go to Packagist i.e. open packagist.org in your browser and login to your packagist-account.
+   e. For me, my packagist credentials: username/email-goto.jitendra@gmail.com & password as jitendra.research's password.
+   f. Click on "Submit" link present in header-section.
+   g. Here in text-box under "Repository URL", put your github-package URL:
+   	https://github.com/<your-github-user-name>/helloworld
+      and click on "Check" button.
+   h. Packagist will check your project/package and return the project/package name. If it’s correct accept it.
+   i. It's done. Now your package is available on packagist.org to search(with name as Packagist suggested in just previous-step) and download/install to use for any developer in their project.
