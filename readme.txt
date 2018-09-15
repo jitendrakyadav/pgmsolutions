@@ -986,7 +986,7 @@ Composer is a package manager for PHP. We can use packages the community develop
 	c. Answer the questions which composer asks in interactive mode:
 		i.   Package name: <vendor-name>/<package-name>    (for me it's: jitendrayy/hello-world)
 		ii.  Description: My first Composer project
-		iii. Author: <your-name> <your-mail-id>  (for me it's: Jitendra Yadav <jitendray@cybage.com>, but here some bug in composer, due to this reason it's not accepting it's own format, so just press Enter key with blank and let composer accept/keep their suggested value, later we would modify composer.json file)
+		iii. Author: <your-name> <your-mail-id>  (for me it's: Jitendra Yadav <jitendray@cybage.com>, but here some bug in composer, due to this reason composer is not accepting it's own format, so just press Enter key with blank and let composer accept/keep their suggested value, later we would modify composer.json file)
 		iv.  Minimum Stability: dev
 		v.   Package Type: library
 		vi.  License: just press Enter key with blank
@@ -1072,3 +1072,51 @@ Composer is a package manager for PHP. We can use packages the community develop
       and click on "Check" button.
    h. Packagist will check your project/package and return the project/package name. If it’s correct accept it.
    i. It's done. Now your package is available on packagist.org to search(with name as Packagist suggested in just previous-step) and download/install to use for any developer in their project.
+      Example: Created a package "jitendrayy/hello-world" hosted on GitHub(github.com) with my username "jitendrayy" and publish the same on Packagist(packagist.org). Anyone can search this package on packagist.org with name jitendrayy/hello-world and install/use with help of Composer in their project. Let's see how we can use this package/library in our project:
+	i.  Create a blank directory "my-project" & go inside it.
+	ii. We have 2 options to download & install the package jitendrayy/hello-world:
+	    A. run command any one of followings i.e. either a or b or c:
+		a. "composer require --dev jitendrayy/hello-world dev-master", would create composer.json as following:
+			{
+    				"require-dev": {
+        				"jitendrayy/hello-world": "dev-master"
+    				}
+			}
+		   Note: --dev => Add requirement to require-dev  [Look/observe by command: "composer --help require"]
+		b. "composer require jitendrayy/hello-world dev-master@dev", would create composer.json as following:
+			{
+    				"require": {
+        				"jitendrayy/hello-world": "dev-master@dev"
+    				}
+			}
+		c. "composer require jitendrayy/hello-world @dev", would create composer.json as following:
+			{
+    				"require": {
+        				"jitendrayy/hello-world": "@dev"
+    				}
+			}
+	        Above command creates/downloads other files/folders as following:
+		a. vendor/jitendrayy/hello-world package
+		b. vendor/composer/(all aotoload files)
+		c. vendor/autoload.php
+		d. composer.lock
+			
+	    B. Create composer.json:
+			{
+				"require": {
+					"jitendrayy/hello-world": "*"
+				},
+				"minimum-stability": "dev"
+			}
+	       run command "composer install". it creates/downloads:
+		a. vendor/jitendrayy/hello-world package
+                b. vendor/composer/(all aotoload files)
+                c. vendor/autoload.php
+                d. composer.lock
+	iii. create a file my-project/index.php:
+		<?php
+		require_once 'vendor/autoload.php';
+
+		echo HelloWorld\SayHello :: world();
+	iv.  run command "php index.php"
+	v.   Got output as per expectation: Hello World, Composer!
