@@ -1,3 +1,9 @@
+Here is 4 sections:
+Section 1: What is Composer and Packagist [Line No. 7]
+Section 2: Composer commands and Autoloading concept [Line No. 18]
+Section 3: composer.json file and it's objects/fields [LIne No. 410]
+Section 4: How we create a package & publish the same on Packagist and use that package from packagist.org in our own-project [Line No. 970]
+
 /*** Composer:https://getcomposer.org [Cheat-Sheet: https://composer.json.jolicode.com/] ***/
 1. Composer is a dependency manager or package manager in PHP that provides a standard format(composer.json) for managing dependencies of PHP software and required libraries.
 2. Composer runs through the command line and installs dependencies (e.g. libraries) for an application.
@@ -961,7 +967,7 @@ Case Study:
    To view/read in more detail, visit: https://getcomposer.org/doc/04-schema.md#minimum-stability
 
 
-/*** Create and publish a package to Packagist ***/
+/*** Create and publish a package to Packagist and use that package from packagist.org in our own-project ***/
 Using GitHub(github.com), Packagist(packagist.org) and Composer one can contribute with PHP community by creating packages.
 Composer is a package manager for PHP. We can use packages the community developed and we can contribute with our packages too. Here, we will see, how to create a project/package, install Composer inside it("install composer inside it" means just to create composer.json file for the package) and send to Packagist, from where other developers can use it inside their projects.
 1. Creating a package: 
@@ -1072,9 +1078,11 @@ Composer is a package manager for PHP. We can use packages the community develop
       and click on "Check" button.
    h. Packagist will check your project/package and return the project/package name. If it’s correct accept it.
    i. It's done. Now your package is available on packagist.org to search(with name as Packagist suggested in just previous-step) and download/install to use for any developer in their project.
-      Example: Created a package "jitendrayy/hello-world" hosted on GitHub(github.com) with my username "jitendrayy" and publish the same on Packagist(packagist.org). Anyone can search this package on packagist.org with name jitendrayy/hello-world and install/use with help of Composer in their project. Let's see how we can use this package/library in our project:
+      
+      Case Study: How we download/install a package from packagist.org and use that in our-project
+	Created a package "jitendrayy/hello-world" hosted on GitHub(github.com) with my username "jitendrayy" and publish the same on Packagist(packagist.org). Anyone can search this package on packagist.org with name jitendrayy/hello-world and install/use with help of Composer in their project. Let's see how we can use this package/library in our project:
 	i.  Create a blank directory "my-project" & go inside it.
-	ii. We have 2 options to download & install the package jitendrayy/hello-world:
+	ii. We have 2 options to download & install the package jitendrayy/hello-world (remember when you request for a package from packagist.org, Packagist assumes you want that package witn "minimum-stability": "stable" as default and jitendrayy/hello-world is available with "dev" version only so if you don't mention that you are ok with "dev" version, Packagist would not allow anyone to download/install jitendrayy/hello-world package):
 	    A. run command any one of followings i.e. either a or b or c:
 		a. "composer require --dev jitendrayy/hello-world dev-master", would create composer.json as following:
 			{
@@ -1120,3 +1128,27 @@ Composer is a package manager for PHP. We can use packages the community develop
 		echo HelloWorld\SayHello :: world();
 	iv.  run command "php index.php"
 	v.   Got output as per expectation: Hello World, Composer!
+
+5. Set webhook for our packagist.org package(that actually/really/physically present on github.com) from github.com using packagist.org API so that whenever we push any source-code update for our package on github.com it directly reflect on packagist.org. 
+   Reference: https://youtu.be/xStIvGNosVc
+   If we don't set this webhook then for Packagist package latest-update we need to do following:
+	a. Go to Packagist(packagist.org) and login to your account.
+	b. In header, mouse-hover on your username > My packages > My packages > <click-to-your-package-for-which-you-want-latest-update> > <click-on-Udate-button-here>
+	c. It's done. Look your right-side where your package's versions are mentioned and here your latest-version would reflect.
+   Let's follow the following steps to set webhook for our package:
+	d. Go to GitHUb(github.com) and login to your account.
+	e. Click on your package for which you want to set webhook > Settings (following "Insights" tab) > Webhooks (In left-side menu) > Add webhook
+	f. Fill the information here like "Payload URL", "Content type", "Secret", etc.
+	   Go to https://packagist.org/ > click on "About Packagist" link in footer > How to update packages? > Manual hook setup
+		i.   Copy Packagist API URL like "https://packagist.org/api/update-package?username=jitendrakyadav&apiToken=API_TOKEN"
+			A. Look in URL, there is API_TOKEN
+			B. To get this token, login to Packagist(packagist.org) > In header, mouse-hover on your username > Profile > click on "Show API Token" > "Your API Token" are displayed, copy this and replace API_TOKEN by this token in your Packagist API URL.
+		ii.  Enter this API URL as "Payload URL"
+		iii. Copy another content like "{"repository":{"url":"PACKAGIST_PACKAGE_URL"}}"
+			A. Look here, there is PACKAGIST_PACKAGE_URL
+			B. This is your Packagist package URL, to get this, login to Packagist(packagist.org) > In header, mouse-hover on your username > My packages > mouse-hover on a package for which you want to set webhook, right click & then select "Copy link address". This is your package URL, now replace PACKAGIST_PACKAGE_URL by this URL.
+		iv.  Select "Content type" as application/json and for "Secret" field use the content got in previous step "C".
+		v.   "Which events would you like to trigger this webhook?" select "Just the push event."
+		vi.  Make checked the check-box "Active" 
+		vii. Click on button "Add webhook".
+	g. Now It's done. Webhook is set.
