@@ -1,7 +1,7 @@
 Here is 4 sections:
 Section 1: What is Composer and Packagist [Line No. 7]
 Section 2: Composer commands and Autoloading concept [Line No. 18]
-Section 3: composer.json file and it's objects/fields [LIne No. 410]
+Section 3: composer.json file and it's objects/fields [Line No. 410]
 Section 4: How we create a package & publish the same on Packagist and use that package from packagist.org in our own-project [Line No. 970]
 
 /*** Composer:https://getcomposer.org [Cheat-Sheet: https://composer.json.jolicode.com/] ***/
@@ -1133,13 +1133,13 @@ Composer is a package manager for PHP. We can use packages the community develop
    Reference: https://youtu.be/xStIvGNosVc
    If we don't set this webhook then for Packagist package latest-update we need to do following:
 	a. Go to Packagist(packagist.org) and login to your account.
-	b. In header, mouse-hover on your username > My packages > My packages > <click-to-your-package-for-which-you-want-latest-update> > <click-on-Udate-button-here>
+	b. In header, mouse-hover on your username > My packages > My packages > <click-to-your-package-for-which-you-want-latest-update> > <click-on-Update-button-here> [packagist_package.png]
 	c. It's done. Look your right-side where your package's versions are mentioned and here your latest-version would reflect.
    Let's follow the following steps to set webhook for our package:
 	d. Go to GitHUb(github.com) and login to your account.
 	e. Click on your package for which you want to set webhook > Settings (following "Insights" tab) > Webhooks (In left-side menu) > Add webhook
-	f. Fill the information here like "Payload URL", "Content type", "Secret", etc.
-	   Go to https://packagist.org/ > click on "About Packagist" link in footer > How to update packages? > Manual hook setup
+	f. Fill the information here like "Payload URL", "Content type", "Secret", etc. [webhook_github.png]
+	   Go to https://packagist.org/ > click on "About Packagist" link in footer > How to update packages? > Manual hook setup: [Packagist_API.png]
 		i.   Copy Packagist API URL like "https://packagist.org/api/update-package?username=jitendrakyadav&apiToken=API_TOKEN"
 			A. Look in URL, there is API_TOKEN
 			B. To get this token, login to Packagist(packagist.org) > In header, mouse-hover on your username > Profile > click on "Show API Token" > "Your API Token" are displayed, copy this and replace API_TOKEN by this token in your Packagist API URL.
