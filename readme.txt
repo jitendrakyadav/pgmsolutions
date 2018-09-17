@@ -4,17 +4,48 @@
 man tail         /* manual 'tail' */
 tail --help
 
+/*** Go to just previous directory in hierarchy ***/
+cd ..
+
+/*** Return to just previous directory where you are present in past ***/
+cd -   /* i.e. "cd dash"; "dash" symbol => also referred as "hyphen" or "subtract" or "negative" or "minus" sign */
+
 /*** Short command to move into their home directory ***/
 cd ~       /* Now you would find yourself in directory /home/jitendra for me as I had logined with username 'jitendra' */
 
-/**** Create a directory and any parents(-p argument) that don't already exist
-Following will create both directories i.e. trainingapp directory along with it's parent directory jitendray ****/
+/*** Create a directory and any parents(-p argument) that don't already exist. Following will create both directories i.e. trainingapp directory along with it's parent directory jitendray ***/
 mkdir -p /var/www/html/jitendray/trainingapp
 sudo mkdir -p /var/www/html/jitendray/trainingapp
 
-/*** Update a file or create a file with provided extension if it doesn't exist: ***/ 
-//vim is different editor from vi and better while updating/editing a record/file 
+/*** Listing files/folders ***/
+ls      /* List files/folders (only files/folders name) of current directory */
+ll      /* ll => an alias of "ls -l"; lists all files/folders (with detaile like file/folder's owner-name, group-name, creation/updation date-time) of current directory*/
+ll -a   /* "ll -a" => an alias of "ls -la"; -a => This option is used to list hidden files/folders as well; it list all files/folders with it's details of current directory and hidden files/folders as well. */
+ll /var/www/html/2018/test     /* Lists all files/folders of test directory */
+
+/*** To see all folders/files in current directory  ***/
+find .
+find xyz     /* xyz => any directory name; To see all files/folders of a directory. */
+
+/*** "vim" editor: vim is different editor from vi and better while updating/editing a record/file. Remember, everytime whenever your file is open and you want some/any operation on your file i.e. you want to fire any command like "G" to reach end of file then always your file must be in "read" only mode. ***/
+/* 1. Update a file or create a file (with provided extension) if it doesn't exist */
+vim index.html
 sudo vim index.html
+/* 2. Reach end of a file i.e. arrive last line of file */
+G   
+/* i.e. type only capital G while you are in "read" only mode i.e. you are not in "insert" mode. By default, file opens in "read" only mode; to go with "insert" mode just type "i" i.e small i and return back to "read" only mode just press "Esc" button */
+/* 3. Reach start/first-line of file: Remember you must be in "read" only mode. */
+gg
+/* 4. Reach to a particular line no: Remember you must be in "read" only mode. */
+Esc + "type line no" + Shift + g
+/* 5. Copy some text from one line in opened file and paste the same on another line */
+Select some text using your mouse when your file is open & you are in "read" only mode, go to "insert" mode and right-click your mouse where your pointer is blinking and select paste.
+/* 6. Close file & save changes */
+Esc + (Shift + :) + wq   /* wq => write and quit */
+/* 7. Close file and un-save changes */
+Esc + (Shift + :) + q!
+/* Search any text/word in a file */
+
 
 /*** Unzip a zip file ***/
 unzip /home/jitendra/Downloads/Magento-CE-2.2.5_sample_data-2018-06-26-09-35-44.zip
@@ -91,8 +122,7 @@ cat /etc/os-release
 ifconfig        /* Linux */
 ipconfig        /* Dos */
 
-/*** To see all folders/files in current directory  ***/
-find .
+
 
 /*** Ubuntu Commands ***/
 
@@ -124,6 +154,15 @@ sudo apt-get autoclean
 /*** One of the most basic fixes to resolve dependencies problems is to run: ***/ 
 sudo apt-get -f install
 
+/*** To open terminal/cli ***/
+Ctrl + Alt + t
+
+/*** To lock your machine ***/
+Ctrl + Alt + l
+
+/*** Clear the terminal/screen ***/
+clear
+
 /*** Apache server command: ***/ 
 sudo service apache2 status 
 sudo service apache2 start 
@@ -135,5 +174,25 @@ sudo service mysql status
 sudo service mysql start 
 sudo service mysql stop
 
+/*** What is DNS => Domain Name System ***/
+1. DNS is how domain names are translated into IP addresses, and DNS also controls email delivery. DNS is what allows you to use your web browser to find web sites as well as send and receive email.
+2. DNS makes it possible for us to use easy to remember domain names in place of complex IP addresses (gracechurch.com instead of 209.61.148.168).
+3. DNS is sort of like the white pages directory of the internet - when you enter a domain name into your internet browser, DNS does the directory lookup to find out which server that domain is pointed to and what it's IP address is and then it responds by displaying the site you requested.
+Note: "White pages" meaning => The white pages is a listing of telephone subscribers in a telephone directory.
+
+/*** Bypass DNS ***/
+1. Create your virtual-host with server-name/domain-name defined and the directory to which it would point. [use branch: create_virtual_host_in_ubuntu_16.04]
+2. While creating virtual-host in previous step, you get 2 things from there:
+	a. server-name/domain-name which you have mentioned there
+	b. Machine IP address where you have created virtual-host
+   Mention these 2 things in your local maching's host file like following:
+   172.72.27.112 google.com www.google.com
+   from where you would access the server-name/domain-name(mentioned/used in step.1) using your browser.
+   This means, now your machine browser takes to you on IP: 172.72.27.112 web-page instead on google.com home-page when you hit the URL google.com or www.google.com in your browser.
+   Remember host file location in ubuntu:
+	/etc/hosts
+   and in windows:
+	C:\Windows\System32\Drivers\etc\hosts
+ 
 /*** Get installed php version: ***/ 
 php -v
