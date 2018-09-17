@@ -26,3 +26,5 @@
     curl_wget_file_get_contents
 14. Ideal release process before and after application live:
     ideal_production_release_process
+15. Composer, Autoloading and composer.json
+    composer_autoloading_composer.json
