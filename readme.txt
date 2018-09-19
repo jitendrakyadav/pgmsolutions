@@ -190,6 +190,9 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 10. A branch consists of a no. of commits. But when you use "git log" to view current branch commits, It shows not only current branch commits but also it's parent branches commits as well (till "master" branch).
 11. "master" branch is the base/top-most-parent branch of all branches available in the repository. 
 12. To have more clarity on git branches and their commits flow, look into git_branches_and_their_commits_flow.pdf.
+13. Sometime, when we pull a branch to our local, we got a ton of files in working-folder i.e. in non-staging area. These files have not any content-change but only file-mode change like from 644 to 755 or vice versa. To remove these type of problems i.e. showing git-repository files in changed/modified state due to only file-mode changes of files not in content, use following command while you are in your project/repository's root directory:
+    git config core.filemode false
+    By-default, this setting is "true" that's why git shows change in file even only if file-mode changes not content.
 
 /*** Find the git commits, that introduced a string or removed the string in current branch ***/
 git log -S "Hello World!"
