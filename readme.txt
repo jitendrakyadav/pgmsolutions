@@ -192,7 +192,20 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 12. To have more clarity on git branches and their commits flow, look into git_branches_and_their_commits_flow.pdf.
 13. Sometime, when we pull a branch to our local, we got a ton of files in working-folder i.e. in non-staging area. These files have not any content-change but only file-mode change like from 644 to 755 or vice versa. To remove these type of problems i.e. showing git-repository files in changed/modified state due to only file-mode changes of files not in content, use following command while you are in your project/repository's root directory:
     git config core.filemode false
-    By-default, this setting is "true" that's why git shows change in file even only if file-mode changes not content.
+    By-default, this setting is "true" that's why git shows change in file, even only if file-mode changes, not content.
+14. Git parameters could have 3 different scopes. You can see this by running command "git config --list --show-origin" instead of "git config --list" [Screenshot from window machine: git-parameter-value-scope.jpg]:
+    	a. Local Scope: In this scope, git parameters are set at your repository level & is controlled by your repository's .git directory: 
+		git config core.autocrlf false
+	b. Global Scope: In this scope, git parameters are set at user's level means this scope value of a git parameter would be applicable for all repositories of that user. It is controlled by User's home directory's .gitconfig file value.
+		git config --global core.autocrlf true
+		/* .gitconfig location */
+		~/.gitconfig
+		/home/<your-user-name>/.gitconfig       /* In Ubuntu  */
+		/c/Users/<your-user-name>/.gitconfig    /* In Windows */
+	c. System Scope: When Git installs in your system/machine/server, It has system-level value for git parameters and would be applicable for all Users existing on that system.
+	For a git parameter, it's local scope value has highest priority. Scope priority is as following:
+	Local Scope > Global Scope > System Scope
+	Note: .gitattributes file (if presents in repository/project's-root-directory) would override even git parameter's local scope value. 
 
 /*** Find the git commits, that introduced a string or removed the string in current branch ***/
 git log -S "Hello World!"
