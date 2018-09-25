@@ -15,3 +15,23 @@ Disable and delete virtual host:
 4. Delete the entry for this virtual-host from /etc/hosts file.
 5. It's done.
 6. Apart from it, you might like to delete the whole project folder(for which this virtual-host had been created) from root-directory i.e. /var/www/html/ and delete it's associated DB as well.
+
+Create virtual-host in Windows:
+1. In /d/xampp/apache/conf/extra/httpd-vhosts.conf, add followings at last line:
+	<VirtualHost *:80>
+    		##ServerAdmin webmaster@dummy-host2.example.com
+    		DocumentRoot "D:\xampp\htdocs\2018\mg2\mg226"
+    		ServerName mg226.local.com
+    		##ErrorLog "logs/dummy-host2.example.com-error.log"
+    		##CustomLog "logs/dummy-host2.example.com-access.log" common
+		<Directory "D:\xampp\htdocs\2018\mg2\mg226">
+			DirectoryIndex index.php
+			AllowOverride All
+			Order allow,deny
+			Allow from all
+		</Directory>
+	</VirtualHost>
+2. Record this virtual-host entry in /c/Windows/System32/drivers/etc/hosts as following at last line:
+	127.0.0.1       mg226.local.com
+3. It's done. Now access you project by URL http://mg226.local.com in your browser. If it is un-accessible, check apache & php error logs. If it's still not working, restart your machine to make effective your hosts file entry.
+
