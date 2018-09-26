@@ -72,7 +72,7 @@ Note: "White pages" meaning => The white pages is a listing of telephone subscri
 
 /*** Linux Commands ***/
 
-/**** Get help related to a linux command for ex. 'tail' ****/
+/*** Get help related to a linux command for ex. 'tail' ***/
 man tail         /* manual 'tail' */
 tail --help
 
@@ -147,10 +147,10 @@ Note: Best practice is to create a blank directory & then unzip any zip file ins
 zip -r hello.zip hi      /* Here zipped a directory 'hi' with another name 'hello', when you run 'unzip hello.zip', you will get a directory 'hi' with all files recursively existing inside it as there was 'hi' while zipping dirctory */
 zip hello 1.txt 2.txt 3.txt        /* created a hello.zip file having files 1.txt, 2.txt, 3.txt:  when unzipping hello.zip, parellel to hello.zip, we would get 1.txt, 2.txt, 3.txt without any wrapper folder */
 
-/**** Get username using currently ****/
+/*** Get username using currently ***/
 whoami
 
-/**** Get groups for a username ****/
+/*** Get groups for a username ***/
 groups <username>     /* first word after : is your primary group */
 
 /*** Create user in ubuntu 16.04: For detail browse https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-ubuntu-16-04 or look here into how-to-add-and-delete-users-on-ubuntu-16-04.png  ***/
@@ -174,20 +174,20 @@ sudo deluser <username>       /* If you are other than root user, having sudo gr
 deluser --remove-home <username>          /* Delete the user's home directory as well when the user is deleted for ex: /home/jitu */
 sudo deluser --remove-home <username>
 
-/**** Change owner from one to another ****/
+/*** Change owner from one to another ***/
 sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:groupname directory */
 
-/**** Change mode of a file/directory ****/
+/*** Change mode of a file/directory ***/
 chmod -R 777 /var/www/html/2018/magento2/public_html/var
 chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub     /* R for recursively, f for forcefully */
 
-/**** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ****/
+/*** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ***/
 cp xyz.php jitendray.php
-/* Copy each & every files of one directory to another directory */
-cp /var/www/html/2018/test/* /var/www/html/2018/test2/test3/
-cp test/* test2/test3/     /* Relative paths are allowed as well */
+/* Copy each & every file/folder of one directory to another directory */
+cp /var/www/html/2018/ci226/* /var/www/html/2018/other_instance/public/
+cp ci226/* other_instance/public/     /* Relative paths are allowed as well */
 
-/**** move some files from one place to another  ****/
+/*** Move some files from one place to another  ***/
 mv /home/jitendra/Downloads/* /var/www/html/2018/magento2/public_html/
 /* Move each & every files of Downloads directory to current-directory */
 mv /home/jitendra/Downloads/* .
@@ -195,34 +195,34 @@ mv /home/jitendra/Downloads/* .
 mv ./* /var/www/html/2018/test/
 mv ./* ../../test/  /* You might use relative-path as well */
 
-/**** Rename a file xyz.txt by abc.txt  ****/
+/*** Rename a file xyz.txt by abc.txt  ***/
 mv xyz.txt abc.txt
 
-/**** Remove all files and folders recursively from a directory trainingapp, but not the directory trainingapp ****/
+/*** Remove all files and folders recursively from a directory trainingapp, but not the directory trainingapp ***/
 rm -R /var/www/html/jitendray/trainingapp/*
 /* remove all files/folders recursively from current directory, but not the current directory */
 rm -R ./*
 /* Remove all files/folders recursively from a directory trainingapp including the directory trainingapp itself as well */
 rm -R /var/www/html/jitendray/trainingapp
 
-/**** Switch user from current to other for ex. 'jitendray' ****/
+/*** Switch user from current to other for ex. 'jitendray' ***/
 su jitendray
 
 /*** Login as root user(or login with another user, just replace 'root' by any other <username>) ***/
 ssh root@<server-ip-address>
 su root      /* If you are already logined with another user  */
 
-/**** View log file ****/
+/*** View log file ***/
 tail error.log               /* last 10 lines by default */
 tail -f 15 error.log         /* last 15 lines, if file-content grows dynamically, would show dynamically latest 15 lines */
 tail -n 15 error.log         /* last 15 lines, statically i.e. just opposite of above */
 head error.log               /* first 10 lines by default */
 head -n 15 error.log         /* first 15 lines */
 
-/**** To know about OS on machine ****/
+/*** To know about OS on machine ***/
 cat /etc/os-release
 
-/**** To know about your machine IP ****/
+/*** To know about your machine IP ***/
 ifconfig        /* Linux */
 ipconfig        /* Dos */
 
