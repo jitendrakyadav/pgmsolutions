@@ -183,26 +183,41 @@ chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub     /* R for recursive
 
 /*** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ***/
 cp xyz.php jitendray.php
-/* Copy each & every file/folder of one directory to another directory */
-cp /var/www/html/2018/ci226/* /var/www/html/2018/other_instance/public/
-cp ci226/* other_instance/public/     /* Relative paths are allowed as well */
+/* Copy each & every file/folder recursively of one directory to another directory. Here only files/folders from/inside "ci226" would be copied not "ci226". Here if you don't use option "-R" then only files of "ci226" would be copied not folders. */
+cp -R /var/www/html/2018/ci226/* /var/www/html/2018/other_instance/public/
+/* Copy all files/folders from/inside "ci226" directory but not directory "ci226" to another directory "public". As following, relative paths are allowed as well. */
+cp -R ci226/* other_instance/public/
+cp -R ../code/* ../../myBkp/
+/* Copy all files/folders of current directory to another directory */
+cp -R ./* other_instance/public/
+cp -R ./* ../../public/media/
+/* Copy each & every file/folder of "Downloads" directory to current-directory */
+cp /home/jitendra/Downloads/* ./
+cp ~/Downloads/* ./
+/* Copy a whole directory with it's all files/folders to/inside another directory. Like after following command execution, you can access source-code of app/code directory from app/myBkp/code as well. */
+cp -R app/code app/myBkp/
 
-/*** Move some files from one place to another  ***/
-mv /home/jitendra/Downloads/* /var/www/html/2018/magento2/public_html/
-/* Move each & every files of Downloads directory to current-directory */
-mv /home/jitendra/Downloads/* .
-/* Move each & every files of current directory to test directory */
-mv ./* /var/www/html/2018/test/
-mv ./* ../../test/  /* You might use relative-path as well */
-
-/*** Rename a file xyz.txt by abc.txt  ***/
+/*** Rename a file xyz.txt by abc.txt ***/
 mv xyz.txt abc.txt
+/* Move all files/folders recursively of one directory to another directory. Here only files/folders from/inside "Downloads" would be moved not "Downloads". Here, need not to use option "-R" (so don't use "-R" with "mv" command), "*" character alone is sufficient to work exactly the same task which "-R" does in "cp" command as above. */
+mv /home/jitendra/Downloads/* /var/www/html/2018/magento2/public_html/
+/* Move all files/folders from/inside "ci226" directory but not directory "ci226" to another directory "public". As following, relative paths are allowed as well. */
+mv ci226/* other_instance/public/
+mv ../code/* ../../myBkp/
+/* Move all files/folders of current directory to another directory */
+mv ./* other_instance/public/
+mv ./* ../../public/media/
+/* Move each & every file/folder of "Downloads" directory to current-directory */
+mv /home/jitendra/Downloads/* ./
+mv ~/Downloads/* ./
+/* Move a whole directory with it's all files/folders to/inside another directory. Like after following command execution, you would be unable to access source-code of "app/code" directory i.e. then it would be available from "app/myBkp/code" */
+mv app/code app/myBkp/
 
-/*** Remove all files and folders recursively from a directory trainingapp, but not the directory trainingapp ***/
+/*** Remove all files/folders recursively from/inside directory trainingapp, but not the directory trainingapp ***/
 rm -R /var/www/html/jitendray/trainingapp/*
-/* remove all files/folders recursively from current directory, but not the current directory */
+/* remove all files/folders from current directory, but not the current directory */
 rm -R ./*
-/* Remove all files/folders recursively from a directory trainingapp including the directory trainingapp itself as well */
+/* Remove a whole directory like "trainingapp" with all it's files/folders */
 rm -R /var/www/html/jitendray/trainingapp
 
 /*** Switch user from current to other for ex. 'jitendray' ***/
