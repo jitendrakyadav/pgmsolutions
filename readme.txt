@@ -93,35 +93,54 @@ sudo mkdir -p /var/www/html/jitendray/trainingapp
 ls      /* List files/folders (only files/folders name) of current directory */
 ll      /* ll => an alias of "ls -l"; lists all files/folders (with detaile like file/folder's owner-name, group-name, creation/updation date-time) of current directory*/
 ll -a   /* "ll -a" => an alias of "ls -la"; -a => This option is used to list hidden files/folders as well; it list all files/folders with it's details of current directory and hidden files/folders as well. */
-ll /var/www/html/2018/test     /* Lists all files/folders of test directory */
-ll -a /var/www/html/2018/test  /* Lists all files/folders of test directory including hidden files as well */
+ll /var/www/html/2018/test       /* Lists all files/folders of test directory */
+ll -a /var/www/html/2018/test    /* Lists all files/folders of test directory including hidden files as well */
+ll -at /var/www/html/2018/test   /* -t => sort by modification time, newest first */
 
 /*** To see all folders/files in current directory  ***/
 find .
 find xyz     /* xyz => any directory name; To see all files/folders of a directory. */
 
 /*** "vim" editor: vim is different editor from vi and better while updating/editing a record/file. Remember, everytime whenever your file is open and you want some/any operation on your file i.e. you want to fire any command like "G" to reach end of file then always your file must be in "read" only mode. ***/
-/* 1. Update a file or create a file (with provided extension) if it doesn't exist */
-vim index.html
-sudo vim index.html
-/* 2. Reach end of a file i.e. arrive last line of file */
-G   
+/* 1.Update a file or create a file (with provided extension) if it doesn't exist */
+	vim index.html
+	sudo vim index.html
+/* 2.Reach end of a file i.e. arrive last line of file */
+	G   
 /* i.e. type only capital G while you are in "read" only mode i.e. you are not in "insert" mode. By default, file opens in "read" only mode; to go with "insert" mode just type "i" i.e small i and return back to "read" only mode just press "Esc" button */
-/* 3. Reach start/first-line of file: Remember you must be in "read" only mode. */
-gg
-/* 4. Reach to a particular line no: Remember you must be in "read" only mode. */
-Esc + "type line no" + Shift + g
-/* 5. Remove/erase the current line */
-dd
-/* 6. Remove all-lines or whole-content of file */
-gg    /* First of all, go to first line */
-dG    /* Then type "dG" i.e. delete upto the last line */
-/* 7. Copy some text from one line in opened file and paste the same on another line */
-Select some text using your mouse when your file is open & you are in "read" only mode, go to "insert" mode and right-click your mouse where your pointer is blinking and select paste.
-/* 8. Close file & save changes */
-Esc + (Shift + :) + wq   /* wq => write and quit */
-/* 9. Close file and un-save changes */
-Esc + (Shift + :) + q!
+/* 3.Reach start/first-line of file: Remember you must be in "read" only mode. */
+	gg
+/* 4.Reach to a particular line no: Remember you must be in "read" only mode. */
+	Esc + "type line no" + Shift + g
+/* 5.Remove/erase the current line */
+	dd
+/* 6.Remove all-lines or whole-content of file */
+	gg    /* First of all, go to first line */
+	dG    /* Then type "dG" i.e. delete upto the last line */
+/* 7.copy and paste current line  */
+	Esc + yy
+	Esc + 5yy
+	Esc + 7yy
+/* 
+a. yy => stands for "yank", we have actually copied the current line to the vim buffer, which is similar to the operating system's clipboard. 
+b. 5yy => would copy the 5 lines from the current cursor position line.
+c. 7yy => would copy the 7 lines from the current cursor position line.  
+d. Now move your cursor where you want to paste this copied line. Remember your are in read-only mode(If you like, you might go in insert mode by typing "i", create some space or blank lines, move your cursor there and again return back to read-only mode by pressing keyboard button "Esc"); Then type following: 
+*/
+	p    (small "p" => It would paste the copied line just next to the current cursor position line)
+	P    (capital "P" => It would paste the copied line just previous to the current cursor position line)
+Note: above p/P command would not affect already present next/previous lines although it would create their own fresh line with copied content.
+/* 8.Select a particular section, then copy & paste the same */
+	Esc + (Go to the starting poing of the section which you want to copy) + v + (Remember: small "v" => it brings vim editor into visual mode and visual mode is used for one and only to select some portion of your editor. move your cursor left, right, up and down through keybord button till the time when you reach end-point of your section, you would notice that background of this selected section has been darken, means those portion are selected now) + y + (move your cursor where you want to paste this copied portion. Remember your are in read-only mode now not in visual mode, actually after "yank" vim editor brings himself from visual mode to read-only mode) + p/P
+Note: small "p" => paste the copied section just after the current cursor position character; capital "P" => paste the copied section just before the current curser position character.
+/* 9.cut and paste current line */
+Same thing and exactly same concept as used in above Point-7, just only replace "yy" by "dd". "dd" actually deletes the current line, but places it in vim buffer, so we can easily paste it somewhere else.
+/* 10.Select a particular section, then cut & paste the same */
+Same thing and exactly same concept as used in above Point-8, just only replace "y" by "d". "d" actually deletes the selected portion, but places it in vim buffer, so we can easily paste it somewhere else.
+/* 11.Close file & save changes */
+	Esc + (Shift + :) + wq   /* wq => write and quit */
+/* 12.Close file and un-save changes */
+	Esc + (Shift + :) + q!
 /* Search any text/word in a file */
 
 /* Remove the whole/all content of a file without open the same */
