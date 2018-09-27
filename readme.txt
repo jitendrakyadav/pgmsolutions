@@ -122,7 +122,7 @@ find xyz     /* xyz => any directory name; To see all files/folders of a directo
 	Esc + 5yy
 	Esc + 7yy
 /* 
-a. yy => stands for "yank", we have actually copied the current line to the vim buffer, which is similar to the operating system's clipboard. 
+a. yy => stands for "yank", we have actually copied the current line to the vim buffer(A buffer is a data area shared by hardware devices or program processes that operate at different speeds or with different sets of priorities), which is similar to the operating system's clipboard(A clipboard is a temporary storage area for data that the user wants to copy from one place to another). 
 b. 5yy => would copy the 5 lines from the current cursor position line.
 c. 7yy => would copy the 7 lines from the current cursor position line.  
 d. Now move your cursor where you want to paste this copied line. Remember your are in read-only mode(If you like, you might go in insert mode by typing "i", create some space or blank lines, move your cursor there and again return back to read-only mode by pressing keyboard button "Esc"); Then type following: 
@@ -137,14 +137,56 @@ Note: small "p" => paste the copied section just after the current cursor positi
 Same thing and exactly same concept as used in above Point-7, just only replace "yy" by "dd". "dd" actually deletes the current line, but places it in vim buffer, so we can easily paste it somewhere else.
 /* 10.Select a particular section, then cut & paste the same */
 Same thing and exactly same concept as used in above Point-8, just only replace "y" by "d". "d" actually deletes the selected portion, but places it in vim buffer, so we can easily paste it somewhere else.
-/* 11.Close file & save changes */
+/* 11.Undo & Redo */
+	u    		(small "u" => for changes undo or rollback)
+	Ctrl + r	(for redo)
+/* 12.Close file & save changes */
 	Esc + (Shift + :) + wq   /* wq => write and quit */
-/* 12.Close file and un-save changes */
+/* 13.Close file and un-save changes */
 	Esc + (Shift + :) + q!
-/* Search any text/word in a file */
+vim's last line mode: Whenever you do:
+	Esc + Shift + :
+Then whatever you type in vim, would appear on the last line of the editor window. Hence the name "last line mode".
+Just before the last line, you might see your file name with it's absolute path, file-opening data & time and at right corner of the same line you can view the exact line-no, character-no at which currently your cursor is blinking. It also shows percentage of page according to your current cursor position.
+/* 14.Search any text/word in a file: To search a word: */
+	Esc + / + (then type the word you want to search) + Enter
+	Esc + Shift + ? + (then type the word you want to search) + Enter
+Now you cursor is at first location out of the all locations where your searching-word is present. Use:
+	a. n => i.e. small "n" to go to the next location of the searching-word
+	b. * => i.e. star symbol to go to the next location of the searching-word in forward direction
+	c. # => i.e. hash symbol to go to the next location of the searching-word in backward direction
+If your exact search-word is not found then vim might suggest you some similar word to search. 
+Example: search "he" but there is no any exact word "he" then after press "Enter" button, your cursor might reach to a location with word "hello" and after pressing "n" character it brings you next "hello" word location i.e. in place of "he" it would start locating/searching "hello" word. 
+If vim does not found either the exact word or similar-word then it shows message like "Pattern not found".
+/* 15.Make your search case-insensitive; Remember, default-search mode is case-sensitive */
+	Esc + Shift + :set ignorecase + Enter      (set search to case-insensitive mode. it's scope is till the file is open)
+	Esc + Shift + :set noignorecase + Enter    (returns back to default-search mode)
+Note: After closing the file or re-open the file, default-search mode i.e. case-sensitive mode is set automatically.
 
-/* Remove the whole/all content of a file without open the same */
+/*** Remove the whole/all content of a file without open the same ***/
 > test.txt
+
+/*** "locate" command ***/
+While "find" is no doubt one of the most popular as well as powerful command for file searching in Linux, it's not fast enough for situations where in you need instantaneous results. If you want to search a file throughout your system/machine/server through CLI and speed is the top most priority, then there's another command that you would like to use: "locate".
+The reason "locate" is so fast is because it doesn't read the file system for the searched file, it actually refers a database (called mlocate database and prepared/updated by command "updatedb") to find what user is looking, and based on that search, produces its output. 
+While this is a good approach, it has it's drawbacks as well. The main issue is that, after every new file is created on the system, you need to update the tool's database for it to work correctly. Otherwise, "locate" command would not be able to find files that are created after the last database update.
+/* 1.Refresh mlocate database */
+	sudo updatedb
+/* 2.Search a file */
+	locate <file-name>
+	locate test.php
+	locate test
+Note: Here "locate" converts your file-name as following to extend their search criteria:
+	"test.php" => "*test.php*"
+	"test" => "*test*"
+/* 3.Limit search queries to a specific number */
+	locate test.txt -n 10      (would list only first 10 results)
+/* 4.Display the total number of matching results */
+	locate -c test.php
+/* 5.Search the file in case-insensitive manner */
+	locate -i test.php
+/* 6.Display only files present in your system/machine/server */
+	locate -i -e test.php
 
 /*** Run/Execute a php file from CLI ***/
 php test.php
