@@ -166,27 +166,40 @@ Note: After closing the file or re-open the file, default-search mode i.e. case-
 /*** Remove the whole/all content of a file without open the same ***/
 > test.txt
 
-/*** "locate" command ***/
+/*** "locate" command: This command is used to search any file/directory throughout the system/machine/server. ***/
 While "find" is no doubt one of the most popular as well as powerful command for file searching in Linux, it's not fast enough for situations where in you need instantaneous results. If you want to search a file throughout your system/machine/server through CLI and speed is the top most priority, then there's another command that you would like to use: "locate".
-The reason "locate" is so fast is because it doesn't read the file system for the searched file, it actually refers a database (called mlocate database and prepared/updated by command "updatedb") to find what user is looking, and based on that search, produces its output. 
-While this is a good approach, it has it's drawbacks as well. The main issue is that, after every new file is created on the system, you need to update the tool's database for it to work correctly. Otherwise, "locate" command would not be able to find files that are created after the last database update.
+The reason "locate" is so fast is because it doesn't read the file system for the searched file or directory, it actually refers a database (called mlocate database and prepared/updated by command "updatedb") to find what user is looking, and based on that search, produces its output. 
+While this is a good approach, it has it's drawbacks as well. The main issue is that, after every new file/directory is created on the system, you need to update the tool's database for it to work correctly. Otherwise, "locate" command would not be able to find files/directories that are created after the last database update.
 /* 1.Refresh mlocate database */
 	sudo updatedb
-/* 2.Search a file */
-	locate <file-name>
+/* 2.Search a file/directory */
+	locate <file/directory-name>
 	locate test.php
 	locate test
-Note: Here "locate" converts your file-name as following to extend their search criteria:
+Note: Here "locate" converts your file/directory name as following automatically to extend their search criteria:
 	"test.php" => "*test.php*"
 	"test" => "*test*"
-/* 3.Limit search queries to a specific number */
+/* 3.Search for exact file/directory name i.e. we don't want to let "locate" add * symbol to start & end of our searched-word. Like for searching "testfile" we don't want "locate" modify it as "*testfile*", for it we will have to use "-r" option i.e. regular expression. To view all "locate" options use command "locate --help" or for more information about "locate" use command "man locate": */
+	locate -r /testfile$		(r => regexp)
+	locate -c -r /testfile$		(It would show only no. of results. "-c -r" and "-cr" are same)	
+	locate -cr /testfile$		(It would show only no. of results.) 
+/* 4.Limit search queries to a specific number */
 	locate test.txt -n 10      (would list only first 10 results)
-/* 4.Display the total number of matching results */
-	locate -c test.php
-/* 5.Search the file in case-insensitive manner */
-	locate -i test.php
-/* 6.Display only files present in your system/machine/server */
+/* 5.Display the total number of matching results only */
+	locate -c test.php	(c => count)     
+/* 6.Search the file in case-insensitive manner */
+	locate -i test.php	(i => ignore-case)
+/* 7.Display only those files which are physically present in your system/machine/server; because it might be a case that your searched file/directory has been deleted after the last mlocate database update then normal "locate" command would still show that deleted file/directory in their result but with following command having option "-e" would force to "locate" to check physical existance of the files/directories before display: */
+	locate -e test.php	(e => existing)
+	locate -ie test.php     ("-ie" and "-i -e" are same)
 	locate -i -e test.php
+/* 8.Get statistics/information about mlocate database */
+	locate -S	(capital "S" => statistics)
+/* 9.Suppress error messages: sometime unnecessary messages are displayed like "you have not permission for these directories to search as you are not a super-user". To hide these type of errors use "-q" option */
+	locate -q test.php
+/* 10.Choose/Use a new mlocate database(not the default one) for search */
+	locate -d <new-mlocate-db-path> <file/directory-name>	(d => database DBPATH)
+	locate -d /var/lib/mlocate/mlocate-new.db test.php 
 
 /*** Run/Execute a php file from CLI ***/
 php test.php
