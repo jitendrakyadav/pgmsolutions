@@ -97,6 +97,45 @@ ll /var/www/html/2018/test       /* Lists all files/folders of test directory */
 ll -a /var/www/html/2018/test    /* Lists all files/folders of test directory including hidden files as well */
 ll -at /var/www/html/2018/test   /* -t => sort by modification time, newest first */
 
+/*** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ***/
+cp xyz.php jitendray.php
+/* Copy each & every file/folder recursively of one directory to another directory. Here only files/folders from/inside "ci226" would be copied not "ci226". Here if you don't use option "-R" then only files of "ci226" would be copied not folders. */
+cp -R /var/www/html/2018/ci226/* /var/www/html/2018/other_instance/public/
+/* Copy all files/folders from/inside "ci226" directory but not directory "ci226" to another directory "public". As following, relative paths are allowed as well. */
+cp -R ci226/* other_instance/public/
+cp -R ../code/* ../../myBkp/
+/* Copy all files/folders of current directory to another directory */
+cp -R ./* other_instance/public/
+cp -R ./* ../../public/media/
+/* Copy each & every file/folder of "Downloads" directory to current-directory */
+cp /home/jitendra/Downloads/* ./
+cp ~/Downloads/* ./
+/* Copy a whole directory with it's all files/folders to/inside another directory. Like after following command execution, you can access source-code of app/code directory from app/myBkp/code as well. */
+cp -R app/code app/myBkp/
+
+/*** Rename a file xyz.txt by abc.txt ***/
+mv xyz.txt abc.txt
+/* Move all files/folders recursively of one directory to another directory. Here only files/folders from/inside "Downloads" would be moved not "Downloads". Here, need not to use option "-R" (so don't use "-R" with "mv" command), "*" character alone is sufficient to work exactly the same task which "-R" does in "cp" command as above. */
+mv /home/jitendra/Downloads/* /var/www/html/2018/magento2/public_html/
+/* Move all files/folders from/inside "ci226" directory but not directory "ci226" to another directory "public". As following, relative paths are allowed as well. */
+mv ci226/* other_instance/public/
+mv ../code/* ../../myBkp/
+/* Move all files/folders of current directory to another directory */
+mv ./* other_instance/public/
+mv ./* ../../public/media/
+/* Move each & every file/folder of "Downloads" directory to current-directory */
+mv /home/jitendra/Downloads/* ./
+mv ~/Downloads/* ./
+/* Move a whole directory with it's all files/folders to/inside another directory. Like after following command execution, you would be unable to access source-code of "app/code" directory i.e. then it would be available from "app/myBkp/code" */
+mv app/code app/myBkp/
+
+/*** Remove all files/folders recursively from/inside directory trainingapp, but not the directory trainingapp ***/
+rm -R /var/www/html/jitendray/trainingapp/*
+/* remove all files/folders from current directory, but not the current directory */
+rm -R ./*
+/* Remove a whole directory like "trainingapp" with all it's files/folders */
+rm -R /var/www/html/jitendray/trainingapp
+
 /*** "vim" editor: vim is different editor from vi and better while updating/editing a record/file. Remember, everytime whenever your file is open and you want some/any operation on your file i.e. you want to fire any command like "G" to reach end of file then always your file must be in "read" only mode. ***/
 /* 1.Update a file or create a file (with provided extension) if it doesn't exist */
 	vim index.html
@@ -162,23 +201,25 @@ Note: After closing the file or re-open the file, default-search mode i.e. case-
 /*** Remove the whole/all content of a file without open the same ***/
 > test.txt
 
-/*** "find" command: Search for files in a directory hierarchy ***/
-find					(To see all folders/files in current directory)
-find ./
-find .
-find xyz				(To see all files/folders of a directory. Here, xyz => any directory name.)     
+/*** "find" command: Search for files/directories in a directory hierarchy ***/
+find					(To see all directories/files from/inside current directory)
+find ./					(This is either way to write the above command)		
+find .					(This is either way to write the above command)
+find xyz				(To see all files/directories of a directory, named "xyz")     
+find ./ -name "*world"			(search files/directories from/inside current directory having name - starting with n number of characters where n >= 0 followed by "world")
+find ./ -type d -name "*world"		(search/show d => directory only from current directory having name - starting with n number of characters where n >= 0 followed by "world")
 find ./ -type f -name "file1.php"	(search -type f => file in current directory => ./ with -name => name file1.php)
-find ./ -type f -name "fi*"		(search files starting with characters "fi")
-find ./ -type f -iname "fi*"		(search files in -i => case-insensitive manner i.e search a file start with "fi"/"Fi"/"fI"/"FI")
+find ./ -type f -name "fi*"		(search files starting with characters "fi" followed by n number of characters where n >= 0)
+find ./ -type f -iname "fi*"		(search files in -i => case-insensitive manner i.e search a file start with "fi"/"Fi"/"fI"/"FI" followed by n number of characters where n >= 0)
 find ./ -type f -name "*fi*"		(search files having 2 characters "fi" starting & ending with n number of characters where n >= 0)
 find ./ -type f -name "*.php"		(search files with n numbers of characters followed by ".php")
-find ./ -type f -not -iname "*.php"	(search/show all files excluding only - with n numbers of characters followed by ".php" with case-insensitive manner in current directory)
-find /etc -type f -iname "*.conf"	(search files starting with n number of characters followed by ".conf")
-find /etc -maxdepth 1 -type f -iname "*.conf"	(search files having depth not more than 1. Depth of a file is measured by depth of directories inside which file is located i.e. directory inside directory. Example: Here all matched/searched files found inside /etc directory, would have depth 1, if found inside /etc/xyz directory then for those files depth would be 2, if inside /etc/xyz/xyz2 then for those files depth would be 3, and so on.)
-find /etc -size +10k			(search files having size more than 1k) 
-find /etc -size -1k			(search files having size less than 1k) 
-find ~/Downloads -size +10M		(search files having size more than 10 MB)
-find ~/Downloads -size -10M		(search files having size less than 10 MB)
+find ./ -type f -not -iname "*.php"	(search/show all files of a directory excluding only - with n numbers of characters followed by ".php" in case-insensitive manner)
+find /etc -type f -iname "*.conf"	(search files starting with n number of characters where n >= 0 followed by ".conf" in case-insensitive manner)
+find /etc -maxdepth 1 -type f -iname "*.conf"	(search files having depth upto 1. Depth of a file is measured by depth of directories inside which file is located i.e. directory inside directory. Example: Here all matched/searched files found inside /etc directory, would have depth 1, if found inside /etc/xyz directory then for those files depth would be 2, if inside /etc/xyz/xyz2 then for those files depth would be 3, and so on. Here if -maxdepth is set 3 then those files would be searched here which has depth 3 as well as depth 1 and 2)
+find /etc -size +10k			(search files in directory "/etc" having size more than 1KB) 
+find /etc -size -1k			(search files in directory "/etc" having size less than 1KB) 
+find ~/Downloads -size +10M		(search files in directory "~/Downloads" having size more than 10 MB)
+find ~/Downloads -size -10M		(search files in directory "~/Downloads" having size less than 10 MB)
 
 /*** "locate" command: This command is used to search any file/directory throughout the system/machine/server. ***/
 While "find" is no doubt one of the most popular as well as powerful command for file searching in Linux, it's not fast enough for situations where in you need instantaneous results. If you want to search a file throughout your system/machine/server through CLI and speed is the top most priority, then there's another command that you would like to use: "locate".
@@ -269,45 +310,6 @@ sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:gr
 chmod -R 777 /var/www/html/2018/magento2/public_html/var
 chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub     /* R for recursively, f for forcefully */
 
-/*** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ***/
-cp xyz.php jitendray.php
-/* Copy each & every file/folder recursively of one directory to another directory. Here only files/folders from/inside "ci226" would be copied not "ci226". Here if you don't use option "-R" then only files of "ci226" would be copied not folders. */
-cp -R /var/www/html/2018/ci226/* /var/www/html/2018/other_instance/public/
-/* Copy all files/folders from/inside "ci226" directory but not directory "ci226" to another directory "public". As following, relative paths are allowed as well. */
-cp -R ci226/* other_instance/public/
-cp -R ../code/* ../../myBkp/
-/* Copy all files/folders of current directory to another directory */
-cp -R ./* other_instance/public/
-cp -R ./* ../../public/media/
-/* Copy each & every file/folder of "Downloads" directory to current-directory */
-cp /home/jitendra/Downloads/* ./
-cp ~/Downloads/* ./
-/* Copy a whole directory with it's all files/folders to/inside another directory. Like after following command execution, you can access source-code of app/code directory from app/myBkp/code as well. */
-cp -R app/code app/myBkp/
-
-/*** Rename a file xyz.txt by abc.txt ***/
-mv xyz.txt abc.txt
-/* Move all files/folders recursively of one directory to another directory. Here only files/folders from/inside "Downloads" would be moved not "Downloads". Here, need not to use option "-R" (so don't use "-R" with "mv" command), "*" character alone is sufficient to work exactly the same task which "-R" does in "cp" command as above. */
-mv /home/jitendra/Downloads/* /var/www/html/2018/magento2/public_html/
-/* Move all files/folders from/inside "ci226" directory but not directory "ci226" to another directory "public". As following, relative paths are allowed as well. */
-mv ci226/* other_instance/public/
-mv ../code/* ../../myBkp/
-/* Move all files/folders of current directory to another directory */
-mv ./* other_instance/public/
-mv ./* ../../public/media/
-/* Move each & every file/folder of "Downloads" directory to current-directory */
-mv /home/jitendra/Downloads/* ./
-mv ~/Downloads/* ./
-/* Move a whole directory with it's all files/folders to/inside another directory. Like after following command execution, you would be unable to access source-code of "app/code" directory i.e. then it would be available from "app/myBkp/code" */
-mv app/code app/myBkp/
-
-/*** Remove all files/folders recursively from/inside directory trainingapp, but not the directory trainingapp ***/
-rm -R /var/www/html/jitendray/trainingapp/*
-/* remove all files/folders from current directory, but not the current directory */
-rm -R ./*
-/* Remove a whole directory like "trainingapp" with all it's files/folders */
-rm -R /var/www/html/jitendray/trainingapp
-
 /*** Switch user from current to other for ex. 'jitendray' ***/
 su jitendray
 
@@ -331,3 +333,24 @@ ipconfig        /* Dos */
 
 /*** Get installed php version: ***/ 
 php -v
+
+/*** Viw current date/time with time-zone on your machine/system/server ***/
+date
+
+/*** Viw calendar of current-month on your machine/system/server ***/
+cal
+
+/*** List users who are currently online/active on system/server ***/
+w
+
+/*** create more than 1 files with blank content in one go ***/
+touch hello.php test.php app/readme.txt app/etc/env.php app/etc/config.php
+
+/*** Show current working directory ***/
+pwd
+
+/*** Show history of commands fired previously by the current-user within their environment ***/
+history
+
+/***   ***/
+
