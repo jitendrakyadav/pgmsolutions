@@ -97,10 +97,6 @@ ll /var/www/html/2018/test       /* Lists all files/folders of test directory */
 ll -a /var/www/html/2018/test    /* Lists all files/folders of test directory including hidden files as well */
 ll -at /var/www/html/2018/test   /* -t => sort by modification time, newest first */
 
-/*** To see all folders/files in current directory  ***/
-find .
-find xyz     /* xyz => any directory name; To see all files/folders of a directory. */
-
 /*** "vim" editor: vim is different editor from vi and better while updating/editing a record/file. Remember, everytime whenever your file is open and you want some/any operation on your file i.e. you want to fire any command like "G" to reach end of file then always your file must be in "read" only mode. ***/
 /* 1.Update a file or create a file (with provided extension) if it doesn't exist */
 	vim index.html
@@ -166,6 +162,24 @@ Note: After closing the file or re-open the file, default-search mode i.e. case-
 /*** Remove the whole/all content of a file without open the same ***/
 > test.txt
 
+/*** "find" command: Search for files in a directory hierarchy ***/
+find					(To see all folders/files in current directory)
+find ./
+find .
+find xyz				(To see all files/folders of a directory. Here, xyz => any directory name.)     
+find ./ -type f -name "file1.php"	(search -type f => file in current directory => ./ with -name => name file1.php)
+find ./ -type f -name "fi*"		(search files starting with characters "fi")
+find ./ -type f -iname "fi*"		(search files in -i => case-insensitive manner i.e search a file start with "fi"/"Fi"/"fI"/"FI")
+find ./ -type f -name "*fi*"		(search files having 2 characters "fi" starting & ending with n number of characters where n >= 0)
+find ./ -type f -name "*.php"		(search files with n numbers of characters followed by ".php")
+find ./ -type f -not -iname "*.php"	(search/show all files excluding only - with n numbers of characters followed by ".php" with case-insensitive manner in current directory)
+find /etc -type f -iname "*.conf"	(search files starting with n number of characters followed by ".conf")
+find /etc -maxdepth 1 -type f -iname "*.conf"	(search files having depth not more than 1. Depth of a file is measured by depth of directories inside which file is located i.e. directory inside directory. Example: Here all matched/searched files found inside /etc directory, would have depth 1, if found inside /etc/xyz directory then for those files depth would be 2, if inside /etc/xyz/xyz2 then for those files depth would be 3, and so on.)
+find /etc -size +10k			(search files having size more than 1k) 
+find /etc -size -1k			(search files having size less than 1k) 
+find ~/Downloads -size +10M		(search files having size more than 10 MB)
+find ~/Downloads -size -10M		(search files having size less than 10 MB)
+
 /*** "locate" command: This command is used to search any file/directory throughout the system/machine/server. ***/
 While "find" is no doubt one of the most popular as well as powerful command for file searching in Linux, it's not fast enough for situations where in you need instantaneous results. If you want to search a file throughout your system/machine/server through CLI and speed is the top most priority, then there's another command that you would like to use: "locate".
 The reason "locate" is so fast is because it doesn't read the file system for the searched file or directory, it actually refers a database (called mlocate database and prepared/updated by command "updatedb") to find what user is looking, and based on that search, produces its output. 
@@ -195,7 +209,7 @@ Note: Here "locate" converts your file/directory name as following automatically
 	locate -i -e test.php
 /* 8.Get statistics/information about mlocate database */
 	locate -S	(capital "S" => statistics)
-/* 9.Suppress error messages: sometime unnecessary messages are displayed like "you have not permission for these directories to search as you are not a super-user". To hide these type of errors use "-q" option */
+/* 9.Suppress error messages: sometime unnecessary messages are displayed like "you have not permission for these directories to search as you are not a super-user". To hide these type of messages, use "-q" option */
 	locate -q test.php
 /* 10.Choose/Use a new mlocate database(not the default one) for search */
 	locate -d <new-mlocate-db-path> <file/directory-name>	(d => database DBPATH)
