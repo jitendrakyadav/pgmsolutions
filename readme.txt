@@ -334,16 +334,16 @@ ipconfig        /* Dos */
 /*** Get installed php version: ***/ 
 php -v
 
-/*** Viw current date/time with time-zone on your machine/system/server ***/
+/*** View current date/time with time-zone on your machine/system/server ***/
 date
 
-/*** Viw calendar of current-month on your machine/system/server ***/
+/*** View calendar of current-month on your machine/system/server ***/
 cal
 
 /*** List users who are currently online/active on system/server ***/
 w
 
-/*** create more than 1 files with blank content in one go ***/
+/*** "touch" command: using this, we can create 0 kb multiple files i.e. with blank content in one go ***/
 touch hello.php test.php app/readme.txt app/etc/env.php app/etc/config.php
 
 /*** Show current working directory ***/
