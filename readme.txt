@@ -339,6 +339,7 @@ date
 
 /*** View calendar of current-month on your machine/system/server ***/
 cal
+cal 2018	(Displays calendar of whole year)     
 
 /*** List users who are currently online/active on system/server ***/
 w
@@ -352,5 +353,19 @@ pwd
 /*** Show history of commands fired previously by the current-user within their environment ***/
 history
 
-/***   ***/
+/*** "top" command ***/
+The top command allows users to monitor processes and system resource usage on Linux. It is interactive(that means at run time it accepts input and at the same time provide/display output/result), and you can browse through the list of processes, kill a process, and so on. 
+Reference: 1. https://www.booleanworld.com/guide-linux-top-command/
+	   2. https://youtu.be/rloSW2TGGjU
 
+We can divide "top" screen in two parts. The upper half(i.e. the summary area) of the output contains statistics on processes and resource usage, while the lower half contains a list of the currently running processes. We can use the arrow keys and Page Up/Down keys to browse through the list. If we want to quit, simply press "q".
+1. Summary Area: It has 5 rows. Let's go for one by one:
+	a. First row: This row looks like something as following:
+		top - 23:47:02 up 90 days 15:26,  2 users,  load average: 0.49, 0.46, 0.45
+	It shows current time in hour:minute:second. Secondly it shows system's up-time i.e. from how much time machine/system/server has been started or in other words, from how much time machine/system/server has not been shutdown/power-off. Here shows machine has been started 90 days 15 hours & 26 minutes back. It also shows there are 2 users currently active/online on system. 
+	Thirdly it shows "load average". This section represents the average "load" over one, five and fifteen minutes. "Load" is a measure of the amount of computational work a system performs. On Linux, the load is the number of processes in the R and S states at any given moment. The "load average" value gives you a relative measure of how long you must wait for things to get done.
+	Let us consider a few examples to understand this concept. On a single core system(i.e. having only one processor/CPU), a load average of 0.4 means the system is doing only 40% of work it can do. A load average of 1 means that the system is exactly at it's capacity. A system with a load average of 2.12 means that it is overloaded by 112% more work than it can handle.
+	On a multi-core system(i.e. having more than one processor/CPU), we should first divide the load average with the number of CPU cores to get a similar measure.
+	b. Second row: This row has "Tasks" and looks like as following: 
+		Tasks: 248 total,   1 running, 247 sleeping,   0 stopped,   0 zombie
+	
