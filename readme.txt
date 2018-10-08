@@ -380,6 +380,42 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 	Processes in the D and S states are shown in "sleeping", and those in the T state are shown in "stopped". The number of zombies are shown as the "zombie" value and obviously processes in R state are shown as running.
 	c. Third row: This row shows the percentage of CPU time spent on various tasks and looks like as following:
 		%Cpu(s):  0.1 us,  0.1 sy,  0.0 ni, 99.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-	
-
-		 
+		i.   "us" value: The "us" value is the time CPU spends executing processes/programs in userspace.
+		ii.  "sy" value: The "sy" value is the time CPU spends executing processes/programs in kernelspace.
+		Reference: https://youtu.be/sUw32fUZgNk
+		Userspace:	
+			A. It is the space where user do their work.
+			B. Example: viewing a file
+			C. It has private VAS => Virtual Address Space.
+			D. Userspace has limited access/privileges or we might say it's access is to it's space only and no any access outside of it.
+		Kernel & Kernelspace: 
+			A. Kernel is the connection medium between software & hardware. 
+			B. In easy language, you might say it's like a bridge which connects two villages situated on 2 different edges of a river. 
+			C. It is the central module of any operating-system. 
+			D. It controls CPU usage, memory usage, tasks execution scheduling, etc. It controls peripheral devices like keyboard, mouse, etc. as well.   
+			E. It has their space where it works without any user interruption, called kernelspace.
+			F. It has single VAS => Virtual Address Space.
+			G. Any program moves between userspace and kernelspace till the execution completes.
+			H. Example: when user wants to open a file then this file-opening process initially in userspace as user requires for it then it enters into kernelspace and kernel do their work here like having communication with memory(hardware) and decides how much memory needs to allocate this process, then again it returns back to userspace to serve to the user i.e. file content viewable on the screen. 
+			I. As it is central/core part of OS it has access of userspace as well.
+		iii. "ni" value: Linux uses a "nice" value to determine the priority of a process. A process with a high "nice" value gets a low priority. Similarly, processes with a lower "nice" gets higher priority. The default "nice" value can be changed. The time spent on executing processes with a manually set "nice" appear as the ni value.
+		iv.  "id" value: It shows the time for which CPU remains idle(i.e. no work). Most operating systems put the CPU on a power saving mode when it is idle.
+		v.   "wa" value: It is the time the CPU spends waiting for I/O to complete(like suppose there is a process/program which requires some number as input in it's execution interactive mode to provide factorial of that number as output, so CPU waits until it get the number from user to process further).
+		Scheduling Algorithms: To decide which process to execute first and which process to execute last to achieve maximum CPU utilisation, operating system has following scheduling algorithms for CPU:
+			A. First Come First Serve(FCFS) Scheduling
+			B. Shortest-Job-First(SJF) Scheduling
+			C. Priority Scheduling
+			D. Round Robin(RR) Scheduling
+			E. Multilevel Queue Scheduling
+			F. Multilevel Feedback Queue Scheduling
+		Remember, scheduling algorithms keep on changing every moment by OS, based on circuminstances at that moment. CPU scheduling algorithms decision might take place under the following four circumstances:
+			A. When a process switches from the running state to the waiting state(for I/O request)
+			B. When a process switches from the running state to the ready state (for example, when an interrupt occurs).
+			C. When a process switches from the waiting state to the ready state(for example, completion of I/O).
+			D. When a process terminates.			
+		In circumstances 1 and 4, a new process(if one exists in the ready queue) is selected by CPU for execution. Suppose if there is only one process having I/O request then firstly CPU waits to get input by user if it consumes more time then CPU becomes idle and process goes under waiting mode, after process getting input from user, goes in ready state and then CPU comes in execution state and executes the process. 
+		vi.  "hi" => Hardware Interrupts & "si" => Software Interrupts value: The time spent on handling hardware and software interrupts are given by hi and si respectively. 
+		Interrupts are signals to the processor about an event that requires immediate attention. The processor responds by suspending its current activities, saving its state, and executing a function called an interrupt handler (or an interrupt service routine, ISR) to deal with the event. This interruption is temporary and after the interrupt handler finishes, the processor resumes normal activities.
+		Hardware interrupts are typically used by peripherals to tell the system about events, such as a keypress on a keyboard. Hardware interrupts are asynchronous. The act of initiating a hardware interrupt is referred to as an interrupt request (IRQ).
+		A software interrupt is caused by an exceptional condition. For example, a divide-by-zero exception will be thrown if the processor's arithmetic logic unit is commanded to divide a number by zero as this instruction is an error and impossible. The operating system will catch this exception, and can decide what to do about it: usually aborting the process and displaying an error message.
+		Each interrupt has its own interrupt handler. The number of hardware interrupts is limited (as peripheral devices like keyboard & mouse etc. are limited and hence they can fire limited interruptions) by the number of interrupt request (IRQ) to the processor, but there may be hundreds of different software interrupts. Interrupts are a commonly used technique for computer multitasking, especially in real-time computing.	 
