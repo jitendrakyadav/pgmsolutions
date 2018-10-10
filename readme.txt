@@ -427,5 +427,9 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 		Hardware virtualization or platform virtualization refers to the creation of a virtual machine(Reference: https://youtu.be/bC534nTUYwA) that acts like a real computer with a separate operating system. For example, a computer that is running Microsoft Windows may host/create a virtual machine that looks like a computer with the Ubuntu Linux operating system; Ubuntu-based software can be run on the virtual machine.
 		In hardware virtualization, the host machine is the actual machine on which the virtualization takes place, and the guest machine is the virtual machine. The words host and guest are used to distinguish the software that runs on the physical machine from the software that runs on the virtual machine (A software like notepad++ if available on host machine or on one virtual machine would not be available on another virtual machine, you would be install the same i.e. notepad++ there as well to use in that virtual machine, means any virtual machine would behave like a different computer/platform/machine and seems like not related in any way to the host machine or another virtual machine). The software that creates a virtual machine on the host hardware is called a hypervisor or Virtual Machine Monitor/Software. There are many hypervisors available in market like VMware, VirtualBox, etc.
 	d. Fourth row: This row shows the percentage of CPU time spent on various tasks and looks like as following:
-		KiB Mem :  8092012 total,  6405552 free,   250952 used,  1435508 buff/cache
-		
+		KiB Mem :  8041232 total,  1612456 free,  3038196 used,  3390580 buff/cache
+		KiB Swap: 16507900 total, 16507900 free,        0 used.  4184248 avail Mem
+	Reference: 1. https://youtu.be/Rman7ORGbrg => What is RAM, DRAM, SD RAM, SDR SD RAM, DDR SD RAM, SRAM
+		   2. https://youtu.be/KzCS_revsPQ and https://youtu.be/5IjcTUgpHX4 => Cache Memory
+		   3. https://youtu.be/T2tsPO4b3E0 => Cache Mapping
+		   4. https://youtu.be/PB7vcUfmyCg => Various Memories including Cache, Flash, Virtual, Buffer 
