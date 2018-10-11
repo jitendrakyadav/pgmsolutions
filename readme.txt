@@ -358,7 +358,7 @@ history
 /*** "top" command ***/
 The top command allows users to monitor processes and system resource usage on Linux. It is interactive(that means at run time it accepts input and at the same time provide/display output/result), and you can browse through the list of processes, kill a process, and so on. 
 Reference: 1. https://www.booleanworld.com/guide-linux-top-command/
-	   2. https://youtu.be/rloSW2TGGjU
+	   2. https://youtu.be/rloSW2TGGjU => "top" command & it's sub-commands usages
 
 We can divide "top" screen in two parts. The upper half(i.e. the summary area) of the output contains statistics on processes and resource usage, while the lower half contains a list of the currently running processes. We can use the arrow keys and Page Up/Down keys to browse through the list. If we want to quit, simply press "q".
 1. Summary Area: It has 5 rows. Let's go for one by one:
@@ -370,7 +370,7 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 	On a multi-core system(i.e. having more than one processor/CPU), we should first divide the load average with the number of CPU cores to get a similar measure.
 	b. Second row: This row has "Tasks" and looks like as following: 
 		Tasks: 248 total,   1 running, 247 sleeping,   0 stopped,   0 zombie
-	This section shows statistics regarding the processes running on your system. The "total" value is simply the total number of processes. For example, in the above screenshot, there are 248 processes running. To understand the rest of the values, we need a little bit of background on how the Linux kernel handles processes.
+	This section shows statistics regarding the processes running on your system. The "total" value is simply the total number of processes. For example, in above provided data, there are 248 processes running. To understand the rest of the values, we need a little bit of background on how the Linux kernel handles processes.
 	The CPU is idle(means having no-work at that time) when a process performs I/O (like suppose there is a process/program which requires some number as input in it's execution interactive mode to provide factorial of that number as output), so operating-systems switch to executing other processes during this time. In addition, the OS allows a given process to execute for a very small amount of time, and then it switches over to another process. This is how operating-systems appear/work as if they were in "multitasking" state/mode. Doing all this requires us to keep track of the "state" of a process. In Linux, a process may be in of these states:
 		i.   Runnable (R): A process in this state is either executing on the CPU, or it is present on the run queue, ready to be executed.
 		ii.  Interruptible(i.e. make a break in the continuity of a process) sleep (D): Processes in this state are waiting for an event to complete to get again their turn to be processed by CPU; as it is interrupted last time due to CPU's multitasking mode.
@@ -384,13 +384,13 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 		%Cpu(s):  0.1 us,  0.1 sy,  0.0 ni, 99.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 		i.   "us" value: The "us" value is the time CPU spends executing processes/programs in userspace.
 		ii.  "sy" value: The "sy" value is the time CPU spends executing processes/programs in kernelspace.
-		Reference: https://youtu.be/sUw32fUZgNk
+		Reference: https://youtu.be/sUw32fUZgNk => What is exactly userspace, kernel & kernelspace
 		Userspace:	
 			A. It is the space where user do their work.
 			B. Example: viewing a file
 			C. It has private VAS => Virtual Address Space.
 			D. Userspace has limited access/privileges or we might say it's access is to it's space only and no any access outside of it.
-		Kernel & Kernelspace: 
+		Kernel & Kernelspace (kernel-1.png, kernel-2.png): 
 			A. Kernel is the connection medium between software & hardware. 
 			B. In easy language, you might say it's like a bridge which connects two villages situated on 2 different edges of a river. 
 			C. It is the central module of any operating-system. 
@@ -424,12 +424,38 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 		vii. "st" value: Steal time is the percentage of time a virtual CPU waits for a real CPU while the hypervisor is servicing another virtual processor.
 		In a virtualized environment, a part of the CPU resources are given to each virtual machine (VM) (Actually not only CPU but other resources like RAM, Harddisk, etc. are also divided into parts not really but virtually and assigned these resource-parts to these virtual machines while creating these VMs by base/physical machine). The OS detects when it has work to do, but it cannot perform them because the CPU is busy on some other VM. The amount of time lost in this way is the "steal time", shown as "st".
 		Virtualization: It refers to the act of creating a virtual (rather than actual) version of something. In computing, for example: virtual host, virtual machine, etc. 
-		Hardware virtualization or platform virtualization refers to the creation of a virtual machine(Reference: https://youtu.be/bC534nTUYwA) that acts like a real computer with a separate operating system. For example, a computer that is running Microsoft Windows may host/create a virtual machine that looks like a computer with the Ubuntu Linux operating system; Ubuntu-based software can be run on the virtual machine.
+		Hardware virtualization or platform virtualization refers to the creation of a virtual machine(Reference: https://youtu.be/bC534nTUYwA => What is virtualization exactly) that acts like a real computer with a separate operating system. For example, a computer that is running Microsoft Windows may host/create a virtual machine that looks like a computer with the Ubuntu Linux operating system; Ubuntu-based software can be run on the virtual machine.
 		In hardware virtualization, the host machine is the actual machine on which the virtualization takes place, and the guest machine is the virtual machine. The words host and guest are used to distinguish the software that runs on the physical machine from the software that runs on the virtual machine (A software like notepad++ if available on host machine or on one virtual machine would not be available on another virtual machine, you would be install the same i.e. notepad++ there as well to use in that virtual machine, means any virtual machine would behave like a different computer/platform/machine and seems like not related in any way to the host machine or another virtual machine). The software that creates a virtual machine on the host hardware is called a hypervisor or Virtual Machine Monitor/Software. There are many hypervisors available in market like VMware, VirtualBox, etc.
-	d. Fourth row: This row shows the percentage of CPU time spent on various tasks and looks like as following:
+	d. Fourth & Fifth row: These rows shows the information regarding memory usage of the system and looks like as following:
 		KiB Mem :  8041232 total,  1612456 free,  3038196 used,  3390580 buff/cache
 		KiB Swap: 16507900 total, 16507900 free,        0 used.  4184248 avail Mem
-	Reference: 1. https://youtu.be/Rman7ORGbrg => What is RAM, DRAM, SD RAM, SDR SD RAM, DDR SD RAM, SRAM
-		   2. https://youtu.be/KzCS_revsPQ and https://youtu.be/5IjcTUgpHX4 => Cache Memory
-		   3. https://youtu.be/T2tsPO4b3E0 => Cache Mapping
-		   4. https://youtu.be/PB7vcUfmyCg => Various Memories including Cache, Flash, Virtual, Buffer 
+	The lines marked "Mem" and "Swap" show information about RAM and swap space respectively. Here Swap is actually virtual memory, well described in 4th point of below section named "Important points". 
+	As we naturally expect, the "total", "free" and "used" values have their usual meanings. The "avail mem" value is the amount of memory that can be allocated to processes without causing more swapping. Like here, suppose to execute a program processor needed 5 GB > 4.184248 GB swap memory then might be this row could update itself to increase their total Swap memory which is currently 16.507900 GB. "buff/cache" are same as well described in 3rd & 5th points of below section named "Important points".
+	References: 
+		1. https://youtu.be/Rman7ORGbrg => What is RAM(Random Access Memory), DRAM(Dynamic RAM), SD RAM(Synchronous DRAM), SDR SD RAM(Single Data Rate SD RAM), DDR SD RAM(Double Data Rate SD RAM), SRAM(Static RAM)
+		2. https://youtu.be/KzCS_revsPQ and https://youtu.be/5IjcTUgpHX4 => Cache Memory
+		3. https://youtu.be/T2tsPO4b3E0 => Cache Mapping
+		4. https://youtu.be/PB7vcUfmyCg => Various memories including Cache, Flash, Virtual, Buffer
+		5. Memory hierarchy => memories_in_a_computer.jpg
+	Important points:
+		1. Secondary memory or ROM i.e. read-only memory is slowest memory having most space. Unlike main memory (RAM), ROM retains its contents even when the computer is turned off. ROM is referred to as being non-volatile(volatile => tending to vary/change often). Processor uses this to store their data.
+		2. RAM i.e. random-access memory is called primary memory or main memory. It is faster and having fewer space as compared to sceondary memory. It is refered as read-write memory. It is volatile(volatile => tending to vary/change often). Processor/CPU uses this to store their instructions and execute the same. It is of 2 types:
+			a. Dynamic RAM: 
+				i.   It uses 1 capacitor & 1 transistor to store singlr bit of data.
+				ii.  It needs frequent recharge to store data as it is.
+				iii. So it consumes more power as compared with "Static RAM".
+				iv.  It's slower than "Static RAM".
+				V.   It is of 2 types:
+					A. clock disabled
+					B. clock enabled i.e. Synchronous Dynamic RAM. It's of 2 types:
+						a. Single Data Rate i.e. SDR SD RAM which was used in Intel Celeron & Pentium processors.
+						b. Double Data Rate i.e. DDR SD RAM. It has different generations like DDR1, DDR2, DDR3, DDR4. DDR4 is the latest & fastest SD RAM in it's DDR generation/series and is used in latest Intel processors like i5 & i7.
+			b. Static RAM: 
+				i.   It uses 1 flip-flop & 4 to 6 transistors to store single bit of memory i.e. more space to store same amount of data as compared to Dynamic RAM that's why it is costlier than Dynamic RAM. 
+				ii.  It stores data till computer/machine/server power off occurs.
+				iii. It doesn't require frequent recharge that means it consumes less power.
+				iv.  It's faster than Dynamic RAM and is used as cache memory.
+		3. Buffer: A physical location in memory(RAM) where processor stores some data at temporary basis like 30 mins or 50 mins so that if processor again needs the same data to uses it takes from here. It lost on computer power off.
+		4. Virtual memory: When RAM is full and processor needs more, then processor uses some limited space of hard-disk as RAM, this limited space is called virtual-memory. For example: suppose processor needs 2.5 GB RAM to execute a process/program but their available only 2 GB of RAM in computer, so in this case processor uses 1 GB extra as virtual memory to fulfill their requirement and after execution completes, processor instantly releases this virtual memory. As accessing disks i.e. hard-disk are slow, relying too much on virtual memory can harm system performance.
+		5. Cache: As Static RAM is used as cache memory. It might contain space from 2MB uptO 12MB. It's of 3 types L1, L2, L3 referred as Level 1, Level 2 & Level 3. L1 is inbuilt with processor, L2 might be inside processor or outside of processor and L3 is out of processor.
+		6. Registers: It comes inbuilt with processor and is the fastest memory that processor uses in computer. As it has very less space and contains only most frequently used data addresses that present in cache. It's uses negligible by processor so let's not discuss more about it.
