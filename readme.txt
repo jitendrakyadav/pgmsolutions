@@ -430,18 +430,19 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 		KiB Mem :  8041232 total,  1612456 free,  3038196 used,  3390580 buff/cache
 		KiB Swap: 16507900 total, 16507900 free,        0 used.  4184248 avail Mem
 	The lines marked "Mem" and "Swap" show information about RAM and swap space respectively. Here Swap is actually virtual memory, well described in 4th point of below section named "Important points". 
-	As we naturally expect, the "total", "free" and "used" values have their usual meanings. The "avail mem" value is the amount of memory that can be allocated to processes without causing more swapping. Like here, suppose to execute a program processor needed 5 GB > 4.184248 GB swap memory then might be this row could update itself to increase their total Swap memory which is currently 16.507900 GB. "buff/cache" are same as well described in 3rd & 5th points of below section named "Important points".
+	As we naturally expect, the "total", "free" and "used" values have their usual meanings. The "avail mem" value is the amount of memory that can be allocated to processes without causing more swapping. Like here, suppose to execute a program, processor needed 5 GB > 4.184248 GB swap memory then might be possible this row could update itself to increase their total Swap memory which is currently 16.507900 GB. 
+	"buff/cache" are same as well described in 3rd & 5th points of below section named "Important points".
 	References: 
 		1. https://youtu.be/Rman7ORGbrg => What is RAM(Random Access Memory), DRAM(Dynamic RAM), SD RAM(Synchronous DRAM), SDR SD RAM(Single Data Rate SD RAM), DDR SD RAM(Double Data Rate SD RAM), SRAM(Static RAM)
 		2. https://youtu.be/KzCS_revsPQ and https://youtu.be/5IjcTUgpHX4 => Cache Memory
 		3. https://youtu.be/T2tsPO4b3E0 => Cache Mapping
 		4. https://youtu.be/PB7vcUfmyCg => Various memories including Cache, Flash, Virtual, Buffer
 		5. Memory hierarchy => memories_in_a_computer.jpg
-	Important points:
+	Important points about memories: Memories are of two types. First are those, used for processing like RAM, Buffer, Cache, Registers (Example: Suppose you starts your computer after some time and open notepad but actually what happens - notepad software is stored in hard-disk so processor/CPU brings notepad from hard-disk to RAM so that it can process further instructions, means like suppose now you type "M" on notepad then what happens - kernel receive instruction from keyboard and instruct processor to write the same on notepad, now processor search the notepad file which it finds in RAM and execute/process their instruction i.e. write the character "M" in notepad file); and second which are used for data(like we might say softwares, applications, many type of files, etc.) storage like hard-disk.
 		1. Secondary memory or ROM i.e. read-only memory is slowest memory having most space. Unlike main memory (RAM), ROM retains its contents even when the computer is turned off. ROM is referred to as being non-volatile(volatile => tending to vary/change often). Processor uses this to store their data.
-		2. RAM i.e. random-access memory is called primary memory or main memory. It is faster and having fewer space as compared to sceondary memory. It is refered as read-write memory. It is volatile(volatile => tending to vary/change often). Processor/CPU uses this to store their instructions and execute the same. It is of 2 types:
+		2. RAM i.e. random-access memory is called primary memory or main memory. It is faster and having fewer space as compared to sceondary memory. It is refered as read-write memory. It is volatile(volatile => tending to vary/change often). Processor/CPU uses this to store their instructions and execute/process the same. It is of 2 types:
 			a. Dynamic RAM: 
-				i.   It uses 1 capacitor & 1 transistor to store singlr bit of data.
+				i.   It uses 1 capacitor & 1 transistor to store singlr bit of memory/data.
 				ii.  It needs frequent recharge to store data as it is.
 				iii. So it consumes more power as compared with "Static RAM".
 				iv.  It's slower than "Static RAM".
@@ -449,13 +450,13 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 					A. clock disabled
 					B. clock enabled i.e. Synchronous Dynamic RAM. It's of 2 types:
 						a. Single Data Rate i.e. SDR SD RAM which was used in Intel Celeron & Pentium processors.
-						b. Double Data Rate i.e. DDR SD RAM. It has different generations like DDR1, DDR2, DDR3, DDR4. DDR4 is the latest & fastest SD RAM in it's DDR generation/series and is used in latest Intel processors like i5 & i7.
+						b. Double Data Rate i.e. DDR SD RAM. It has different generations like DDR1, DDR2, DDR3, DDR4. DDR4 is the latest & fastest DDR SD RAM in DDR generation/series and is used in latest Intel processors like i5 & i7.
 			b. Static RAM: 
-				i.   It uses 1 flip-flop & 4 to 6 transistors to store single bit of memory i.e. more space to store same amount of data as compared to Dynamic RAM that's why it is costlier than Dynamic RAM. 
-				ii.  It stores data till computer/machine/server power off occurs.
+				i.   It uses 1 flip-flop & 4 to 6 transistors to store single bit of memory/data i.e. more space to store same amount of data as compared to Dynamic RAM that's why it is costlier than Dynamic RAM. 
+				ii.  It stores the data statically i.e. can store same data continuously till computer/machine/server power off occurs.
 				iii. It doesn't require frequent recharge that means it consumes less power.
 				iv.  It's faster than Dynamic RAM and is used as cache memory.
-		3. Buffer: A physical location in memory(RAM) where processor stores some data at temporary basis like 30 mins or 50 mins so that if processor again needs the same data to uses it takes from here. It lost on computer power off.
+		3. Buffer: A physical location in memory(RAM) where processor stores some data at temporary basis like for 30 or 50 mins so that if processor again needs the same data to use it takes from here. It lost on computer power off.
 		4. Virtual memory: When RAM is full and processor needs more, then processor uses some limited space of hard-disk as RAM, this limited space is called virtual-memory. For example: suppose processor needs 2.5 GB RAM to execute a process/program but their available only 2 GB of RAM in computer, so in this case processor uses 1 GB extra as virtual memory to fulfill their requirement and after execution completes, processor instantly releases this virtual memory. As accessing disks i.e. hard-disk are slow, relying too much on virtual memory can harm system performance.
-		5. Cache: As Static RAM is used as cache memory. It might contain space from 2MB uptO 12MB. It's of 3 types L1, L2, L3 referred as Level 1, Level 2 & Level 3. L1 is inbuilt with processor, L2 might be inside processor or outside of processor and L3 is out of processor.
+		5. Cache: Static RAM is used as cache memory. It might contain space from 2MB upto 12MB. It's of 3 types L1, L2, L3 referred as Level 1, Level 2 & Level 3. L1 is inbuilt with processor, L2 might be inside processor or outside of processor and L3 is out of processor.
 		6. Registers: It comes inbuilt with processor and is the fastest memory that processor uses in computer. As it has very less space and contains only most frequently used data addresses that present in cache. It's uses negligible by processor so let's not discuss more about it.
