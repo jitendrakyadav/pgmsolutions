@@ -460,3 +460,14 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 		4. Virtual memory: When RAM is full and processor needs more, then processor uses some limited space of hard-disk as RAM, this limited space is called virtual-memory. For example: suppose processor needs 2.5 GB RAM to execute a process/program but their available only 2 GB of RAM in computer, so in this case processor uses 1 GB extra as virtual memory to fulfill their requirement and after execution completes, processor instantly releases this virtual memory. As accessing disks i.e. hard-disk are slow, relying too much on virtual memory can harm system performance.
 		5. Cache: Static RAM is used as cache memory. It might contain space from 2MB upto 12MB. It's of 3 types L1, L2, L3 referred as Level 1, Level 2 & Level 3. L1 is inbuilt with processor, L2 might be inside processor or outside of processor and L3 is out of processor.
 		6. Registers: It comes inbuilt with processor and is the fastest memory that processor uses in computer. As it has very less space and contains only most frequently used data addresses that present in cache. It's uses negligible by processor so let's not discuss more about it.
+
+2. Task Area: The lower half section has many columns with data. The data in both sections(i.e. current section & upper half section) refreshes after every specific time-duration, by default it's 3 seconds. Let's observe all columns one by one:
+	a. PID: It is the process ID, an unique positive integer that identifies a process.
+	b. USER: It is the "effective" username (which maps to an user ID) of the user who started the process.
+	c. PR & NI: 
+	d. VIRT, RES & SHR: 
+	e. S: It shows the process state in single-letter form. Above 1(b)-i,ii,iii,iv,v well describes the various states of a process.
+	f. %CPU: It shows percentage of CPU used by the process.
+	g. %MEM: It shows percentage of RAM used by the process.
+	h. TIME+: It shows total time of activity of the process.
+	i. COMMAND: It shows name of the process. Like if you fire command "ls -l" it would show here as "bash".
