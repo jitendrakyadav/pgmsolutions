@@ -462,12 +462,14 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 		6. Registers: It comes inbuilt with processor and is the fastest memory that processor uses in computer. As it has very less space and contains only most frequently used data addresses that present in cache. It's uses negligible by processor so let's not discuss more about it.
 
 2. Task Area: The lower half section has many columns with data. The data in both sections(i.e. current section & upper half section) refreshes after every specific time-duration, by default it's 3 seconds. Let's observe all columns one by one:
-	a. PID: It is the process ID, an unique positive integer that identifies a process.
-	b. USER: It is the "effective" username (which maps to an user ID) of the user who started the process.
+	a. PID: It is the process ID, an unique positive integer that identifies a process/task.
+	b. USER: It is the "effective" username (which maps to an user ID) of the user who started the process/task.
 	c. PR & NI: 
-	d. VIRT, RES & SHR: 
-	e. S: It shows the process state in single-letter form. Above 1(b)-i,ii,iii,iv,v well describes the various states of a process.
-	f. %CPU: It shows percentage of CPU used by the process.
-	g. %MEM: It shows percentage of RAM used by the process.
-	h. TIME+: It shows total time of activity of the process.
-	i. COMMAND: It shows name of the process. Like if you fire command "ls -l" it would show here as "bash".
+	d. VIRT: It is total amount of virtual memory (i.e. swap in summary area) used by the process/task.
+	e. RES: It stands for resident size, which is an accurate representation of how much actual physical memory a process is consuming. In other words, It is non-swapped physical memory (i.e. RAM or Mem in summary area) used by the process/task. 
+	f. SHR:
+	e. S: It shows the process state in single-letter form. Above 1(b)-i,ii,iii,iv,v well describes the various states of a process/task.
+	f. %CPU: It is percentage of CPU used by the process/task.
+	g. %MEM: It is percentage of RAM used by the process/task.
+	h. TIME+: It is total time of activity of the process/task.
+	i. COMMAND: It shows name of the process/task. Like if you fire command "ls -l" it would show here as "bash".
