@@ -356,7 +356,7 @@ pwd
 history
 
 /*** "top" command ***/
-The top command allows users to monitor processes and system resource usage on Linux. It is interactive(that means at run time it accepts input and at the same time provide/display output/result), and you can browse through the list of processes, kill a process, and so on. 
+The top command allows users to monitor processes and system resource usage on Linux. It is interactive(that means at run time it accepts input and at the same time provide/display output/result), and you can browse through the list of processes, kill a process, and so on. Open manual for "top" command i.e. "man top" to know more.
 Reference: 1. https://www.booleanworld.com/guide-linux-top-command/
 	   2. https://youtu.be/rloSW2TGGjU => "top" command & it's sub-commands usages
 
@@ -464,12 +464,41 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 2. Task Area: The lower half section has many columns with data. The data in both sections(i.e. current section & upper half section) refreshes after every specific time-duration, by default it's 3 seconds. Let's observe all columns one by one:
 	a. PID: It is the process ID, an unique positive integer that identifies a process/task.
 	b. USER: It is the "effective" username (which maps to an user ID) of the user who started the process/task.
-	c. PR & NI: 
+	c. PR & NI: "PR" shows the scheduling priority of the process from the perspective of the kernel. "NI" shows the nice value of a process. Nice value affects the priority of a process. 
 	d. VIRT: It is total amount of virtual memory (i.e. swap in summary area) used by the process/task.
 	e. RES: It stands for resident size, which is an accurate representation of how much actual physical memory a process is consuming. In other words, It is non-swapped physical memory (i.e. RAM or Mem in summary area) used by the process/task. 
-	f. SHR:
-	e. S: It shows the process state in single-letter form. Above 1(b)-i,ii,iii,iv,v well describes the various states of a process/task.
-	f. %CPU: It is percentage of CPU used by the process/task.
-	g. %MEM: It is percentage of RAM used by the process/task.
-	h. TIME+: It is total time of activity of the process/task.
-	i. COMMAND: It shows name of the process/task. Like if you fire command "ls -l" it would show here as "bash".
+	f. SHR: It indicates how much of the VIRT size is actually sharable (memory or libraries). In the case of libraries, it does not necessarily mean that the entire library is resident. For example, if a program only uses a few functions in a library, the whole library is mapped and will be counted in VIRT and SHR, but only the parts of the library file containing the functions being used will actually be loaded in and be counted under RES.
+	g. S: It shows the process state in single-letter form. Above 1(b)-i,ii,iii,iv,v well describes the various states of a process/task.
+	h. %CPU: It is percentage of CPU used by the process/task.
+	i. %MEM: It is percentage of RAM used by the process/task.
+	j. TIME+: It is total time of activity of the process/task.
+	k. COMMAND: It shows name of the process/task. Like if you fire command "ls -l" it would show here as "bash".
+
+"top" sub-commands: "top" command is one of the most frequently used commands in our daily system administrative jobs. "top" command displays processor activity of our Linux box and also displays tasks managed by kernel in real-time. It'll show how processor and memory are being used, and other information like running processes/tasks. This may help us to take correct action.
+While "top" command is running and showing information for summary-area & task-area, we can use following sub-commands to get more:
+1. Get help: when you press "h", it shows help for interactive commands. Use "Esc" or "q" to get back.
+2. Display specific user process: when you press "u", in interactive mode it would tell you to provide username as input (leave blank for all-users); you might select any from "USER" column & input the same. Then it will list only those processes/tasks started by provided username.
+3. "top -u <username>": Same just as above. Difference is that you can instruct "top" directly to list only "<username>" processes/tasks while it starts running.
+4. Highlight & Bold running process/task: Press "z" and/or "b" option in running top command will display running process in color and/or bold which may help you to identified running process easily.
+5. Shows absolute path of processes/tasks: Press "c" option in running top command, it will display absolute path of running process/task.
+6. Change Delay or Set "Screen Refresh Interval": By default screen refresh interval is 3.0 seconds, same could be changed by pressing "d" option in running top command.
+7. Kill running process/task: You can kill a process by pressing "k" and then by supplying PID of the process which you want to kill & then an "Enter" button press. For Example: like in Windows - (Ctrl + Alt + Delete) => Task Manager => Choose Process/Task => End task.
+8. Sorting the process list:
+	"M" to sort by memory usage
+	"P" to sort by CPU usage
+	"N" to sort by process ID ie. PID
+	"T" to sort by running time
+When you press above characters, top displays all results in descending order. However, you can switch to ascending order by pressing "R". Again pressing "R" would bring back you in descending order again.
+9. Renice a Process: We can use "r" option to change the priority of the process, also called Renice.
+10. Show only specific number of processes: Press "n" and then provide the number of processes/tasks you want to list only in interactive mode; Remember zero to show default no of processes.
+11. Save "top" command results: To save the running "top" command results output to a file top-output.txt, use following command:
+	top -n 1 -b > top-output.txt
+12. Filtering through processes: If you have a lot of processes to work with, a simple sort won't work well enough. In such a situation, you can use top's filtering to focus on a few processes. To activate this mode, press "o"/"O", a prompt appears inside top, and you can type a filter expression here as followings:
+	COMMAND=top
+	!COMMAND=top
+	%CPU>0.0
+	%CPU>3.0
+You can add more and more filters one by one using the same process; here in this case, all previous filters would be preserved. To remove all filters, just press "=".
+13. Forest view: Sometimes, we may want to see the child-parent hierarchy of processes. You can see this with the forest view, by pressing "v"/"V" while top is running. Again by pressing "v"/"V", you may return to default view again. I can tell from the screenshot forest-view-1.png & forest-view-2.png, the "systemd" process was the first one to start up on the system. It has started processes such as "sshd", which in turn has created other sshd processes, and so on.
+14. Changing the default look of CPU and memory statistics: If you are mostly at home in a GUI environment, you might not like top's default way of showing CPU and memory statistics(default-view-top-home-screen.png). You can press "t" and "m" to change the style of CPU and memory statistics. If you press "t" or "m" repeatedly it cycles through two different types of progress bars(modified-view-top-home-screen.png). If you press the key for a third time, the progress bar is hidden. If you press the key again, it brings back the default. 
+15. Exit "top" command: Press "q" for the same. If it doesn't work, use "Ctrl + c" as last option.
