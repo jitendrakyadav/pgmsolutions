@@ -380,6 +380,7 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 		A process may create a number of child processes. When a process dies on Linux, it isn’t all removed from memory immediately — its process descriptor stays in memory (the process descriptor only takes a tiny amount of memory). The process's status becomes EXIT_ZOMBIE and the process's parent is notified that its child process has died. The parent process is then supposed to execute the wait() system call to read the dead process's exit status and other information. This allows the parent process to get information from the dead process. After wait() is called, the zombie process is completely removed from memory by parent process.
 		This normally happens very quickly, so you won't see zombie processes accumulating on your system. However, if a parent process isn't programmed properly and never calls wait(), its zombie children will stick around in memory until they're cleaned up.
 	Processes in the D and S states are shown in "sleeping", and those in the T state are shown in "stopped". The number of zombies are shown as the "zombie" value and obviously processes in R state are shown as running.
+	If we want to show "Threads" here instead of "Tasks", just press capital "H". All threads of a process share its virtual address space and system resources. If we want to switch back to the process/task view, press "H" again. 
 	c. Third row: This row shows the percentage of CPU time spent on various tasks and looks like as following:
 		%Cpu(s):  0.1 us,  0.1 sy,  0.0 ni, 99.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 		i.   "us" value: The "us" value is the time CPU spends executing processes/programs in userspace.
@@ -400,7 +401,7 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 			G. Any program moves between userspace and kernelspace till the execution completes.
 			H. Example: when user wants to open a file then this file-opening process initially in userspace as user requires for it then it enters into kernelspace and kernel do their work here like having communication with memory(hardware) and decides how much memory needs to allocate this process, then again it returns back to userspace to serve to the user i.e. file content viewable on the screen. 
 			I. As it is central/core part of OS it has access of userspace as well.
-		iii. "ni" value: Linux uses a "nice" value to determine the priority of a process. A process with a high "nice" value gets a low priority. Similarly, processes with a lower "nice" gets higher priority. The default "nice" value can be changed. The time spent on executing processes with a manually set "nice" appear as the ni value.
+		iii. "ni" value: Linux uses a "nice" value to determine the priority of a process. A process with a high "nice" value gets a low priority. Similarly, processes with a lower "nice" gets higher priority. The default "nice" value can be changed. A process with higher priority(i.e. lower nice value) would get more time of CPU for it's execution so that it could finished/completed earlier. The time spent on executing processes with a manually set "nice" appear as the ni value.
 		iv.  "id" value: It shows the time for which CPU remains idle(i.e. no work). Most operating systems put the CPU on a power saving mode when it is idle.
 		v.   "wa" value: It is the time the CPU spends waiting for I/O to complete(like suppose there is a process/program which requires some number as input in it's execution interactive mode to provide factorial of that number as output, so CPU waits until it get the number from user to process further).
 		Scheduling Algorithms: To decide which process to execute first and which process to execute last to achieve maximum CPU utilisation, operating system has following scheduling algorithms for CPU:
@@ -464,7 +465,18 @@ We can divide "top" screen in two parts. The upper half(i.e. the summary area) o
 2. Task Area: The lower half section has many columns with data. The data in both sections(i.e. current section & upper half section) refreshes after every specific time-duration, by default it's 3 seconds. Let's observe all columns one by one:
 	a. PID: It is the process ID, an unique positive integer that identifies a process/task.
 	b. USER: It is the "effective" username (which maps to an user ID) of the user who started the process/task.
-	c. PR & NI: "PR" shows the scheduling priority of the process from the perspective of the kernel. "NI" shows the nice value of a process. Nice value affects the priority of a process. 
+	c. PR & NI: "NI" shows the nice value of a process and is an user-space concept. "PR" shows the scheduling priority of the process from the perspective of the kernel and is the process’s actual priority. 
+	   Nice value affects the priority of a normal process.
+	   NI value ranges from -20 to 19  (Here -20 => highest priority, 19 => lowest priority, 0 is default nice value)
+	   PR = 20 + NI = 20 + (-20 to 19) = 0 to 39   (For normal processes)
+	   Thus if we change NI value of a normal process on runtime, PR value also changes accordingly.
+	   Example: Suppose for a process NI=0 and PR=20; if we change NI=-5 then PR would be changed to (20-5) i.e. 15.
+	   If there is showing "rt" under PR for a process(here it's real-time process), this means it's showing "real time" scheduling priority and it's can't be changed manually i.e. we can change NI value for the process but it's PR value "rt" would be unchanged.  
+	   Summarize:
+		Nice value NI is a user-space concept and priority PR is the process's actual priority that is used by Linux kernel. In linux system, priorities are from 0 to 139 in which 0 to 99 for real time processes(i.e. having value "rt" under PR) and 100 to 139 for users(i.e. user-space processes). Nice value range is -20 to +19 where -20 is highest, 0 default and +19 is lowest. Relation between nice value and priority is:
+	   PR = 20 + NI
+	   so, the value of PR = 20 + (-20 to +19) is 0 to 39 that maps 100 to 139.
+	   For a process(i.e. normal/user-space process), having NI=-20 & PR=0, is the highest priority and NI=-19, -18, ..0, 1, ..19 with PR=1, 2, ..20, 21, ..39 is lower and lower priority respectively. Here remember from just above statement, PR=0 to 39 means ideally 100 to 139.
 	d. VIRT: It is total amount of virtual memory (i.e. swap in summary area) used by the process/task.
 	e. RES: It stands for resident size, which is an accurate representation of how much actual physical memory a process is consuming. In other words, It is non-swapped physical memory (i.e. RAM or Mem in summary area) used by the process/task. 
 	f. SHR: It indicates how much of the VIRT size is actually sharable (memory or libraries). In the case of libraries, it does not necessarily mean that the entire library is resident. For example, if a program only uses a few functions in a library, the whole library is mapped and will be counted in VIRT and SHR, but only the parts of the library file containing the functions being used will actually be loaded in and be counted under RES.
@@ -489,16 +501,23 @@ While "top" command is running and showing information for summary-area & task-a
 	"N" to sort by process ID ie. PID
 	"T" to sort by running time
 When you press above characters, top displays all results in descending order. However, you can switch to ascending order by pressing "R". Again pressing "R" would bring back you in descending order again.
-9. Renice a Process: We can use "r" option to change the priority of the process, also called Renice.
+9. Renice a Process: We can use "r" option (after pressing r, in interactive mode it would tell you to provide process-id & nice-value) to change the priority of the process, also called Renice. Remember only superuser or root user can renice/change/reset nice value i.e. NI and hence PR value(i.e. actual priority) for a process. 
+	Here we are changing priority of a running process, but if we want, we can set priority of a process while starting the process. 
+	Example: Suppose an user wanted to compress a large file, but don't want to slow down other processes, then he might run the following command:
+	nice -n 19 zip -r magento.zip Magento-CE-2.2.6_sample_data-2018-09-07-02-28-42
+	sudo nice -n 19 zip -r magento.zip Magento-CE-2.2.6_sample_data-2018-09-07-02-28-42
 10. Show only specific number of processes: Press "n" and then provide the number of processes/tasks you want to list only in interactive mode; Remember zero to show default no of processes.
-11. Save "top" command results: To save the running "top" command results output to a file top-output.txt, use following command:
+11. Show all column names which could be displayed: While "top" is running, press small "f", it would show all available columns, here starred columns represent the columns whose are currently set as columns to show under "Task" area i.e. the lower-half area.
+	a. Adding a new column: To do this, press "f" which will show you all available columns list, now navigate to the row which contains the column name which you want to add, for example navigate to "RUSER" and press space-bar to select the highlighted option. Once you hit space-bar, the highlighted option adds a star "*" before the column-name, that means it has been selected/set to show as column in task-area. To go back to the home screen of top, press "Esc". So now you can see, a new column with "RUSER" has appeared as the last column.
+	b. Removing an existing column: Follow exactly the same steps as in just previous section (a). Just navigate to the column which you want to remove then press space-bar from your keyboard.
+12. Save "top" command results: To save the running "top" command results output to a file top-output.txt, use following command:
 	top -n 1 -b > top-output.txt
-12. Filtering through processes: If you have a lot of processes to work with, a simple sort won't work well enough. In such a situation, you can use top's filtering to focus on a few processes. To activate this mode, press "o"/"O", a prompt appears inside top, and you can type a filter expression here as followings:
+13. Filtering through processes: If you have a lot of processes to work with, a simple sort won't work well enough. In such a situation, you can use top's filtering to focus on a few processes. To activate this mode, press "o"/"O", a prompt appears inside top, and you can type a filter expression here as followings:
 	COMMAND=top
 	!COMMAND=top
 	%CPU>0.0
 	%CPU>3.0
 You can add more and more filters one by one using the same process; here in this case, all previous filters would be preserved. To remove all filters, just press "=".
-13. Forest view: Sometimes, we may want to see the child-parent hierarchy of processes. You can see this with the forest view, by pressing "v"/"V" while top is running. Again by pressing "v"/"V", you may return to default view again. I can tell from the screenshot forest-view-1.png & forest-view-2.png, the "systemd" process was the first one to start up on the system. It has started processes such as "sshd", which in turn has created other sshd processes, and so on.
-14. Changing the default look of CPU and memory statistics: If you are mostly at home in a GUI environment, you might not like top's default way of showing CPU and memory statistics(default-view-top-home-screen.png). You can press "t" and "m" to change the style of CPU and memory statistics. If you press "t" or "m" repeatedly it cycles through two different types of progress bars(modified-view-top-home-screen.png). If you press the key for a third time, the progress bar is hidden. If you press the key again, it brings back the default. 
-15. Exit "top" command: Press "q" for the same. If it doesn't work, use "Ctrl + c" as last option.
+14. Forest view: Sometimes, we may want to see the child-parent hierarchy of processes. You can see this with the forest view, by pressing "v"/"V" while top is running. Again by pressing "v"/"V", you may return to default view again. I can tell from the screenshot forest-view-1.png & forest-view-2.png, the "systemd" process was the first one to start up on the system. It has started processes such as "sshd", which in turn has created other sshd processes, and so on.
+15. Changing the default look of CPU and memory statistics: If you are mostly at home in a GUI environment, you might not like top's default way of showing CPU and memory statistics(default-view-top-home-screen.png). You can press "t" and "m" to change the style of CPU and memory statistics. If you press "t" or "m" repeatedly it cycles through two different types of progress bars(modified-view-top-home-screen.png). If you press the key for a third time, the progress bar is hidden. If you press the key again, it brings back the default.
+16. Exit "top" command: Press "q" for the same. If it doesn't work, use "Ctrl + c" as last option.
