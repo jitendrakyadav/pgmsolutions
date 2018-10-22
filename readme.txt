@@ -1,10 +1,15 @@
 Timestamp:
-It is the current time measured in the number of seconds since January 1 1970 00:00:00 GMT. Means, it is the difference of current-time and the time that was at 01-Jan-1970 00:00:00 GMT. Timestamp would be calculated on same zone, for example: a date-time for which you want to calculate timestamp in GMT+05:30:00 then 01-Jan-1970 00:00:00 AM you must assume on same timezone, then timestamp i.e. time-difference in seconds, would be proper/correct [Look timestamp-and-timezone-concept.pdf].
+
+It is the current time measured in the number of seconds since January 1 1970 00:00:00 GMT. 
+Means, it is the difference of current-time and the time that was at 01-Jan-1970 00:00:00 GMT. 
+Timestamp is calculated on same timezone. Example: a date-time like 22-Oct-2018 04:00:00PM for which you want to calculate timestamp in timezone GMT+05:30:00 = (22-Oct-2018 04:00:00PM in timezone GMT+05:30:00 in seconds) - (01-Jan-1970 00:00:00 in timezone GMT+05:30:00 in seconds) = Time duration between two dates with same timezone in seconds [Look timestamp-and-timezone-concept.pdf]. PHP's various date & time functions take care of all these things automatically i.e. like mktime(), just input here your date-time it would output you timestamp in seconds using current working timezone. Don't need to add like 5*3600+1800 or 3600 or subtract 5*3600 to get timestamp of a particular date-time in a particular timezone, just change timezone using function date_default_timezone_set() and use various date & time functions like mktime(), PHP would adjust/balance all other things and output you correct timestamp for that particular date-time and timezone.  
+Remember, At the moment 01-Jan-1970 00:00:00AM GMT, in timezone GMT+05:30:00, clock shows time 01-Jan-1970 05:30:00AM or in other words we can say 5 hours & 30 minutes before timezone GMT+05:30:00 clock had been shown time 01-Jan-1970 00:00:00AM. That's why at 01-Jan-1970 00:00:00AM GMT, timestamp in timezone GMT+05:30:00 is -(5*3600+1800)=-19800 
 Important points:
 1. For same date-time like 2018-10-22 04:00:00 PM, different timezones have different value of timestamp. Timezones having GMT+ value would have lower timestamp value rather than timezones having GMT- value [Look timestamp-and-timezone-concept.pdf].
    Example: For dates 1970-01-01 00:00:00 AM and 1970-01-01 06:30:00 AM
    a. For timezone "GMT+05:30" or "Asia/Kolkata":
    	echo mktime(0,0,0,1,1,1970);	//Output: -19800 i.e. -(5*3600+1800) i.e. -(5 Hours + 30 minutes)
+	//hour,minute,second,month,day,year
    	echo mktime(6,30,0,1,1,1970);   //Output: 3600 i.e. 1 Hour
    b. For "GMT+01" or "Europe/Berlin"
 	echo mktime(0,0,0,1,1,1970);	//Output: -3600 i.e. -(1 Hour)
@@ -19,6 +24,7 @@ Important points:
    Example: Let's see for 1 & (6*3600) seconds timestamp values, what date-time different timezones return.
    a. For timezone "GMT+05:30" or "Asia/Kolkata":
    	echo date("Y-m-d h:i:s A", 1);		//Output: 1970-01-01 05:30:01 AM
+	//h => 12 hours format, H => 24 hours format, a => am/pm, A => AM/PM
    	echo date("Y-m-d h:i:s A", (6*3600));	//Output: 1970-01-01 11:30:00 AM
    b. For timezone "GMT+01" or "Europe/Berlin":
    	echo date("Y-m-d h:i:s A", 1);		//Output: 1970-01-01 01:00:01 AM
