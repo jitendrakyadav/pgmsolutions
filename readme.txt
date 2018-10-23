@@ -57,3 +57,41 @@ Important points:
    date_default_timezone_set("US/Eastern");	//GMT-05
    date_default_timezone_set("Asia/Kolkata");	//GMT+05:30
 7. date-time functions & timezone are also explained at Page No.-19,66.
+8. Manipulating date & time in an object-oriented way i.e. using "DateTime" class: In 24 hours format, midnight is represented as 00:00:00 and in 12 hours format, midnight is represented by 12:00:00AM. H => 24 hours format, h => 12 hours format.
+   Reference: http://php.net/manual/en/class.datetime.php
+   Example: 
+   $dt = new DateTime();
+   $dt->setTimestamp(1539196200);
+   echo $dt->format("Y-m-d H:i:s")." ".date_default_timezone_get()."\n";	
+   //Output(in 24 hours format): 2018-10-11 00:00:00 Asia/Kolkata
+   echo $dt->format("Y-m-d h:i:s A")." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format): 2018-10-11 12:00:00 AM Asia/Kolkata
+   $dt->setTimestamp(1539196200+1);
+   echo $dt->format("Y-m-d H:i:s")." ".date_default_timezone_get()."\n";	
+   //Output(in 24 hours format): 2018-10-11 00:00:01 Asia/Kolkata
+   echo $dt->format("Y-m-d h:i:s A")." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format): 2018-10-11 12:00:01 AM Asia/Kolkata
+   $dt->setTimestamp(1539196200+3601);
+   echo $dt->format("Y-m-d H:i:s")." ".date_default_timezone_get()."\n";	
+   //Output(in 24 hours format): 2018-10-11 01:00:01 Asia/Kolkata
+   echo $dt->format("Y-m-d h:i:s A")." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format): 2018-10-11 01:00:01 AM Asia/Kolkata
+   $dt->setTimestamp(1539196200+13*3600);
+   echo $dt->format("Y-m-d H:i:s")." ".date_default_timezone_get()."\n";
+   //Output(in 24 hours format): 2018-10-11 13:00:00 Asia/Kolkata
+   echo $dt->format("Y-m-d h:i:s A")." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format); 2018-10-11 01:00:00 PM Asia/Kolkata
+   echo date("Y-m-d h:i:s A")." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format): 2018-10-23 11:17:36 AM Asia/Kolkata
+   echo date("Y-m-d h:i:s A", strtotime("-1 day"))." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format): 2018-10-22 11:17:36 AM Asia/Kolkata
+
+   Above in procedural way:
+   echo date("Y-m-d H:i:s", (1539196200))." ".date_default_timezone_get()."\n";
+   //Output(in 24 hours format): 2018-10-11 00:00:00 Asia/Kolkata
+   echo date("Y-m-d h:i:s A", (1539196200))." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format): 2018-10-11 12:00:00 AM Asia/Kolkata
+   echo date("Y-m-d H:i:s", (1539196200+13*3600))." ".date_default_timezone_get()."\n";
+   //Output(in 24 hours format): 2018-10-11 13:00:00 Asia/Kolkata
+   echo date("Y-m-d h:i:s A", (1539196200+13*3600))." ".date_default_timezone_get()."\n";
+   //Output(in 12 hours format); 2018-10-11 01:00:00 PM Asia/Kolkata
