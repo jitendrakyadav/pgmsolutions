@@ -20,19 +20,13 @@ curl --manual
 /*** A website that provides fake online REST API for testing and prototyping: http://jsonplaceholder.typicode.com/. We can test here GET, POST, PUT, DELETE API requests. ***/
 /* A curl GET request to show 100 posts */
 curl http://jsonplaceholder.typicode.com/posts 
-
 /* A curl GET request to show 1 post with id=3 */           
-curl http://jsonplaceholder.typicode.com/posts/3 
-
+curl http://jsonplaceholder.typicode.com/posts/3
+/* While using HTTPS protocol, allows HTTP as well on the same time. To give this instruction to your curl, just use -k or --insecure option while making curl request */
+curl -k https://XXX.com 
+curl --insecure https://XXX.com 
 /* A curl GET request to show 1 post with id=3; "-v" flag includes more words/sentences along with response to explain the same in more detail; verbose = using or containing too many words */           
 curl -v http://jsonplaceholder.typicode.com/posts/3
-
-/* Weather forecast information for a city */
-curl wttr.in/delhi
-
-/* If an URL needs credential to access, then use following */
-curl -u username:password http://XXXXXX.com/XXXX
-
 /* It includes header information as well to show along with post-data */         
 curl -i http://jsonplaceholder.typicode.com/posts/3 
       
@@ -43,22 +37,8 @@ curl -I http://jsonplaceholder.typicode.com/posts/3
    
 /* It gets all 100 posts data and output/put into a newly created file post-data.txt in current directory */    
 curl -o post-data.txt http://jsonplaceholder.typicode.com/posts  
-
 /* It gets all 100 posts data and output/put into a newly created file posts(i.e. last part of URL; with no extension) in current directory */
 curl -O http://jsonplaceholder.typicode.com/posts
-
-/* Go to web-page, right click on image and choose "Copy image address" and put here in command. It will download 2LDiENb.png file into current directory */         
-curl -O https://i.imgur.com/2LDiENb.png
-
-/* Rename the file which you want to download, now wrar560.exe will be downloaded as application.exe */
-curl -o application https://www.rarlab.com/rar/wrar560.exe
-                     
-/* Here wrar560.exe will be downloaded with the same name */
-curl -O https://www.rarlab.com/rar/wrar560.exe
-               
-/* Here what web-server provides for this URL(means same[content] as browser provides for this URL through web-server), created & stored in page.html */
-curl -o page.html http://blog.ajindra.com/php/what-is-soap/   
-/* Remember, curl download file or output data which web-server provides for that provided URL (as here used HTTP/HTTPS protocol) */  
 
 /* It makes a HTTP POST request; "-X" option to provide a request type */
 curl --data "title=Hello&body=Hello World" -X POST http://jsonplaceholder.typicode.com/posts 
@@ -69,15 +49,39 @@ curl --data "title=Hello" -X PUT http://jsonplaceholder.typicode.com/posts/3
 /* A DELETE request to delete record with id=3 */
 curl -X DELETE http://jsonplaceholder.typicode.com/posts/3 
 
-/* -L flag is used to follow the redirection; http://google.com redirects to it's www version i.e. https://www.google.com */
+/*** Using some complicated HTTP POST request ***/
+curl --data "employee_id=123456789&card_number=123456789" -X POST http://127.0.0.1:9091/api/validateCard
+/* Provide input data as json */
+curl --data '{"employee_id":"1234"}' -X POST http://127.0.0.1:9091/api/validateCard
+/* Add header option as well */
+curl --header "Content-Type: application/json" --data '{"employee_id":"1234"}' -X POST http://127.0.0.1:9091/api/validateCard
+
+/*** Go to web-page, right click on image and choose "Copy image address" and put here in command. It will download 2LDiENb.png file into current directory ***/         
+curl -O https://i.imgur.com/2LDiENb.png
+                     
+/*** Here wrar560.exe will be downloaded with the same name ***/
+curl -O https://www.rarlab.com/rar/wrar560.exe
+/* Rename the file which you want to download, now wrar560.exe will be downloaded as application.exe */
+curl -o application https://www.rarlab.com/rar/wrar560.exe
+               
+/*** Here what web-server provides for this URL(means same[content] as browser provides for this URL through web-server), created & stored in page.html. Remember, curl downloads file or output data which web-server provides for that given URL (as here used HTTP/HTTPS protocol) ***/
+curl -o page.html http://blog.ajindra.com/php/what-is-soap/  
+
+/*** Weather forecast information for a city ***/
+curl wttr.in/delhi
+
+/*** If an URL needs credential to access, then use following ***/
+curl -u username:password http://XXXXXX.com/XXXX
+
+/*** -L flag is used to follow the redirection; http://google.com redirects to it's www version i.e. https://www.google.com ***/
 curl -L http://google.com
 
-/* Upload file/files to server through ftp protocol using curl */                                  
+/*** Upload file/files to server through ftp protocol using curl ***/                                  
 curl -u jitendraLDD:123456! -T test.txt ftp://letsdodevelopment.com
 curl -u jitendraLDD:123456! -T "{test.txt,test2.txt}" ftp://letsdodevelopment.com
 /* -T => Transfer file to destination; "jitendraLDD" is ftp-username, "123456!" is ftp-password and "letsdodevelopment.com" is ftp-host-name */
 
-/* Download a file from server through ftp protocol using curl */
+/*** Download a file from server through ftp protocol using curl ***/
 curl -u jitendraLDD:123456! -O ftp://letsdodevelopment.com/index.php
 /* Here "jitendraLDD" is ftp-username, "123456!" is ftp-password and "letsdodevelopment.com" is ftp-host-name */
 
@@ -85,6 +89,7 @@ curl -u jitendraLDD:123456! -O ftp://letsdodevelopment.com/index.php
 curl ifconfig.me/ip
 
 /* -------------------------------------------------------------------------------------------------- */
+
 /*** PHP uses cURL ***/
 PHP supports libcurl, a library created by Daniel Stenberg, that allows you to connect and communicate to many different types of servers with many different types of protocols.
 libcurl currently supports the http, https, ftp, gopher, telnet, dict, file, and ldap protocols.
