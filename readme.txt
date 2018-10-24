@@ -15,7 +15,7 @@
 curl --help
 
 /*** curl manual ***/
-curl --manual
+man curl
 
 /*** A website that provides fake online REST API for testing and prototyping: http://jsonplaceholder.typicode.com/. We can test here GET, POST, PUT, DELETE API requests. ***/
 /* A curl GET request to show 100 posts */
@@ -50,11 +50,24 @@ curl --data "title=Hello" -X PUT http://jsonplaceholder.typicode.com/posts/3
 curl -X DELETE http://jsonplaceholder.typicode.com/posts/3 
 
 /*** Using some complicated HTTP POST request ***/
-curl --data "employee_id=123456789&card_number=123456789" -X POST http://127.0.0.1:9091/api/validateCard
-/* Provide input data as json */
-curl --data '{"employee_id":"1234"}' -X POST http://127.0.0.1:9091/api/validateCard
+curl --data "employee_id=12345&card_number=1234567891" -X POST http://127.0.0.1:9091/api/validateCard
+/* 
+Provide input data as json: 
+Look {'employee_id':'12345'} is not a valid json data; 
+Remember: parameters must be always enclosed with double-quotation mark, enclosed any parameter/value with single-quotation mark makes it invalid json data. 
+{"employee_id":"12345","card_number":"1234567891"}	//valid json data - all parameter/value within double-quotation mark
+{"employee_id":12345,"card_number":"1234567891"}	//valid json data - integer values are allowed without any quotation mark
+{"employee_id" :12345,"card_number": "1234567891"}	//valid json data - space are allowed between parameter & colon as well as between colon & parameter's value; but as per best practises, don't leave any space from starting of json-data string to the till it's end. PHP's json_encode() follows the same practise. For many type of json encode & decode examples, look into json_encode_decode_examples.php; for more, look on page no. 68-81 specially on page no. 77 under branch php_concepts_and_programming.
+{"employee_id":'12345','card_number':"1234567891"}	//invalid json data - single quotation mark is not allowed anywhere either for parameter or it's value
+*/
+curl --data '{"card_number":"1234567891"}' -X POST http://127.0.0.1:8443/api/validateCard
+/* with multiple parameters like employee_id & card_number for data here: Remember --data = -d */
+curl -d '{"employee_id":12345,"card_number":"1234567891"}' -X POST http://127.0.0.1:8443/api/validateCard
 /* Add header option as well */
-curl --header "Content-Type: application/json" --data '{"employee_id":"1234"}' -X POST http://127.0.0.1:9091/api/validateCard
+curl --header "Content-Type: application/json" --data '{"card_number":"1234567891"}' -X POST http://127.0.0.1:8443/api/validateCard
+/* Add multiple headers: Remember --header = -H */
+curl -H "Content-Type: application/json" -H "Accept: application/json" -H "Accept-Language: application/json" -d '{"card_number":"1234567891"}' -X POST http://127.0.0.1:8443/api/validateCard
+Note: To know & use more options like -d, -H for curl, use command "curl --help".
 
 /*** Go to web-page, right click on image and choose "Copy image address" and put here in command. It will download 2LDiENb.png file into current directory ***/         
 curl -O https://i.imgur.com/2LDiENb.png
