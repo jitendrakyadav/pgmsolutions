@@ -240,11 +240,19 @@ wget -c --limit-rate=10k http://ftp.gnu.org/gnu/emacs/elisp-manual-21-2.8.tar.gz
 /*** 8.Run downloading process in background: Run just following command and if you want you could be signoff/logout with your user but machine should be running i.e. not get shutdown; wget continues download-process in background, completes it & writes the whole download-process report moment by moment in a log file "wget-log" created in current-directory. In following command, -b => --background => go to background after startup ***/
 wget -b https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 
-/*** 9.Downloading the whole website: Following command copies all the pages linked with https://www.howtopronounce.com/ ***/
+/*** 9.Downloading the whole website: 
+--execute => -e => execute a '.wgetrc'-style command
+robots=off => instruct wget to access those area of website as well which are mentioned to not access in robots.txt
+--recursive => -r => specify recursive download
+--no-parent => -np => don't ascend to the parent directory
+--no-clobber => -nc => skip downloads that would download to existing files
+Following command copies all the pages linked with https://www.howtopronounce.com/ 
+***/
 wget --execute robots=off --recursive --no-parent --continue --no-clobber https://www.howtopronounce.com/
 
-/*** 10.Download mp4 file using the link ***/
+/*** 10.Download mp4 file using the link 
+--level=NUMBER => -l => maximum recursion depth (0 for infinite)
+--accept=LIST => -A => comma-separated list of accepted extensions
+***/
 wget --level=1 --recursive --no-parent --accept mp4,MP4 http://download.wavetlan.com/SVV/Media/HTTP/http-mp4.htm
 /* ====================================================================================================================== */
-
-
