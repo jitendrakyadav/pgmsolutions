@@ -200,3 +200,54 @@ if ($error) {
 }
 $response_array = json_decode($response_json, TRUE);
 return $response_array;
+
+/* -------------------------------------------------------------------------------------------------- */
+
+"wget" (a linux file downloader) command: 
+Reference: a. https://youtu.be/YkEiEYwYQho
+	   b. https://www.computerhope.com/unix/wget.htm
+
+1. wget stands for "web get". It is a command-line utility which downloads files over a network/internet.
+2. wget has been designed for robustness over slow or unstable network/internet connections; if a download fails due to a network/internet problem, it will keep retrying until the whole file has been retrieved. If the server supports regetting, it will instruct the server to continue the download from where it left off.
+3. wget is a free utility for non-interactive download of files from the web. It supports HTTP, HTTPS, and FTP protocols, as well as retrieval through HTTP proxies.
+Note: Proxy Server: A proxy server is a dedicated computer or a software system running on a computer that acts as an intermediary between an endpoint-device/client-machine, such as a computer, and another server from which a user or client is requesting a service. The proxy server may exist in the same machine as a firewall server or it may be on a separate server, which forwards requests through the firewall.
+4. wget is non-interactive, meaning that it can work in the background, while the user is not logged on, which allows you to start a retrieval and disconnect from the system (i.e. sign-out/log-out for your user in the system/machine/server), letting wget finish the work. While just opposite of it, most web browsers require constant user interaction, which makes transferring a lot of data difficult.
+5. wget can follow links in HTML and XHTML pages and create local versions of remote websites, fully recreating the directory structure of the original site, which is sometimes called "recursive downloading". While doing that, wget respects the Robot Exclusion Standard (robots.txt). wget can be instructed to convert the links in downloaded HTML files to the local files for offline viewing.
+Note: The robots exclusion standard, also known as the robots exclusion protocol or simply robots.txt, is a standard used by websites to communicate with web crawlers and other web robots. The standard specifies how to inform the web-robot/web-crawler about which areas of the website should not be processed or scanned. Robots/web-robots/web-crawlers are often used by search engines to categorize websites. Not all robots cooperate with the standard; email harvesters, spambots, malware, and robots that scan for security vulnerabilities may even start with the portions of the website where they have been told to stay out.
+
+/*** 1.Get/Read "wget" help(to see all available options for wget like -O, -c, etc.) & manual ***/
+wget --help
+man wget
+
+/*** 2.Basic command: Download a 56MB file using the link ***/
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+/*** 3.Download the file with different name: use capital "O", small "o" would not work here. If you use only "google_chrome" without extension in following command instead of "google_chrome.rpm" then generated file would be without extension i.e. google_chrome instead of google_chrome.rpm ***/
+wget -O google_chrome.rpm https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+/*** 4.Downloading multiples files with different protocol using a single command: Here 2 different protocols are HTTPS & HTTP ***/
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm http://ftp.gnu.org/gnu/emacs/elisp-manual-21-2.8.tar.gz
+
+/*** 5.Downloading multiple files using a text file: Put all file-links that needs to be downloaded in a text file like file-links-need-to-download.txt, one link per line then use following command. Here "-i" indicates input-file. ***/
+wget -i file-links-need-to-download.txt
+
+/*** 6.Download an incomplete file which had been stopped/dis-continued in past due to some manual interruption ***/
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+Note: when file(suppose, it is a large file having size 800MB or 1.5GB) downloading is in progress, press "Ctrl+c" to stop/terminate downloading, reason might be, this process consuming more internet bandwidth & due to it your other importanr works are hampering which needed full internet-bandwidth/internet-speed. Now you return back to 8PM when all office-employees has left for home and no-fear now of more consumption of internet-bandwidth; so continue again the remaining file-download process exactlly from that point where it was interrupted like if 300MB out of 800MB is downloaded then it must continue downloading from 301th MB of data up to 800MB not again from 1st MB of data up to 800MB. In following command, -c => --continue => resume getting a partially-downloaded file. You can repeat this terminate/resume process as many times as you want.
+wget -c https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+/*** 7.Setting maximum/highest network-bandwidth/internet-bandwidth/internet-speed limit while downloading a file ***/
+wget --limit-rate=100k http://ftp.gnu.org/gnu/emacs/elisp-manual-21-2.8.tar.gz
+Note: Just in previous case, avoid important works hampering due to more consumption of internet-bandwidth for a large file download, now you might bound your particular large-file-download internet-consumption-bandwidth as small as you want and let it work in a corner for some more longer time without hampering other important works due to lower-internet-bandwidth/slower-internet-speed. Press "Ctrl+c" to terminate the above download and run the following command to resume/again-continue the remaining download with lower internet-bandwidth i.e. from 100k to now 10k:
+wget -c --limit-rate=10k http://ftp.gnu.org/gnu/emacs/elisp-manual-21-2.8.tar.gz
+
+/*** 8.Run downloading process in background: Run just following command and if you want you could be signoff/logout with your user but machine should be running i.e. not get shutdown; wget continues download-process in background, completes it & writes the whole download-process report moment by moment in a log file "wget-log" created in current-directory. In following command, -b => --background => go to background after startup ***/
+wget -b https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+/*** 9.Downloading the whole website: Following command copies all the pages linked with https://www.howtopronounce.com/ ***/
+wget --execute robots=off --recursive --no-parent --continue --no-clobber https://www.howtopronounce.com/
+
+/*** 10.Download mp4 file using the link ***/
+wget --level=1 --recursive --no-parent --accept mp4,MP4 http://download.wavetlan.com/SVV/Media/HTTP/http-mp4.htm
+
+
