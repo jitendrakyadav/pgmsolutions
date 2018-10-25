@@ -100,9 +100,7 @@ curl -u jitendraLDD:123456! -O ftp://letsdodevelopment.com/index.php
 
 /*** Get your public-ip-address: ip address provided by your ISP(internet service provider), not your local address ***/
 curl ifconfig.me/ip
-
-/* -------------------------------------------------------------------------------------------------- */
-
+/* ====================================================================================================================== */
 /*** PHP uses cURL ***/
 PHP supports libcurl, a library created by Daniel Stenberg, that allows you to connect and communicate to many different types of servers with many different types of protocols.
 libcurl currently supports the http, https, ftp, gopher, telnet, dict, file, and ldap protocols.
@@ -141,7 +139,7 @@ $response_json = curl_exec($ch);
 /* Close cURL session */
 curl_close($ch);
 $response_array = json_decode($response_json, TRUE);
-/* -------------------------------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------------------------------------------------- */
 /* Example 2: using cURL in PHP */
 /* Initialize a cURL session: returns a cURL handle for use with other functions */
 $ch             = curl_init();
@@ -200,9 +198,7 @@ if ($error) {
 }
 $response_array = json_decode($response_json, TRUE);
 return $response_array;
-
-/* -------------------------------------------------------------------------------------------------- */
-
+/* ====================================================================================================================== */
 "wget" (a linux file downloader) command: 
 Reference: a. https://youtu.be/YkEiEYwYQho
 	   b. https://www.computerhope.com/unix/wget.htm
@@ -249,5 +245,6 @@ wget --execute robots=off --recursive --no-parent --continue --no-clobber https:
 
 /*** 10.Download mp4 file using the link ***/
 wget --level=1 --recursive --no-parent --accept mp4,MP4 http://download.wavetlan.com/SVV/Media/HTTP/http-mp4.htm
+/* ====================================================================================================================== */
 
 
