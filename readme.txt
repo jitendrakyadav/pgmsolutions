@@ -204,9 +204,10 @@ if ($error) {
 $response_array = json_decode($response_json, TRUE);
 return $response_array;
 /* ====================================================================================================================== */
-"wget" (a linux file downloader) command: 
-Reference: a. https://youtu.be/YkEiEYwYQho
-	   b. https://www.computerhope.com/unix/wget.htm
+/*** wget: a linux file downloader command ***/
+ 
+Reference: a. https://youtu.be/YkEiEYwYQho			(Various wget commands with practical examples)
+	   b. https://www.computerhope.com/unix/wget.htm	(Basic concept: reason behind using wget)
 	   c. https://daniel.haxx.se/docs/curl-vs-wget.html	(Difference between cURL & wget)
 
 1. wget stands for "web get". It is a command-line utility which downloads files over a network/internet.
@@ -246,23 +247,26 @@ wget -c --limit-rate=10k http://ftp.gnu.org/gnu/emacs/elisp-manual-21-2.8.tar.gz
 /*** 8.Run downloading process in background: Run just following command and if you want you could be signoff/logout with your user but machine should be running i.e. not get shutdown; wget continues download-process in background, completes it & writes the whole download-process report moment by moment in a log file "wget-log" created in current-directory. In following command, -b => --background => go to background after startup ***/
 wget -b https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 
-/*** 9.Downloading the whole website: 
---execute => -e => execute a '.wgetrc'-style command
-robots=off => instruct wget to access those area of website as well which are mentioned to not access in robots.txt
---recursive => -r => specify recursive download
---no-parent => -np => don't ascend to the parent directory
---no-clobber => -nc => skip downloads that would download to existing files
-Following command copies all the pages linked with https://www.howtopronounce.com/ 
+/*** 9.Download all images of a website 
+-nd => --no-directories => don't create directory hierarchy
+-r => --recursive => specify recursive download
+-P => --directory-prefix => directory location/path where to save downloaded files
+-A => --accept => comma-separated list of accepted extensions
 ***/
-wget --execute robots=off --recursive --no-parent --continue --no-clobber https://www.howtopronounce.com/
+wget -nd -r -P ./ -A jpeg,jpg,bmp,gif,png http://blog.ajindra.com
+Note: This command downloads all images of the website which have been used at any web-page of the site. Those images are not downloaded which are exist on server but not used at any web-page of the site. Actually, wget crawls the whole website by visiting it's all web-pages one bye one and downloads the images used on those pages. If you want to download any particular image which is on server but not used at any page, use 2nd wget command mentioned here i.e. as following:
+wget http://blog.ajindra.com/pulsar-bike.jpeg 
+What is Web-Spiders/Web-Crawlers => Concept behind how Google - get to know about our website, indexes our website; what-matters/how-affects robots.txt & sitemap.xml in this reference. Reference: https://youtu.be/r_K_VLpFbqE
+web robot or www robot or internet robot or internet bot or simply "bot": is a software program that runs automated tasks(scripts) over the internet for example: social bots(is a particular type of chatbot that is employed in social media networks to automatically generate messages; like facebook bots, twitter bots), helpful bots, malicious bots, etc. The largest use of bots is in web spidering (web crawler). Reference: 1.https://youtu.be/LFE1gLdgWYQ 2.https://en.wikipedia.org/wiki/Internet_bot
 
-/*** 10.Download mp4 file using the link 
---level=NUMBER => -l => maximum recursion depth (0 for infinite)
---accept=LIST => -A => comma-separated list of accepted extensions
-***/
-wget --level=1 --recursive --no-parent --accept mp4,MP4 http://download.wavetlan.com/SVV/Media/HTTP/http-mp4.htm
+/*** 10.Downloading the whole website i.e. clone a remote website at your local for offline viewing 
+-p => get all images, etc. needed to display HTML page
+-k => make links in downloaded HTML or CSS point to local files
+***/ 
+wget -pkr http://blog.ajindra.com/
+Note: Remember, while cloning, wget downloads all images, css, javascript, web-pages statically i.e. in form of ".html". So, cloning a static website or a informational site like https://www.adlift.com/in/ or http://www.cybage.com/ is ok but cloning a dynamic website like https://www.flipkart.com/ has no more-value/meaning as it's-data/web-pages-content/web-pages-content's-numerical-value keeps on changing every-day/every-hour-in-case-of-festive-sale.
 /* ====================================================================================================================== */
-PHP file_get_contents() function:
+/*** PHP file_get_contents() function ***/
 
 It reads entire file into a string.
 Syntax:
@@ -304,7 +308,6 @@ curl_setopt($ch, CURLOPT_MAXREDIRS, 15);
 $response       = curl_exec($ch);
 curl_close($ch);
 echo $response;
-
 //Output: I am from cybage
 
 file_get_contents() vs curl:
