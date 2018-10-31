@@ -1,6 +1,6 @@
 1. Frequently used php functions - Page No. 1
 2. mysqli class uses with example - Page No. 5
-3. Frequently used php functions - Page No. 8
+3. Frequently used php functions - Page No. 8; String functions - Page No. 10-14
 4. Session in PHP - Page No. 17
 5. Cookie - Page No. 18
 6. Special chars to HTML entities: htmlspecialchars(), mktime() and format characters - Page No. 19
