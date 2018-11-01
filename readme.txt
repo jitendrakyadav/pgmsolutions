@@ -308,6 +308,17 @@ sudo deluser --remove-home <username>
 /*** Change owner from one to another ***/
 sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:groupname directory */
 
+/*** Create a user in mysql ***/
+CREATE USER '<username>'@'localhost' IDENTIFIED BY '<password>';
+CREATE DATABASE <db-name>;						//Create a database
+GRANT ALL PRIVILEGES ON <db-name>.* TO '<username>'@'localhost';	//Grant all privileges to <username> for this <db-name>
+FLUSH PRIVILEGES;
+/* Now exit from mysql & restart it. Now try/start login with newly created <username> to access the attached database <db-name>  */
+sudo service mysql restart
+or 
+sudo service mysql stop
+sudo service mysql start
+
 /*** Change mode of a file/directory ***/
 chmod -R 777 /var/www/html/2018/magento2/public_html/var
 chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub     /* R for recursively, f for forcefully */
