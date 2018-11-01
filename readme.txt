@@ -112,9 +112,12 @@ Important points:
       The size of an integer (or integer range) is platform-dependent in PHP:
       	A. For 32 bit builds of PHP, integer range: -2147483648 to 2147483647
 	B. For 64 bit builds of PHP, integer range: -9223372036854775808 to 9223372036854775807
-      It's another fact that to consume/use 64 bit PHP, both machine/computer/server's CPU/processor & operating-system must be of 64 bit as well. 
+      It's another fact that to consume/use 64 bit PHP, both machine/computer/server's CPU/processor & operating-system must be of 64 bit as well. Reference: https://youtu.be/hkNcpl6VMTU 
       To know/get which builds of PHP is using, just print following PHP global constant:
       	echo PHP_INT_SIZE;
 	//Output: 4 => 32 bit PHP, 8 => 64 bit PHP
    d. When you visit https://www.apachefriends.org/download.html, you see, there presents xampp for window with only 32 bit PHP while xampp for linux with 64 bit PHP.
-   e. Since PHP was installed with it's 32 bit build on windows so it's max -ve range value is -2147483648 as given above and we were using -2208976200 as timestamp which was exceeding our max -ve accepted value that's why we were getting warning like "2nd parameter must be integer", and on linux machine due to 64 bit build of PHP, max -ve range value was -9223372036854775808, that's why it accepted there and provided the output. 
+   e. Since PHP was installed with it's 32 bit build on windows so it's max -ve range value is -2147483648 as given above and we were using -2208976200 as timestamp which was exceeding our max -ve accepted value that's why we were getting warning like "2nd parameter must be integer", and on linux machine due to 64 bit build of PHP, max -ve range value was -9223372036854775808, that's why it accepted there and provided the output.
+10. Daylight Saving Time (DST): DST begins in the United States on the second Sunday in March, when people move their clocks forward an hour at 2AM local standard time(so at 2AM on that day, the clocks will then read 3AM local daylight time). Daylight saving time ends on the first Sunday in November, when clocks are moved back an hour at 2AM local daylight time(so they will then read 1AM local standard time). This is done every year in United States to get maximum use of Sunlight in summer season. 
+    Many persons says it creates unusual confusions & complications on day-time level, like moving clock by 1 hour at one time and again moving back by 1 hour at another time. People also says, why such type of drama of moving clock forward/backward in whole country, in place of, just announce in offices to open & closed 1 hour earlier in summer season as compared to winter, that's it.   
+    Reference: https://youtu.be/eD2gTOtScZ4
