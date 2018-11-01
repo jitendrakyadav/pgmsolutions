@@ -36,7 +36,7 @@ Important points:
    	echo date("Y-m-d h:i:s A", 1);		//Output: 1970-01-01 00:00:01 AM
    	echo date("Y-m-d h:i:s A", (6*3600));	//Output: 1970-01-01 06:00:00 AM
 3. time(): This function returns current timestamp.
-   Remember, time() would return same value in any timezone at any moment, and we also know that this same timestamp(getting from time() at any moment) would be translated as different date-time in different timezones.
+   Remember, time() would return same value in any timezone at any moment[Look timestamp-and-timezone-concept.pdf], and we also know that this same timestamp(getting from time() at any moment) would be translated as different date-time in different timezones.
    Example:
    echo date("Y-m-d h:i:s A", time());		//Output: 2018-10-22 04:47:52 PM
 4. strtotime(): This function parse any English textual datetime description into a Unix timestamp.
