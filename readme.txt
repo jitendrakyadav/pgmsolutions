@@ -35,7 +35,8 @@ Important points:
    d. For timezone "GMT+0":
    	echo date("Y-m-d h:i:s A", 1);		//Output: 1970-01-01 00:00:01 AM
    	echo date("Y-m-d h:i:s A", (6*3600));	//Output: 1970-01-01 06:00:00 AM
-3. time(): This function returns current timestamp for current working timezone.
+3. time(): This function returns current timestamp.
+   Remember, time() would return same value in any timezone at any moment, and we also know that this same timestamp(getting from time() at any moment) would be translated as different date-time in different timezones.
    Example:
    echo date("Y-m-d h:i:s A", time());		//Output: 2018-10-22 04:47:52 PM
 4. strtotime(): This function parse any English textual datetime description into a Unix timestamp.
@@ -51,6 +52,7 @@ Important points:
 5. date_default_timezone_get(): This function provides you current working timezone at your system/machine/server.
    Example:
    echo date_default_timezone_get();		//Output: Asia/Kolkata    (which is GMT+05:30)
+   Note: In linux machine, I have seen that, timezone GMT+05:30 name is shown as "Asia/Calcutta" instead of "Asia/Kolkata".
 6. date_default_timezone_set(): This function sets the default timezone used by all date/time functions in a script. 
    Example:
    date_default_timezone_set("Europe/Berlin");	//GMT+01 
@@ -95,3 +97,24 @@ Important points:
    //Output(in 24 hours format): 2018-10-11 13:00:00 Asia/Kolkata
    echo date("Y-m-d h:i:s A", (1539196200+13*3600))." ".date_default_timezone_get()."\n";
    //Output(in 12 hours format); 2018-10-11 01:00:00 PM Asia/Kolkata
+9. Case Study:
+   a. I have used following code to get date-time from a timestamp value on my window machine
+   	echo date("Y-m-d h:i:s A", -2208976200)."\n";
+	$dt = new DateTime();$dt->setTimezone(new DateTimeZone("Asia/Kolkata"));$dt->setTimestamp(-2208976200);
+	echo $dt->format("Y-m-d h:i:s A")."\n";
+	Output: "Warning: date() expects parameter 2 to be integer"
+		"Warning: DateTime::setTimestamp() expects parameter 1 to be integer"
+      Same code, I have used to run on linux machine:
+      	Output: 1900-01-01 08:51:10 AM
+		1900-01-01 08:51:10 AM
+   b. Query/Question: Same code, why run successfully on linux-machine and produces error on window-machine ?
+   c. Yes, it's right, date() function's 2nd parameter must be integer.
+      The size of an integer (or integer range) is platform-dependent in PHP:
+      	A. For 32 bit builds of PHP, integer range: -2147483648 to 2147483647
+	B. For 64 bit builds of PHP, integer range: -9223372036854775808 to 9223372036854775807
+      It's another fact that to consume/use 64 bit PHP, both machine/computer/server's CPU/processor & operating-system must be of 64 bit as well. 
+      To know/get which builds of PHP is using, just print following PHP global constant:
+      	echo PHP_INT_SIZE;
+	//Output: 4 => 32 bit PHP, 8 => 64 bit PHP
+   d. When you visit https://www.apachefriends.org/download.html, you see, there presents xampp for window with only 32 bit PHP while xampp for linux with 64 bit PHP.
+   e. Since PHP was installed with it's 32 bit build on windows so it's max -ve range value is -2147483648 as given above and we were using -2208976200 as timestamp which was exceeding our max -ve accepted value that's why we were getting warning like "2nd parameter must be integer", and on linux machine due to 64 bit build of PHP, max -ve range value was -9223372036854775808, that's why it accepted there and provided the output. 
