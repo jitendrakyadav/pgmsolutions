@@ -47,6 +47,7 @@ sudo service apache2 restart
 sudo service mysql status 
 sudo service mysql start 
 sudo service mysql stop
+sudo service mysql restart
 
 /*** What is DNS => Domain Name System ***/
 1. DNS is how domain names are translated into IP addresses, and DNS also controls email delivery. DNS is what allows you to use your web browser to find web sites as well as send and receive email.
@@ -308,6 +309,7 @@ sudo deluser --remove-home <username>
 /*** Change owner from one to another ***/
 sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:groupname directory */
 
+/* ---------------------------------------------------------------------------------------------------------------------- */
 /*** Create an user in mysql ***/ 
 1. All created-users & their privileges data are stored in "user" table under "mysql" database.
 2. Some mysql server versions restrict to use a password like having min 8 characters with atleast one capital-letter, one small-letter, one special-character, one digit. 
@@ -381,6 +383,7 @@ DROP DATABASE test_db;			//If test_db does not exist, MySQL will issue an error
 DROP DATABASE IF EXISTS test_db;	//If test_db does not exist, MySQL terminates the statement without issuing any error.
 
 Note: It is best practise to keep database and web-server separately i.e. keep database-server and web-server on separate machine i.e. on different IPs. If it is followed, user can't access their database using CLI as from web-server/application-server they can't use command like "mysql -h <host-name> -u <username> -p" as there is not installed MySQL server; and they can't access database server directly using CLI as well, as they have not provided/created any operating-system's user credential to enter into database server and then using their database's credential to access their database. So there remains only one way for user to access their database i.e. use any database GUI tool like MySQL Workbench, SQLyog, etc. Reference: http://www.dbta.com/Editorial/News-Flashes/5-Best-Practices-for-Securing-Databases-101930.aspx
+/* ---------------------------------------------------------------------------------------------------------------------- */
 
 /*** Change mode of a file/directory ***/
 chmod -R 777 /var/www/html/2018/magento2/public_html/var
