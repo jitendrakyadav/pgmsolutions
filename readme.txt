@@ -308,45 +308,79 @@ sudo deluser --remove-home <username>
 /*** Change owner from one to another ***/
 sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:groupname directory */
 
-/*** Create an user in mysql: Firstly, you would need to login to your mysql database server & then run following command. Some mysql server versions restrict to use a password like having min 8 characters with atleast one capital-letter, one small-letter, one special-character, one digit. All created-users & their privileges data are stored in "user" table under "mysql" database. ***/
+/*** Create an user in mysql ***/ 
+1. All created-users & their privileges data are stored in "user" table under "mysql" database.
+2. Some mysql server versions restrict to use a password like having min 8 characters with atleast one capital-letter, one small-letter, one special-character, one digit. 
+3. Firstly, you would need to login to your mysql database server & then run following command. 
 CREATE USER '<username>'@'localhost' IDENTIFIED BY '<password>';
 CREATE USER 'jitendray'@'localhost' IDENTIFIED BY 'Jite_ndra8';
+
 /* Create a database */
 CREATE DATABASE <db-name>;						
 CREATE DATABASE test_db;
+
 /* Difference between keywords DATABASE & SCHEMA */
 In MySQL, physically, a schema is synonymous with a database. You can substitute the keyword SCHEMA instead of DATABASE in MySQL SQL syntax, for example using CREATE SCHEMA instead of CREATE DATABASE. Some other database draw a distinction. For example, in Oracle Database, a schema represents only a part of a database: the tables and other objects owned by a single user.
-/* Grant all privileges to <username> for this <db-name>: Remember <username> can do each & every operation on their attached database, even can delete/drop their database <db-name> as well, but can't create a new database. */
+
+/* Grant all privileges to <username> for <db-name>: Remember, <username> can do each & every operation on their attached database, even can delete/drop their database <db-name> as well, but can't create a new database. */
 GRANT ALL PRIVILEGES ON <db-name>.* TO '<username>'@'localhost';
 GRANT ALL PRIVILEGES ON test_db.* TO 'jitendray'@'localhost';
-/* Provide privileges on specific table of database; Remember: if test_db has 3 tables - tbl1, tbl2, tbl3 but you have provided all-privileges for only 2 tables like tbl1, tbl2 as following then after login, user jitendray would be able to see only these 2 tables tbl1 & tbl2, tbl3 would not be visible i.e. would be hidden for him. */
+
+/* Provide privileges on specific table of database: Remember, if test_db has 3 tables - tbl1, tbl2, tbl3 but you have provided all-privileges for only 2 tables like tbl1, tbl2 as following, then after login, user jitendray would be able to see only these 2 tables tbl1 & tbl2, tbl3 would not be visible i.e. would be hidden for him. */
 GRANT ALL PRIVILEGES ON test_db.tbl1 TO 'jitendray'@'localhost';
 GRANT ALL PRIVILEGES ON test_db.tbl2 TO 'jitendray'@'localhost';
-/* Grant/Provide only SHOW VIEW privileges: definitely tbl3 would be visible for jitendray, but he can't use DESC/DESCRIBE (to view table structure) & SELECT (to view table's data) for tbl3. */
+
+/* Grant/Provide only SHOW VIEW privileges */ 
 GRANT SHOW VIEW ON test_db.tbl3 TO 'jitendray'@'localhost';
-/* Grant SELECT privilege only: you can use DESC/DESCRIBE & SELECT for tbl3 now. But remember, you can't use INSERT, UPDATE, DELETE, etc. for table tbl3 */
+/* Definitely tbl3 would be visible for jitendray, but he can't use DESC/DESCRIBE (to view table structure) & SELECT (to view table's data) for tbl3. */
+ 
+/* Grant SELECT privilege only */ 
 GRANT SELECT ON test_db.tbl3 TO 'jitendray'@'localhost';
+/* You can use DESC/DESCRIBE & SELECT statements for tbl3 now. But remember, you can't use INSERT, UPDATE, DELETE, etc. for table tbl3 */
+
 /* Provide privileges on all databases, present on database-server */
 GRANT ALL PRIVILEGES ON *.* TO 'jitendray'@'localhost';
-/* Provide limited privileges: Permissible Static Privileges for GRANT and REVOKE: Look on page https://dev.mysql.com/doc/refman/8.0/en/grant.html under section "Privileges Supported by MySQL" */
+
+/* Provide limited privileges */ 
 GRANT SELECT, INSERT, UPDATE, DELETE, ALTER, REFERENCES ON test_db.* TO 'jitendray'@'localhost';
-/* Remove/Revoke privileges table by table; Following command would work if you had granted privileges for this table on table-level in past, means like if you had provided privileges the whole db in one go for example my_jitu_db.* and now you are revoking privileges on table-level i.e. table by table then this command would shown you error. */
+/* Permissible Static Privileges for GRANT and REVOKE: Look on web-page https://dev.mysql.com/doc/refman/8.0/en/grant.html under section "Privileges Supported by MySQL" */
+
+/* Remove/Revoke privileges table by table */ 
+Following command would work if you had granted privileges for this table on table-level in past. Means like if you had provided privileges the whole db in one go in past for example my_jitu_db.* and now you are revoking privileges on table-level i.e. table by table then this command would not work and show you error. */
 REVOKE ALL PRIVILEGES ON my_jitu_db.tbl3 FROM 'jitendray'@'localhost';
-/* Remove/Revoke privileges in one go; remember the same things as described in just previous command i.e. revoke privileges in same manner as you had granted in past otherwise error occurs i.e. remove/revoke privileges on bulk level as in following command if you had created privileges on bulk level like my_jitu_db.* and remove/revoke privileges on table level as in previous command if you had created privileges on table level in past like my_jitu_db.tbl3 */
+
+/* Remove/Revoke privileges in one go */ 
+Remember the same things as described in just previous command i.e. revoke privileges in same manner as you had granted in past otherwise error occurs i.e. remove/revoke privileges on bulk level as in following command if you had created privileges on bulk level like my_jitu_db.* and remove/revoke privileges on table level as in previous command if you had created privileges on table level in past like my_jitu_db.tbl3 */
 REVOKE ALL PRIVILEGES ON my_jitu_db.* FROM 'jitendray'@'localhost';
-/* Refresh privileges */
+
+/* Refresh privileges: 
+When we grant some privileges to a user, running the command "flush privileges" will reload the grant tables in the "mysql" database enabling the changes to take effect without reloading or restarting mysql service.
+Following "mysql" database tables contain grant information:
+a. "user": User accounts, global privileges, and other non-privilege columns
+b. "db": Database-level privileges
+c. "tables_priv": Table-level privileges
+d. "columns_priv": Column-level privileges
+e. "procs_priv": Stored procedure and function privileges
+f. "proxies_priv": Proxy-user privileges 
+*/
 FLUSH PRIVILEGES;
+/* Privileges assigned through GRANT option (as above) do not need FLUSH PRIVILEGES to take effect - MySQL server will notice these changes and reload the grant tables immediately. */
+
 /* Now exit from mysql & restart it (Look how restart or stop/start mysql server at line no. 48). Try/Start login with newly created <username> to access the attached database <db-name> (To get/read/understand some basic mysql unix-shell/linux commands, look in branch "mysql_concepts_and_commands" at page no. 7) */
-/* Get all users with their host-name on mysql-server; here "mysql" => db-name, "user" => table-name */
+
+/* Get all users with their host-name on mysql-server: Here "mysql" => db-name, "user" => table-name */
 SELECT user, host FROM mysql.user;
+
 /* Delete/Drop an user from mysql-server: Remember, it doesn't affect user's attached databases, those would remain un-changed. */
 DROP USER '<username>'@'<host-name-or-ip-address-for-which-user-was-created>';
 DROP USER 'jitendray'@'localhost';
+
 /* Delete/Drop a database */
 DROP DATABASE [IF EXISTS] database_name;
 DROP DATABASE test_db;			//If test_db does not exist, MySQL will issue an error
 DROP DATABASE IF EXISTS test_db;	//If test_db does not exist, MySQL terminates the statement without issuing any error.
-Note: It is best practise to keep database and web-server separately i.e. keep database-server and web-server on separate machine i.e. on different IPs. If it is followed, user can't access their database using CLI as from web-server/application-server thay can't use command like "mysql -h <host-name> -u <username> -p" as there is not installed MySQL server; and they can't access database server directly using CLI as well, as they have not provided/created any operating-system's user credential to enter into database-server and then using their database's credential to access their database. So their remains only one way for user to access their database i.e. use any database GUI tool like MySQL Workbench, SQLyog, etc. Reference: http://www.dbta.com/Editorial/News-Flashes/5-Best-Practices-for-Securing-Databases-101930.aspx
+
+Note: It is best practise to keep database and web-server separately i.e. keep database-server and web-server on separate machine i.e. on different IPs. If it is followed, user can't access their database using CLI as from web-server/application-server they can't use command like "mysql -h <host-name> -u <username> -p" as there is not installed MySQL server; and they can't access database server directly using CLI as well, as they have not provided/created any operating-system's user credential to enter into database server and then using their database's credential to access their database. So there remains only one way for user to access their database i.e. use any database GUI tool like MySQL Workbench, SQLyog, etc. Reference: http://www.dbta.com/Editorial/News-Flashes/5-Best-Practices-for-Securing-Databases-101930.aspx
 
 /*** Change mode of a file/directory ***/
 chmod -R 777 /var/www/html/2018/magento2/public_html/var
