@@ -259,6 +259,28 @@ Note: Here "locate" converts your file/directory name as following automatically
 	locate -d <new-mlocate-db-path> <file/directory-name>	(d => database DBPATH)
 	locate -d /var/lib/mlocate/mlocate-new.db test.php 
 
+/*** "grep" command: This command searches file/files to match a given pattern and prints the matching lines containing the pattern. ***/
+1. Help & Manual:
+	grep --help
+	man grep
+2. Syntax: 
+	grep [OPTIONS] PATTERN FILE
+3. Here PATTERN & FILE both might be some regular-expression to provide matching-string & file-names respectively.
+4. FILE => *, means grep would search all files of current directory; and if "-r" option is also used along with this, grep would search recursively all files as well as all folder's files present in current directory.
+	a. FILE => xyz.txt like as following
+		grep jitu xyz.txt
+	then grep print only lines(not the name of file xyz.txt) containing the PATTERN "jitu" in xyz.txt.
+	b. FILE => my* like as following
+		grep jitu my*
+	If there present only one pattern-matched file like myfile1.txt in current directory then output would be same as in just previous section (a) i.e. grep would print only lines containing the PATTERN "jitu", not the file name.
+	suppose there present 3 files like myfile1.txt, myfile2.php & myfile3.txt in current directory; now for same command, grep would print all lines containing the PATTERN "jitu" along with their file-names. 
+5. Popular OPTIONS:
+	-H => print file-name always even if there is file-name mentioned in command
+	-r => search recursively i.e. search all files as well as all folder's files present in current directory
+	-i => ignore case distinctions
+	-n => print line number with output lines of file
+	
+
 /*** Run/Execute a php file from CLI ***/
 php test.php
 /d/xampp/php/php.exe test.php   /* In Windows OS, if environment variable is not set. To set environment variable for PHP look into branch php_concepts_and_programming at Page No. 133 */
