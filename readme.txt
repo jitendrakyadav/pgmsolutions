@@ -265,22 +265,82 @@ Note: Here "locate" converts your file/directory name as following automatically
 	man grep
 2. Syntax: 
 	grep [OPTIONS] PATTERN FILE
+	Remember: any string which you provide as PATTERN here, grep adds wildcard character * as prefix & suffix with search-string and then starts their command execution. Means for search-string "hi", grep would go for search with string "*hi*" instead of "hi". Wildcard character is a kind of placeholder, represented by a single character; it is often used in searches so that full-name need not be write there. In grep manual i.e. "man grep", we can see all wildcard characters with their functionality-explanation under section "Repetition".
 3. Here PATTERN & FILE both might be some regular-expression to provide matching-string & file-names respectively.
 4. FILE => *, means grep would search all files of current directory; and if "-r" option is also used along with this, grep would search recursively all files as well as all folder's files present in current directory.
-	a. FILE => xyz.txt like as following
-		grep jitu xyz.txt
-	then grep print only lines(not the name of file xyz.txt) containing the PATTERN "jitu" in xyz.txt.
+	Let's create a directory "grep" & 4 files info.txt, myfile1.txt, myfile2.php, myfile3.txt inside it with some content. Let's use these files to understand the grep commands/concept: 
+	a. FILE => myfile1.txt like as following
+		Example: grep "Hi" myfile3.txt
+		Output: Hi Jitendra
+		Example: grep "ten.*dr" myfile3.txt
+		Output: Hi Jitendra
+	i.e. grep prints only lines(not the name of file myfile3.txt) containing the PATTERN "Hi" in myfile3.txt.
 	b. FILE => my* like as following
-		grep jitu my*
-	If there present only one pattern-matched file like myfile1.txt in current directory then output would be same as in just previous section (a) i.e. grep would print only lines containing the PATTERN "jitu", not the file name.
-	suppose there present 3 files like myfile1.txt, myfile2.php & myfile3.txt in current directory; now for same command, grep would print all lines containing the PATTERN "jitu" along with their file-names. 
+		Example: grep "Hi" my*
+		Output: myfile2.php:Hi Ramesh
+			myfile3.txt:Hi Jitendra
+	If there presents only one pattern-matched file like myfile3.txt in current directory then output would be same as in just previous point (a) i.e. grep would print only lines containing the PATTERN "Hi", not the file name. In this case "-H" option could be effective.
+	suppose there are 3 files like myfile1.txt, myfile2.php & myfile3.txt in current directory; now for same command, grep would print all lines containing the PATTERN "Hi" along with their file-names. 
 5. Popular OPTIONS:
-	-H => print file-name always even if there is file-name mentioned in command
-	-r => search recursively i.e. search all files as well as all folder's files present in current directory
-	-i => ignore case distinctions
-	-n => print line number with output lines of file
+	i.   -i => ignore case distinctions
+		Example: grep -i "Hi" *
+		Output: info.txt:Hi Ajay
+			myfile2.php:hiren and
+			myfile2.php:hi vijay
+			myfile2.php:Hi Ramesh
+			myfile3.txt:Hi Jitendra
+	ii.  -r => search recursively i.e. search all files as well as all folder & sub-folder's files present in current directory
+	iii. -n => print line number with output lines of file
+		Example: grep -in "Hi" my*
+		Output: myfile2.php:2:hiren and
+			myfile2.php:4:hi vijay
+			myfile2.php:6:Hi Ramesh
+			myfile3.txt:4:Hi Jitendra
+	iv.  -w => match only whole words, not part of words; like "Hi" is a whole word, while "Himanshu" contains Hi as well but only as a part of a word, not as a whole word.
+		Example: grep -iw "Hi" my*
+		Output: myfile2.php:hi vijay
+			myfile2.php:Hi Ramesh
+			myfile3.txt:Hi Jitendra
+		Note: As compared to previous point (a) Example, it excluded the match "hiren and" from myfile2.php
+	v.   -c => print only count of matching lines per FILE.
+		Example: grep -ic "Hi" my*
+		Output: myfile1.txt:0
+			myfile2.php:3
+			myfile3.txt:1
+	vi.  -o => print only the part of a line matching PATTERN; like for command "grep Hi my*", PATTERN Hi would match from word "Himanshu", but print only Hi instead of showing the whole line containing the PATTERN "Hi"
+		Example: grep -io "Hi" my*
+		Output: myfile2.php:hi
+			myfile2.php:hi
+			myfile2.php:Hi
+			myfile3.txt:Hi
+	vii. -l => print only name of FILEs containing matches, not the lines having the matches
+		Example: grep -il "Hi" my*
+		Output: myfile2.php
+			myfile3.txt
+	viii.-L => print only name of FILEs containing no matches
+		Example: grep -iL "Hi" my*
+		Output: myfile1.txt
+	ix.  -A NUM => prints NUM lines after matching line.
+		Example: grep -A 2 "Hi" myfile2.php
+		Output: Hi Ramesh
+			It's a rainy day.
+			Weather is very pleasant.
+	ix.  -B NUM => prints NUM lines before matching line.
+		Example: grep -B 2 "Hi" myfile2.php
+		Output: hi vijay
+			kalyani nagar
+			Hi Ramesh
+	ix.  -C NUM => prints NUM lines before & after matching line.
+		Example: grep -C 2 "Hi" myfile2.php
+		Output: hi vijay
+			kalyani nagar
+			Hi Ramesh
+			It's a rainy day.
+			Weather is very pleasant.
+	ix. -H => print file-name always even if there is file-name mentioned in command
+		Example: grep -H "Hi" myfile3.txt
+		Output: myfile3.txt:Hi Jitendra
 	
-
 /*** Run/Execute a php file from CLI ***/
 php test.php
 /d/xampp/php/php.exe test.php   /* In Windows OS, if environment variable is not set. To set environment variable for PHP look into branch php_concepts_and_programming at Page No. 133 */
