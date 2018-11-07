@@ -542,8 +542,51 @@ tail -n 15 error.log         /* last 15 lines, statically i.e. just opposite of 
 head error.log               /* first 10 lines by default */
 head -n 15 error.log         /* first 15 lines */
 
+/*** "cat" command: Concatenate files and print the combined content of file/files as output ***/
+1. Help & Manual:
+	cat --help
+	man cat
+2. Syntax:
+	cat [OPTION] [FILE]
+3. Examples (use grep-directory files):
+	a. cat myfile1.txt	//Display whole content of myfile1.txt
+	Output:
+		ramesh
+                suresh
+	b. cat -n myfile1.txt delimiter.txt info.txt		
+	Output: //Display combined content of myfile1.txt, delimiter.txt, info.txt with -n => --number => number all output lines
+		1  ramesh
+     		2  suresh
+     		3  -----------------------------------------------------------------------------------------
+     		4  radheshyam tiwari
+     		5  Madhya Pradesh
+     		6  Bihar
+     		7  Uttaranchal
+     		8  Chattishgarh
+     		9  Hi Ajay
+    	       10  Goa		
+
 /*** To know about OS on machine ***/
 cat /etc/os-release
+
+/*** "diff" command: Compare files line by line ***/
+I have created a directory "diff" with some files within it to understand the diff command/concept.
+1. Help & Manual:
+        diff --help
+        man diff
+2. Syntax:
+        diff [OPTION] FILES
+3. Important OPTIONs: Remember, if same line no. of 2 files has "|" symbol between them while comparing 2 files side by side, it means that particular line in both files, are not identical.
+	-y => output in two columns side-by-side	
+	-i => ignore case differences in file contents
+	-b => ignore changes in the amount of white space	
+	/* Suppose there is already 1 space between 2 words and now it becomes 2 or 3 i.e. more than 1 or suppose there is already 4 spaces between 2 words and now it remains 1 space; then -b ignores these changes. */
+	Example: diff -iby f1.txt spaceChangesOnlyWithf1.txt 
+	-w => ignore all white space
+	/* It ignores as in option "-b" as well as the spaces newly emerged between 2 characters or any other space changes */
+	Example: diff -iwy f1.txt spaceChangesOnlyWithf1.txt
+	-s => report when two files are identical/same
+	Example: diff -iys f1.txt identicaltof1.txt
 
 /*** To know about your machine IP ***/
 ifconfig        /* Linux */
