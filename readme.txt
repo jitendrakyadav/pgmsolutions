@@ -79,10 +79,14 @@ Note: "White pages" meaning => The white pages is a listing of telephone subscri
 man tail         /* manual 'tail' */
 tail --help
 
+/*** winpty ***/
+1. winpty is a windows software package providing an interface similar to Unix/Linux for communicating with windows programs.
+2. Case Study: In my window machine, i run command "mysql -u root -p" on MS-DOS, it works fine but when i run this on Git Bash, it doesn't work. Then i added "winpty" as prefix with this command like "winpty mysql -u root -p", it recognizes the "mysql" keyword and works fine.  
+
 /*** Go to just previous directory in hierarchy ***/
 cd ..
 
-/*** Return to just previous directory where you are present in past ***/
+/*** Return to just previous directory where you were present in past ***/
 cd -   /* i.e. "cd dash"; "dash" symbol => also referred as "hyphen" or "subtract" or "negative" or "minus" sign */
 
 /*** Short command to move into their home directory ***/
