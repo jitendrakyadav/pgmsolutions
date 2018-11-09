@@ -71,7 +71,7 @@ Note: "White pages" meaning => The white pages is a listing of telephone subscri
 
 /* What if several virtual hosts are created for various applications and someone wants to access your particular application through IP address */
 
-
+/* ====================================================================================================================== */
 
 /*** Linux Commands ***/
 
@@ -344,7 +344,18 @@ Note: Here "locate" converts your file/directory name as following automatically
 		Output: myfile1.txt:0
 			myfile2.php:3
 			myfile3.txt:1
-	vi.  -o => print only the part of a line matching PATTERN; like for command "grep Hi my*", PATTERN Hi would match from word "Himanshu", but print only Hi instead of showing the whole line containing the PATTERN "Hi". Remember, it prints all occurrences of match, even if suppose there are 3 occurrences in a single line then it would show/print all 3 occurrences of a sinle line in 3 separate lines i.e. per-occurrence per-line.
+	vi.  -m => stop after NUM (lines of) matches (not NUM no. of matches)
+		Example: grep "a" myfile3.txti
+		//Note here: 1st line has 1 match, 2nd line => 2 matches, 3rd line => 1 match, 4th line => 2 matches	
+		Output: India
+			Pakistan
+			Hi Jitendra
+			Srilanka
+		Example: grep -m 3 "a" myfile3.txt
+		Output: India
+			Pakistan
+			Hi Jitendra
+	vii. -o => print only the part of a line matching PATTERN; like for command "grep Hi my*", PATTERN Hi would match from word "Himanshu", but print only Hi instead of showing the whole line containing the PATTERN "Hi". Remember, it prints all occurrences of match, even if suppose there are 3 occurrences in a single line then it would show/print all 3 occurrences of a sinle line in 3 separate lines i.e. per-occurrence per-line.
 		Example: grep -io "Hi" my*
 		Output: myfile2.php:hi
 			myfile2.php:hi
@@ -359,14 +370,14 @@ Note: Here "locate" converts your file/directory name as following automatically
 		Example: grep -o "a" info.txt | wc -l
 		Output: 14
 		Explanation: "|" symbol is used here to give/provide the result/output of first command to second command as input. First command produces 14 lines, each line with just a single character "a"; it works as a file-input to second command which counts the total no. of lines in dynamic inputted file and print the same. Actually, both commands collectively work and provide the total no. of occurrences(not just no. of lines having occurrences) of a PATTERN in a file/files.
-	vii. -l => print only name of FILEs containing matches, not the lines having the matches
+	viii.-l => print only name of FILEs containing matches, not the lines having the matches
 		Example: grep -il "Hi" my*
 		Output: myfile2.php
 			myfile3.txt
-	viii.-L => print only name of FILEs, containing no matches
+	ix.  -L => print only name of FILEs, containing no matches
 		Example: grep -iL "Hi" my*
 		Output: myfile1.txt
-	ix.  -A NUM => prints NUM lines after matching line
+	x.   -A NUM => prints NUM lines after matching line
 		Example: grep -A 2 "Hi" myfile2.php
 		Output: Hi Ramesh
 			It's a rainy day.
@@ -375,22 +386,22 @@ Note: Here "locate" converts your file/directory name as following automatically
 		Output: cybage
 			hi vijay
 			kalyani nagar
-	x.   -B NUM => prints NUM lines before matching line
+	xi.  -B NUM => prints NUM lines before matching line
 		Example: grep -B 2 "Hi" myfile2.php
 		Output: hi vijay
 			kalyani nagar
 			Hi Ramesh
-	xi.  -C NUM => prints NUM lines before & after matching line
+	xii. -C NUM => prints NUM lines before & after matching line
 		Example: grep -C 2 "Hi" myfile2.php
 		Output: hi vijay
 			kalyani nagar
 			Hi Ramesh
 			It's a rainy day.
 			Weather is very pleasant.
-	xii. -H => print file-name always even if there is file-name mentioned in command
+	xiii.-H => print file-name always even if there is file-name mentioned in command
 		Example: grep -H "Hi" myfile3.txt
 		Output: myfile3.txt:Hi Jitendra
-	xiii.-v => invert-match i.e. select non-matching lines
+	xiv. -v => invert-match i.e. select non-matching lines
 		Example: grep "hi" myfile2.php
 		Output: hiren and
 			hi vijay
@@ -528,6 +539,38 @@ DROP DATABASE IF EXISTS test_db;	//If test_db does not exist, MySQL terminates t
 Note: It is best practise to keep database and web-server separately i.e. keep database-server and web-server on separate machine i.e. on different IPs. If it is followed, user can't access their database using CLI as from web-server/application-server they can't use command like "mysql -h <host-name> -u <username> -p" as there is not installed MySQL server; and they can't access database server directly using CLI as well, as they have not provided/created any operating-system's user credential to enter into database server and then using their database's credential to access their database. So there remains only one way for user to access their database i.e. use any database GUI tool like MySQL Workbench, SQLyog, etc. Reference: http://www.dbta.com/Editorial/News-Flashes/5-Best-Practices-for-Securing-Databases-101930.aspx
 /* ---------------------------------------------------------------------------------------------------------------------- */
 
+/*** Permissions in Linux ***/
+Linux is a multi-user operating system, so it has security to prevent people from accessing each other’s confidential files.
+When we use command "ll" or "ls -l", we get file/directory listing in following descriptive/detail/long format:
+-rw-rw-r-- 1 jitendray jitendray   36 Nov  5 14:23 myfile3.txt
+1. First part: -rw-rw-r--
+	a. The first character will almost always be either a
+		"-" => it's a file
+		"d" => it's a directory
+	b. Understanding the security permissions: Let's think about the next 9 characters i.e. 3 sets of 3 characters (see below). Each of the 3 "rwx" characters refers to a different operation we can perform on the file.
+		---     ---     ---
+		rwx     rwx     rwx
+		owner   group   others
+		
+		i.   "Read, write, execute and –": These are permission types, used in linux.
+			"r" => means user can "read" the file’s content
+			"w" => means user can write/modify the file's content
+			"x" => means user can "execute" the file. This permission is given only if the file is a program.
+			If any of the "rwx" characters is replaced by a "-", this means, that permission has been revoked/dismissed. "rwx" indicates => full permission; "---" indicates => fully denied
+		ii.  "Owner, group and others": For permission distribution, linux caregorises users in these 3 types.
+			"owner"  => owner permissions apply only to the owner of the file/directory
+			"group"  => group permissions apply only to the group(i.e. on the users which are in that group) that has been assigned for that particular file/directory 
+			"others" => others permissions apply to all other users on the system i.e. all those users of linux server/computer/machine/operating-system which are neither owner nor in the owner-group of file/directory.
+			Remember, all the above three permissions i.e. "owner", "group" & "others", never interfere to one another and works separately/independently without affecting to one another. User & Group like "www-data" and "root" are used by web servers like Apache, Nginx, etc. on Ubuntu by default for normal operations. So system-
+		iii. Precendence of permissions: 
+			Descending order of precedence: owner, group, others. 
+			This means if you login to a linux system(i.e. operating-system) and for a file/directory you are owner as well as you are also a member/user of owner-group of that file/directory then due to higher precendence of "owner" permission, owner-permission would be applicable/effective for you firstly. Suppose for this file/directory, you are not owner but you are a member/user of owner-group of this file/directory then due to higher precendence of "group" permission, group-permission would be applicable/effective for you rather than "others" permission for this file/directory. Suppose for this file/directory, you are neither owner nor a member/user of owner-group of this file/directory then the lowest precedence i.e. "others" permission would be applicable/effective for you.
+		iv.  Reading the security permissions:
+			For example, consider that the owner's permissions for some files is "rw-" as the first three characters. This means that the owner of the file i.e. "jitendray" can "read" it(look at its contents) and "write" it(modify its contents) but can't execute it because it is not a program; it is a text file.
+			If "r-x" is the second set of 3 characters, it means that the members/users of the group "jitendray" can only read and execute the files.
+			The final three characters show the permissions allowed to anyone who has a UserID on this Linux system which is neither the owner nor present in the owner-group of that file/directory. Let's assume we have the permission like "r--". This means other users of our Linux system would be able to read the contents of file but neither able to modify the contents of file nor execute it.
+		v.   Changing security permissions: 
+
 /*** Change mode of a file/directory ***/
 chmod -R 777 /var/www/html/2018/magento2/public_html/var
 chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub     /* R for recursively, f for forcefully */
@@ -618,6 +661,7 @@ pwd
 /*** Show history of commands fired previously by the current-user within their environment ***/
 history
 
+/* ---------------------------------------------------------------------------------------------------------------------- */
 /*** "top" command ***/
 The top command allows users to monitor processes and system resource usage on Linux. It is interactive(that means at run time it accepts input and at the same time provide/display output/result), and you can browse through the list of processes, kill a process, and so on. Open manual for "top" command i.e. "man top" to know more.
 Reference: 1. https://www.booleanworld.com/guide-linux-top-command/
@@ -784,3 +828,19 @@ You can add more and more filters one by one using the same process; here in thi
 14. Forest view: Sometimes, we may want to see the child-parent hierarchy of processes. You can see this with the forest view, by pressing "v"/"V" while top is running. Again by pressing "v"/"V", you may return to default view again. I can tell from the screenshot forest-view-1.png & forest-view-2.png, the "systemd" process was the first one to start up on the system. It has started processes such as "sshd", which in turn has created other sshd processes, and so on.
 15. Changing the default look of CPU and memory statistics: If you are mostly at home in a GUI environment, you might not like top's default way of showing CPU and memory statistics(default-view-top-home-screen.png). You can press "t" and "m" to change the style of CPU and memory statistics. If you press "t" or "m" repeatedly it cycles through two different types of progress bars(modified-view-top-home-screen.png). If you press the key for a third time, the progress bar is hidden. If you press the key again, it brings back the default.
 16. Exit "top" command: Press "q" for the same. If it doesn't work, use "Ctrl + c" as last option.
+/* ---------------------------------------------------------------------------------------------------------------------- */
+
+/*** Difference between Unix and Linux ***/
+Unix: 
+1. It's much older operating-system.
+2. It's paid. 
+3. Now a days, based on Unix, Mac OS is the most using operating-system.
+Linux: 
+1. Originally Unix was copied/cloned and then customized/developed some different features and functionalities to form a new operating-system that could be free; later this operating-system was called/named Linux. 
+2. So, we might say that Linux is a Unix like operating-system and that's why there is much similarities between the two operating-systems in form of commands, features, etc.
+3. It's an open-source i.e. free; only some special versions are paid but still lesser price than windows-os license. 
+4. It is true that now a days, Linux is more popular and widely used rather than Unix. Ubuntu, CentOS, Fedora, Android etc. are some examples of operating-system based on Linux.
+5. Reference:
+	a. Look on field "OS family" at right-side section on Linux wikipedia page: https://en.wikipedia.org/wiki/Linux
+	b. https://youtu.be/pETr6ix5rZ0	(Linux history, how it came into existence & it's historical connection with Unix)
+	c. https://youtu.be/q-1lD8ypgZM	(Differences between Unix & Linux)
