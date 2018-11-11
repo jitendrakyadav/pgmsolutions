@@ -98,11 +98,12 @@ sudo mkdir -p /var/www/html/jitendray/trainingapp
 
 /*** Listing files/folders ***/
 ls      /* List files/folders (only files/folders name) of current directory */
-ll      /* ll => an alias of "ls -l"; lists all files/folders (with detaile like file/folder's owner-name, group-name, creation/updation date-time) of current directory*/
-ll -a   /* "ll -a" => an alias of "ls -la"; -a => This option is used to list hidden files/folders as well; it list all files/folders with it's details of current directory and hidden files/folders as well. */
+ll      /* ll => an alias of "ls -l"; lists all files/folders (with -l => long-description like file/folder's owner-name, group-name, last updation date-time) of current directory */
+ll -a   /* "ll -a" => an alias of "ls -la"; -a => all => This option is used to list hidden files/folders as well; it list all files/folders with it's long-description of current directory and hidden files/folders as well. */
 ll /var/www/html/2018/test       /* Lists all files/folders of test directory */
 ll -a /var/www/html/2018/test    /* Lists all files/folders of test directory including hidden files as well */
 ll -at /var/www/html/2018/test   /* -t => sort by modification time, newest first */
+ll myfile*			 /* It lists only those files/folders whose name starts with "myfile" having depth=1
 
 /*** Copy a file xyz.php but with different name jitendray.php, means both file would have same content ***/
 cp xyz.php jitendray.php
@@ -538,15 +539,20 @@ DROP DATABASE IF EXISTS test_db;	//If test_db does not exist, MySQL terminates t
 
 Note: It is best practise to keep database and web-server separately i.e. keep database-server and web-server on separate machine i.e. on different IPs. If it is followed, user can't access their database using CLI as from web-server/application-server they can't use command like "mysql -h <host-name> -u <username> -p" as there is not installed MySQL server; and they can't access database server directly using CLI as well, as they have not provided/created any operating-system's user credential to enter into database server and then using their database's credential to access their database. So there remains only one way for user to access their database i.e. use any database GUI tool like MySQL Workbench, SQLyog, etc. Reference: http://www.dbta.com/Editorial/News-Flashes/5-Best-Practices-for-Securing-Databases-101930.aspx
 /* ---------------------------------------------------------------------------------------------------------------------- */
-
-/*** Permissions in Linux ***/
+/*** 
+Permissions in Linux 
+Reference: 1. https://www.geeksforgeeks.org/permissions-in-linux/	(Permissions in Linux)
+	   2. https://youtu.be/Uw6ZWG20wGU 				(Explain File Permissions in Linux)
+***/
 Linux is a multi-user operating system, so it has security to prevent people from accessing each other’s confidential files.
 When we use command "ll" or "ls -l", we get file/directory listing in following descriptive/detail/long format:
 -rw-rw-r-- 1 jitendray jitendray   36 Nov  5 14:23 myfile3.txt
-1. First part: -rw-rw-r--
-	a. The first character will almost always be either a
-		"-" => it's a file
+
+1. 1st column: -rw-rw-r--
+	a. The first character might be as following:
+		"-" => it's a regular file
 		"d" => it's a directory
+		"l" => it's a soft-link/symbolic-link/symlink
 	b. Understanding the security permissions: Let's think about the next 9 characters i.e. 3 sets of 3 characters (see below). Each of the 3 "rwx" characters refers to a different operation we can perform on the file.
 		---     ---     ---
 		rwx     rwx     rwx
@@ -560,20 +566,105 @@ When we use command "ll" or "ls -l", we get file/directory listing in following 
 		ii.  "Owner, group and others": For permission distribution, linux caregorises users in these 3 types.
 			"owner"  => owner permissions apply only to the owner of the file/directory
 			"group"  => group permissions apply only to the group(i.e. on the users which are in that group) that has been assigned for that particular file/directory 
-			"others" => others permissions apply to all other users on the system i.e. all those users of linux server/computer/machine/operating-system which are neither owner nor in the owner-group of file/directory.
-			Remember, all the above three permissions i.e. "owner", "group" & "others", never interfere to one another and works separately/independently without affecting to one another. User & Group like "www-data" and "root" are used by web servers like Apache, Nginx, etc. on Ubuntu by default for normal operations. So system-
-		iii. Precendence of permissions: 
-			Descending order of precedence: owner, group, others. 
-			This means if you login to a linux system(i.e. operating-system) and for a file/directory you are owner as well as you are also a member/user of owner-group of that file/directory then due to higher precendence of "owner" permission, owner-permission would be applicable/effective for you firstly. Suppose for this file/directory, you are not owner but you are a member/user of owner-group of this file/directory then due to higher precendence of "group" permission, group-permission would be applicable/effective for you rather than "others" permission for this file/directory. Suppose for this file/directory, you are neither owner nor a member/user of owner-group of this file/directory then the lowest precedence i.e. "others" permission would be applicable/effective for you.
-		iv.  Reading the security permissions:
+			"others" => others permissions apply to all other users on the system i.e. all those users of linux server/computer/machine/operating-system which are neither owner nor in the group of file/directory.
+			Remember, all the above three permissions i.e. "owner", "group" & "others", never interfere to one another and works separately/independently without affecting to one another. Both "www-data" and "root" are pre-existing user & group as well and used by web servers like Apache, Nginx, etc. in Ubuntu by default for their normal operations. So system-administrator should not use these pre-existing users & groups for their newly-created files or applications and should not allow any newly created user as well to use these pre-existing users and group (which are reserved for some web-server level files & for their operations); if needed, system-administrator should create new group & user to fulfil their requirement.
+		iii. Reading the security permissions: Let's observe the above myfile3.txt long description.
 			For example, consider that the owner's permissions for some files is "rw-" as the first three characters. This means that the owner of the file i.e. "jitendray" can "read" it(look at its contents) and "write" it(modify its contents) but can't execute it because it is not a program; it is a text file.
 			If "r-x" is the second set of 3 characters, it means that the members/users of the group "jitendray" can only read and execute the files.
-			The final three characters show the permissions allowed to anyone who has a UserID on this Linux system which is neither the owner nor present in the owner-group of that file/directory. Let's assume we have the permission like "r--". This means other users of our Linux system would be able to read the contents of file but neither able to modify the contents of file nor execute it.
-		v.   Changing security permissions: 
+			The final three characters show the permissions allowed to anyone who has a UserID on this Linux system which is neither the owner nor present in the group of that file/directory. Let's assume we have the permission like "r--". This means other users of our Linux system would be able to read the contents of file but neither able to modify the contents of file nor execute it.
+		iv.  Changing security permissions: 
+			File Mode	Octal or Numeric
+			---		0
+			--x		1
+			-w-		2
+			-wx		3
+			r--		4
+			r-x		5
+			rw-		6
+			rwx		7
+			
+			From above list, you could easily know that, for:
+			read only 		=> octal value is 4	
+			write only 		=> octal value is 2
+			execute only 		=> octal value is 1
+			read & write only	=> sum of read & write octal values i.e. 4+2=6
+			read & execute only	=> sum of read & execute octal values i.e. 4+1=5
+			write & execute only	=> sum of write & execute octal values i.e. 2+1=3
+			read, write & execute	=> sum of read, write & execute octal values i.e. 4+2+1=7
+		
+		Example: Suppose for a file xyz.php, you want to change permission for owner => rwx => i.e. octal value 7, group => rw- i.e. octal value 6, others => r-- i.e. octal value 4; so you would need to run following command:
+			chmod 764 xyz.php
+		Suppose for the same file, you want to change permission for owner => rwx => i.e. octal value 7, group => rwx i.e. octal value 7, others => rwx i.e. octal value 7; means you want to give full permission for file xyz.php, so you would need to run following command:
+			chmod 777 xyz.php
+		Example: Change permission of a directory
+			chmod -R 777 /var/www/html/2018/magento2/public_html/var
+			chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub	/* R for recursively, f for forcefully */
+		v.   Precendence of permissions: 
+			Descending order of precedence: owner, group, others. 
+			This means if you login to a linux system(i.e. operating-system) and for a file/directory you are owner as well as you are also a member/user of group of that file/directory then due to higher precendence of "owner" permission, owner-permission would be applicable/effective for you firstly. Suppose for this file/directory, you are not owner but you are a member/user of group of this file/directory then due to higher precendence of "group" permission, group-permission would be applicable/effective for you rather than "others" permission for this file/directory. Suppose for this file/directory, you are neither owner nor a member/user of group of this file/directory then the lowest precedence i.e. "others" permission would be applicable/effective for you.
+2. 2nd column: 1
+	Reference: 1. https://youtu.be/Eduo7WsJp20	(Hard link Vs Soft link Part-1)	
+		   2. https://youtu.be/OVZMlOT6L-4	(Hard link Vs Soft link Part-2)	  
+	Type example: type_example.png
+	
+	a. Hard Link: Creating a hard link has the effect of giving one file multiple-names (multiple-names might be in different directories with different names) all of which independently connect to the same data on the disk, none of which depends on any of the others. If the file is opened by any one of its names, and changes are made to its content, then these changes will also be visible when the file is opened by an alternative name.
+	Example(creating hard link): ln main.txt main_hard_link.txt
+	ln => command to create the link; main.txt => the actual-file name with it's path for which you want to create hard-link; main_hard_link.txt => hard-link name with it's path
+	Run command "ll -i"	
+	(Here, -i => to show inode ID column as well. Remember, each file and directory in Linux has a unique inode ID alloted them from inode table; in following directory listing, 1st column shows inode IDs.)
+	790823 -rw-rw-r-- 3 jitendra jitendra    8 Nov 11 17:49 main_hard_link2.txt
+	790823 -rw-rw-r-- 3 jitendra jitendra    8 Nov 11 17:49 main_hard_link.txt
+	790823 -rw-rw-r-- 3 jitendra jitendra    8 Nov 11 17:49 main.txt	
+	Important points:
+		1. You can create as many hard-link for a file as you want.
+		2. Suppose there are a file and it's 2 hard-links then to delete any one of the 3 would not affect the others 2 i.e. they would remain un-changed/un-deleted.  
+		3. Modify in any one, would reflect in others 2 as well with the same new content.
+		4. All 3 would have same inode ID and show same hard-link count. 
+		5. Modify any 1 of 3 would show same new last-modification-time for all 3.
+	Usage/Benefit: We can create backup of any file/files of our application/project by creating hard-link of them on server at some secure place. 
 
-/*** Change mode of a file/directory ***/
-chmod -R 777 /var/www/html/2018/magento2/public_html/var
-chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub     /* R for recursively, f for forcefully */
+	b. Soft Link or Symbolic Link or Symlink (or Shortcut): It's a symbolic copy(not actual) of a file. So when you modify the symlink, in actual you have been modifying the actual/main file for which this symlink has been created. After modification, if you run command "ll", you can easily see that last-modified-time for actual/main file has been changed, but remains unchanged for symlink.
+	Example(creating symlink): ln -s main.txt main_soft_link.txt
+	ln => command to create the link; -s => option to create soft-link; main.txt => the actual-file name with it's path for which you want to create symlink; main_soft_link.txt => symlink name with it's path
+	Run command "ll -i"	
+	(Here, -i => to show inode ID column as well. Remember, each file and directory in Linux has a unique inode ID alloted them from inode table; in following directory listing, 1st column shows inode IDs.)
+	788572 lrwxrwxrwx 1 jitendra jitendra    8 Nov 11 17:41 main_soft_link.txt -> main.txt
+	790823 -rw-rw-r-- 2 jitendra jitendra   34 Nov 11 17:40 main.txt	
+	Important points:
+		1. You can create as many symlink for a file as you want.
+		2. Deleting symlinks would not affect actual/main file.
+		3. Deleting actual/main file would make useless it's symlinks i.e. try to access content of symlinks(like "cat main_soft_link.txt") then, would produce "No such file or directory" error. But if you re-create the actual/main file with the same name, symlinks started working again.
+		4. The actual/main file and it's all symlinks have different inode IDs.
+	Usages/Benefit: We can keep some important files in a single directory anywhere on server at some secure place and could create symlinks for those files in our application's various directories wherever they needed.
+	
+	For a file => This number is the hardlink count of the file. 
+	When a new file created, by default it shows it's hard-link count=1 as it is, in fact, itself works as link for the actual file (like in Linux GUI, when you make double-click on file-symbol, it opens the actual file for you). 	
+
+	For a directory => This number is actually the number of directory entries for that directory.
+	Historically, the first Unix filesystem, created two entries in every directory: . pointing to the directory itself, and .. pointing to its parent(use command "ll -a" or "ls -la" to see these entries). This provided an easy way to travel across the filesystem, both for applications and for the OS itself.
+	Thus each directory has a link count of 2+n where n is the number of subdirectories. The links are the entry for that directory in its parent(in Linux GUI when you see a "directory" symbol & make double click on it you have benn brought to inside this directory, that means, it's also a entry-point for the directory), the directory's own . entry, and the .. entry in each subdirectory(actually the entry .. inside the sub-directory of a directory points to the directory).
+	Example: Following is the content of the subtree rooted at /parent, all directories:
+	/parent
+	/parent/dir
+	/parent/dir/sub1
+	/parent/dir/sub2
+	/parent/dir/sub3	
+	Then directory "dir" has a link count of 5: the dir entry in /parent (i.e. /parent/dir), the . entry in /parent/dir, and the three .. entries in each of /parent/dir/sub1, /parent/dir/sub2 and /parent/dir/sub3. Since /parent/dir/sub1 has no sub-directory, it's link count is 2 (the sub1 entry in /parent/dir and the . entry in /parent/dir/sub1).
+	Remember, for directory "sub1", "dir" is the current directory and "parent" is the parent directory.
+	The root directory, which doesn't have a "proper" parent or no parent, the root directory contains a .. entry pointing to itself. This way it, too, has a link count of 2 plus the number of subdirectories, the 2 being "." and "..".
+	Later filesystems have started to keep track of parent directories in memory and usually don't need . and .. to exist. Most filesystems still report a link count of 2+n for directories regardless of whether . and .. entries exist, but there are exceptions, for example Btrfs filesystem doesn't do this.
+	
+3. 3rd column: jitendray
+	It shows owner(i.e. a kind of user) of the file. In this case, owner's userID is "jitendray".
+4. 4th column: jitendray
+	It shows group(containing some users) assigned for the file/directory.
+5. 5th column: 36
+	It shows size of the file in bytes.
+6. 6th column: Nov  5 14:23
+	It shows the date and time the file was last modified.
+7. 7th column: myfile3.txt
+	It shows, of course, the filename. 
+/* ---------------------------------------------------------------------------------------------------------------------- */
 
 /*** Switch user from current to other for ex. 'jitendray' ***/
 su jitendray
@@ -615,6 +706,14 @@ head -n 15 error.log         /* first 15 lines */
 
 /*** To know about OS on machine ***/
 cat /etc/os-release
+
+/*** "echo" command: Display a line of text. Use command "man echo" to know more about this Linux command ***/
+> xyz.txt
+//This command inputs blank content to file xyz.txt or in other word it removes/deletes the whole content of xyz.txt
+echo "Hi, Good Morning!" > xyz.txt
+//This command removes the whole content of xyz.txt and inputs/add string "Hi, Good Morning!" to file xyz.txt at it's first line
+echo "Hi, Good Morning!" >> xyz.txt
+//This command preserves the whole content of xyz.txt and add the string "Hi, Good Morning!" to xyz.txt at it's last line
 
 /*** "diff" command: Compare files line by line ***/
 I have created a directory "diff" with some files within it to understand the diff command/concept.
