@@ -70,6 +70,14 @@ Note: "White pages" meaning => The white pages is a listing of telephone subscri
 	C:\Windows\System32\Drivers\etc\hosts
 
 /* What if several virtual hosts are created for various applications and someone wants to access your particular application through IP address */
+1. Suppose there is an application: /var/www/html/2018/test
+2. You have created a virtual-host to map url:http://test.local.com/ with your application using conf file like /etc/apache2/sites-available/test.local.com.conf
+3. Like /etc/apache2/sites-available/test.local.com.conf, all other conf files use port 80 as following:
+	<VirtualHost *:80>
+4. Replace this port:80 with some other unique port. It might be any random unique number like 8085, 9091, 9287, etc. as you want.
+5. Save this file /etc/apache2/sites-available/test.local.com.conf and restart Apache server.
+6. Suppose port no. as set in previous step, is like 9091 in place of 80 in file /etc/apache2/sites-available/test.local.com.conf, so now you can access the application /var/www/html/2018/test using url:http://<server-ip>:<port-no> like http://127.0.0.1:9091
+7. All other applications on server would continue to be accessible using their virtual-host URL like http://mg226.local.com/ with shared port 80. 
 
 /* ====================================================================================================================== */
 
@@ -463,6 +471,18 @@ sudo deluser --remove-home <username>
 
 /*** Change owner from one to another ***/
 sudo chown -R jitendray:www-data /var/www/html/jitendray    /* chown username:groupname directory */
+
+/*** Create a new group in Linux ***/
+groupadd <group-name>	/* For manual: "man groupadd", For help: "groupadd --help" */
+groupadd mygroup
+sudo groupadd mygroup
+/* Verify whether group "mygroup" created or not */
+cat /etc/group		/* This is the file where all groups are recorded; check here, newly created group is present or not */
+
+/*** Delete group in Linux ***/
+groupdel <group-name>	/* For manual: "man groupdel", For help: "groupdel --help" */
+groupdel mygroup
+sudo groupdel mygroup
 
 /* ---------------------------------------------------------------------------------------------------------------------- */
 /*** Create an user in mysql ***/ 
