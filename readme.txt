@@ -213,10 +213,12 @@ git log -S "Hello World!"
 git log -S "Hello World!" --all           /* --all option: search all branches of repository */
 or
 git log -S "Hello World!" --source --all
-/* Search in case-insensitive manner: There is no any specific option available for case-insensitive search, but we can do the same by considering a reg-ex as search-string */
-git log -G "[vV]irtual[ ]*[bB]ox" --source --all
+/* Search in case-insensitive manner: I couldn't find any option available for case-insensitive search, but we can do the same by considering a reg-ex as search-string */
+git log -G "[vV]irtual[ ]*[bB]ox" --source --all	
+/* Use "git log --help", when manual/help opens, press character "h" & then scroll down and come to section "OPTIONS": Here -i => ignore-case but i never found how can we use it here; -G => HILITE-SEARCH */
+
 Explanation: 
-1. -G 	=> indicates regular-expression
+1. -G 	=> I found that using this, we can use regular-expression as search-string to search the whole repository
 2. [vV] => 1st character should be either small "v" or capital "V"
 3. [ ]* => There might be zero space or one space or more space
 4. [bB] => There should be exactly one character & that might be either small "b" or capital "B"
