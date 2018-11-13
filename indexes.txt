@@ -27,7 +27,7 @@
 27. php.ini directives(variables) - Page No. 65
 28. Timezone - Page No. 66
 29. Error log files - Page No. 67
-30. How to pass variables and data from PHP to Javascript, json-decode discussed here as well - Page No. 68
+30. How to pass variables and data from PHP to Javascript, json-decode discussed here as well - Page No. 68; To see various valid/invalid json data examples, look in branch curl_wget_file_get_contents in first section i.e. "cURL" under 12th point.
 31. Frequently used php functions - Page No. 82
 32. How a webserver work, what is mod_rewrite, URL rewriting and pretty-links, Reg Ex - Page No. 84
 33. Pass by reference vs Pass by value - Page No. 89
