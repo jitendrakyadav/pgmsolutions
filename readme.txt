@@ -125,3 +125,20 @@ Important points:
 10. Daylight Saving Time (DST): DST begins in the United States on the second Sunday in March, when people move their clocks forward an hour at 2AM local standard time(so at 2AM on that day, the clocks will then read 3AM local daylight time). Daylight saving time ends on the first Sunday in November, when clocks are moved back an hour at 2AM local daylight time(so they will then read 1AM local standard time). This is done every year in United States to get maximum use of Sunlight in summer season. 
     Many persons says it creates unusual confusions & complications on day-time level, like moving clock by 1 hour at one time and again moving back by 1 hour at another time. People also says, why such type of drama of moving clock forward/backward in whole country, in place of, just announce in offices to open & closed 1 hour earlier in summer season as compared to winter, that's it.   
     Reference: https://youtu.be/eD2gTOtScZ4
+/* ---------------------------------------------------------------------------------------------------------------------- */
+Important things in PHP programming:
+1. 0==false==''
+   Example: 
+   if (0==false) {
+   	echo "\nYes";
+   } else {
+   	echo "\nNo";
+   }	
+   Output: Yes
+   if (false=='') {
+   	echo "\nYes";
+   } else {
+   	echo "\nNo";
+   }
+   Output: Yes
+
