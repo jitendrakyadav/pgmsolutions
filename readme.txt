@@ -59,7 +59,11 @@ Look {'employee_id':'12345'} is not a valid json data;
 Remember: parameters must be always enclosed with double-quotation mark, enclosed any parameter/value with single-quotation mark makes it invalid json data. 
 {"employee_id":"12345","card_number":"1234567891"}	//valid json data - all parameter/value within double-quotation mark
 {"employee_id":12345,"card_number":"1234567891"}	//valid json data - integer values are allowed without any quotation mark
+{"employee_id":null,"card_number":"1234567891"}		//valid json data - null values are allowed without any quotation mark as well as it must be always in small-letters as NULL is not allowed as it is in capital-letters.
+{"employee_id":"","card_number":"1234567891"}		//valid json data - blank values are allowed by notation ""
 {"employee_id" :12345,"card_number": "1234567891"}	//valid json data - space are allowed between parameter & colon as well as between colon & parameter's value; but as per best practises, don't leave any space from starting of json-data string to the till it's end. PHP's json_encode() follows the same practise. For many type of json encode & decode examples, look into json_encode_decode_examples.php; for more, look on page no. 68-81 specially on page no. 77 under branch php_concepts_and_programming.
+{"employee_id":,"card_number":"1234567891"}		//invalid json data - any parameter's value must be something like null or "" or "Jitendra" i.e. should not be like nothing
+{"employee_id":NULL,"card_number":"1234567891"}		//invalid json data - As explained above, null is allowed not NULL
 {"employee_id":'12345','card_number':"1234567891"}	//invalid json data - single quotation mark is not allowed anywhere either for parameter or it's value
 ***/
 curl --data '{"card_number":"1234567891"}' -X POST http://127.0.0.1:8443/api/validateCard
