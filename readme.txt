@@ -206,6 +206,11 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 	For a git parameter, it's local scope value has highest priority. Scope priority is as following:
 	Local Scope > Global Scope > System Scope
 	Note: .gitattributes file (if presents in repository/project's-root-directory) would override even git parameter's local scope value. 
+15. In your project collaboration work, if one employee is using Windows OS, other Linux and another one is using Mac OS i.e. project members are using different OS then to avoid to git consider "modified/changed files" only due to different new-line characters in different OS, create file .gitattributes in your project root directory, might be with following contents:
+	* text=auto
+	*.css linguist-vendored
+	*.scss linguist-vendored
+You might consider repository mg226's .gitattributes file as well.
 
 /*** Find the git commits, that introduced a string or removed the string in current branch ***/
 git log -S "Hello World!"
