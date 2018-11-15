@@ -98,7 +98,7 @@ cd ..
 cd -   /* i.e. "cd dash"; "dash" symbol => also referred as "hyphen" or "subtract" or "negative" or "minus" sign */
 
 /*** Short command to move into their home directory ***/
-cd ~       /* Now you would find yourself in directory /home/jitendra for me as I had logined with username 'jitendra' */
+"cd ~" or "cd"	/* Now you would find yourself in directory /home/jitendra for me as I had logined with username 'jitendra' */
 
 /*** Create a directory and any parents(-p argument) that don't already exist. Following will create both directories i.e. trainingapp directory along with it's parent directory jitendray ***/
 mkdir -p /var/www/html/jitendray/trainingapp
@@ -448,6 +448,9 @@ whoami
 /*** Get groups for a username ***/
 groups <username>     /* first word after : is your primary group */
 
+/*** Get all users of a group ***/
+grep -in "<group-name>" /etc/group	/* Here you can see <group-name> & then it's all users with comma separated */     
+
 /*** Create user in ubuntu 16.04: For detail browse https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-ubuntu-16-04 or look here into how-to-add-and-delete-users-on-ubuntu-16-04.png  ***/
 adduser <newuser>            /* If you are logined with 'root' user  */
 sudo adduser <newuser>       /* If you are logined with other than root user but that user is in sudo group */
@@ -583,6 +586,13 @@ When we use command "ll" or "ls -l", we get file/directory listing in following 
 			"w" => means user can write/modify the file's content
 			"x" => means user can "execute" the file. This permission is given only if the file is a program.
 			If any of the "rwx" characters is replaced by a "-", this means, that permission has been revoked/dismissed. "rwx" indicates => full permission; "---" indicates => fully denied
+		Case Study: On a file test.php, i did many kind of permission changes and observed followings:
+			"--x" => If you haven't read permission, It is useless. As without read permission, you can't execute a php file.
+			"-w-" => If you haven't read permission, It is useless. As without read permission, you can't change/modify a php file.
+			"-wx" => If you haven't read permission, both write & execute permissions are useless. As without read permission, you can't change/modify as well as execute the php file.
+			"r-x" => You can read content of the PHP file & execute the same but can't change/modify it's content.
+			"rw-" => You can read content of the PHP file & change/modify the same obviously. But surprisingly, i was able to execute as well the PHP file although i haven't access for it. I don't know what is the reason behind it, might be due to read permission; but it is shocking fact for me & still i am searching reason of it.
+			"r--" => You can read content of the PHP file but can't change/modify the same obviously. But surprisingly, i was able to execute the PHP file although i haven't access for it. I don't know what is the reason behind it, might be due to read permission; but it is shocking fact for me & still i am searching reason of it.
 		ii.  "Owner, group and others": For permission distribution, linux caregorises users in these 3 types.
 			"owner"  => owner permissions apply only to the owner of the file/directory
 			"group"  => group permissions apply only to the group(i.e. on the users which are in that group) that has been assigned for that particular file/directory 
@@ -621,7 +631,7 @@ When we use command "ll" or "ls -l", we get file/directory listing in following 
 			chmod -Rf 777 /var/www/html/2018/magento2/public_html/pub	/* R for recursively, f for forcefully */
 		v.   Precendence of permissions: 
 			Descending order of precedence: owner, group, others. 
-			This means if you login to a linux system(i.e. operating-system) and for a file/directory you are owner as well as you are also a member/user of group of that file/directory then due to higher precendence of "owner" permission, owner-permission would be applicable/effective for you firstly. Suppose for this file/directory, you are not owner but you are a member/user of group of this file/directory then due to higher precendence of "group" permission, group-permission would be applicable/effective for you rather than "others" permission for this file/directory. Suppose for this file/directory, you are neither owner nor a member/user of group of this file/directory then the lowest precedence i.e. "others" permission would be applicable/effective for you.
+			This means if you login to a linux system(i.e. operating-system) and for a file/directory you are owner as well as you are also a member/user of group of that file/directory then due to higher precendence of "owner" permission, owner-permission would be applicable/effective for you in this case, never group permission. Suppose for this file/directory, you are not owner but you are a member/user of group of this file/directory then due to higher precendence of "group" permission, group-permission would be applicable/effective for you rather than "others" permission for this file/directory. Suppose for this file/directory, you are neither owner nor a member/user of group of this file/directory then the lowest precedence i.e. "others" permission would be applicable/effective for you.
 2. 2nd column: 1
 	Reference: 1. https://youtu.be/Eduo7WsJp20	(Hard link Vs Soft link Part-1)	
 		   2. https://youtu.be/OVZMlOT6L-4	(Hard link Vs Soft link Part-2)	  
