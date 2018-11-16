@@ -69,7 +69,7 @@ Note: "White pages" meaning => The white pages is a listing of telephone subscri
    and in windows:
 	C:\Windows\System32\Drivers\etc\hosts
 
-/* What if several virtual hosts are created for various applications and someone wants to access your particular application through IP address */
+/*** What if several virtual hosts are created for various applications and someone wants to access your particular application through IP address ***/
 1. Suppose there is an application: /var/www/html/2018/test
 2. You have created a virtual-host to map url:http://test.local.com/ with your application using conf file like /etc/apache2/sites-available/test.local.com.conf
 3. Like /etc/apache2/sites-available/test.local.com.conf, all other conf files use port 80 as following:
@@ -445,7 +445,7 @@ zip hello 1.txt 2.txt 3.txt        /* created a hello.zip file having files 1.tx
 /*** Get username using currently ***/
 whoami
 
-/*** Get groups for a username ***/
+/*** Get all groups of a user ***/
 groups <username>     /* first word after : is your primary group */
 
 /*** Get all users of a group ***/
