@@ -593,6 +593,15 @@ When we use command "ll" or "ls -l", we get file/directory listing in following 
 			"r-x" => You can read content of the PHP file & execute the same but can't change/modify it's content.
 			"rw-" => You can read content of the PHP file & change/modify the same obviously. But surprisingly, i was able to execute as well the PHP file although i haven't access for it. I don't know what is the reason behind it, might be due to read permission; but it is shocking fact for me & still i am searching reason of it.
 			"r--" => You can read content of the PHP file but can't change/modify the same obviously. But surprisingly, i was able to execute the PHP file although i haven't access for it. I don't know what is the reason behind it, might be due to read permission; but it is shocking fact for me & still i am searching reason of it.
+		Case Study for a directory: Permission for a directory is applied only on that directory, not on the files/folders already present/exist inside that directory, as already present files/folders inside the directory obey their own permissions alloted to them. Here "r" is used for listing the directory, "w" for creating new file/folder inside the directory and "x" for entering to the directory. 
+			--- => means fully denied i.e. you can't list directory like using "ls -l" & can't enter to directory like using "cd <directory-name>" as well as you can't create new file/directory inside the directory. 
+			r-- => means you can list the directory partially i.e. using "ls -l", you can see only file/folder names inside it, not other informations related to these files/folders like file-size, permission, owner/group, etc. and neither you can't enter to directory like using "cd <directory-name>" nor create new file/directory inside the directory like using "touch <directory-name>/<new-file-name>", "mkdir <directory-name>/<new-directory-name>". 
+			--x => you can enter to the directory but you can't list the directory & you can't create new file/directory inside the directory.
+			-w- => useless without execute permission & equivalent to --- i.e. you can't list the directory, you can't enter to the directory as well as you can't create any new file/folder inside the directory. 
+			-wx => you can't list the directory i.e. you can't know how many and which files/folders exist inside the directory, but you can enter to directory & create new file/directory as well inside the directory.
+			rw- => useless without execute permission and equivalent to r-- i.e. still you can only partially list the directory but can't enter to the directory & can't create new file/directory inside the directory.
+			r-x => means you can list the directory like using "ls -l" and enter to directory as well like using "cd <directory-name>". But you can't create new file/directory inside the directory.
+			rwx => means full permission i.e. you can list, enter to directory & create new file/directory inside the directory as well.
 		ii.  "Owner, group and others": For permission distribution, linux caregorises users in these 3 types.
 			"owner"  => owner permissions apply only to the owner of the file/directory
 			"group"  => group permissions apply only to the group(i.e. on the users which are in that group) that has been assigned for that particular file/directory 
@@ -648,9 +657,20 @@ When we use command "ll" or "ls -l", we get file/directory listing in following 
 	Important points:
 		1. You can create as many hard-link for a file as you want.
 		2. Suppose there are a file and it's 2 hard-links then to delete any one of the 3 would not affect the others 2 i.e. they would remain un-changed/un-deleted.  
-		3. Modify in any one, would reflect in others 2 as well with the same new content.
-		4. All 3 would have same inode ID and show same hard-link count. 
-		5. Modify any 1 of 3 would show same new last-modification-time for all 3.
+		3. Modification in any one of 3, would reflect in others 2 as well. Like if you change permission or owner or content of main_hard_link.txt then the exactly same permission or owner or content(hence last-modified-date-time) changes would be reflected in other two files main.txt & main_hard_link2.txt as well. 
+			A. I have changed permission for main_hard_link.txt from 664 to 666 & got same permission changes occured automatically for others 2 as well, as following.
+				790823 -rw-rw-rw- 3 jitendra jitendra    8 Nov 11 17:49 main_hard_link2.txt
+        			790823 -rw-rw-rw- 3 jitendra jitendra    8 Nov 11 17:49 main_hard_link.txt
+        			790823 -rw-rw-rw- 3 jitendra jitendra    8 Nov 11 17:49 main.txt
+			B. I have changed owner/group for main_hard_link.txt from jitendra:jitendra to jitendra:priyanka & got same owner/group changes occured automatically for others 2 as well, as following.  
+				790823 -rw-rw-r-- 3 jitendra priyanka    8 Nov 11 17:49 main_hard_link2.txt
+        			790823 -rw-rw-r-- 3 jitendra priyanka    8 Nov 11 17:49 main_hard_link.txt
+        			790823 -rw-rw-r-- 3 jitendra priyanka    8 Nov 11 17:49 main.txt
+			C. I have added content "Hi" in a new-line for main_hard_link.txt & this time got same updated content, same new file size 11 Byte and new updated date-time "Nov 19 19:57" automatically for others 2 as well, as following.  
+				790823 -rw-rw-r-- 3 jitendra jitendra    11 Nov 19 19:57 main_hard_link2.txt
+        			790823 -rw-rw-r-- 3 jitendra jitendra    11 Nov 19 19:57 main_hard_link.txt
+        			790823 -rw-rw-r-- 3 jitendra jitendra    11 Nov 19 19:57 main.txt 
+		4. All 3 would have same inode ID, same hard-link count, same permission, same owner/group & even same last modified date-time. 
 	Usage/Benefit: We can create backup of any file/files of our application/project by creating hard-link of them on server at some secure place. 
 
 	b. Soft Link or Symbolic Link or Symlink (or Shortcut): It's a symbolic copy(not actual) of a file. So when you modify the symlink, in actual you have been modifying the actual/main file for which this symlink has been created. After modification, if you run command "ll", you can easily see that last-modified-time for actual/main file has been changed, but remains unchanged for symlink.
@@ -665,7 +685,11 @@ When we use command "ll" or "ls -l", we get file/directory listing in following 
 		2. Deleting symlinks would not affect actual/main file.
 		3. Deleting actual/main file would make useless it's symlinks i.e. try to access content of symlinks(like "cat main_soft_link.txt") then, would produce "No such file or directory" error. But if you re-create the actual/main file with the same name, symlinks started working again.
 		4. The actual/main file and it's all symlinks have different inode IDs.
-	Usages/Benefit: We can keep some important files in a single directory anywhere on server at some secure place and could create symlinks for those files in our application's various directories wherever they needed.
+	Usages/Benefit: 
+		1. We can keep some important files in a single directory anywhere on server at some secure place and could create symlinks for those files in our application's various directories wherever they needed. 
+		2. To make link for files, we use "ln" command; to copy files we use "cp" command. The main advantage on symlink is access permission. If you want to change permission or owner or content of all symlinks of a file main.txt (as from above listed files main.txt & main_soft_link.txt) just change permission or owner or content of original file main.txt, all it's symlinks would be changed automatically. On the other hand with copies, you will have to find all the copies first and then change permission or owner or content one by one.
+		3. Here, even if you change permission or owner or content of main_soft_link.txt; after execute "ll" command to see modified files list, you can see the permission or owner or last-modified-time(due to content changes) of main file main.txt has been changed while main_soft_link.txt looks exactly same either permission 777 or owner or last-modified-time. 
+		4. Symlink provides ease of management and saves disk space.
 	
 	For a file => This number is the hardlink count of the file. 
 	When a new file created, by default it shows it's hard-link count=1 as it is, in fact, itself works as link for the actual file (like in Linux GUI, when you make double-click on file-symbol, it opens the actual file for you). 	
