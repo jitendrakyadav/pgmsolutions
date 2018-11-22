@@ -5,8 +5,8 @@ Above website print-screens: setup-apache-virtual-hosts-on-ubuntu-1.png, setup-a
 
 https://tecadmin.net/setup-nginx-virtual-hosts-on-ubuntu/     			[when webserver: nginx]
 
-Create Virtual Host in CentOS:
-https://youtu.be/MR24rVosDhM 
+Create Virtual Host in CentOS 6:
+https://youtu.be/MR24rVosDhM							[when webserver: apache] 
 /* ---------------------------------------------------------------------------------------------------------------------- */
 /*** What is DNS => Domain Name System ***/
 1. DNS is how domain names are translated into IP addresses, and DNS also controls email delivery. DNS is what allows you to use your web browser to find web sites as well as send and receive email.
