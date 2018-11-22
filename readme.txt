@@ -70,14 +70,69 @@ Note: "White pages" meaning => The white pages is a listing of telephone subscri
 	C:\Windows\System32\Drivers\etc\hosts
 
 /*** What if several virtual hosts are created for various applications and someone wants to access your particular application through IP address ***/
+Important Note: 
+a. Syntax for an URL in HTTP or HTTPS protocol is:
+	 <protocol>://<host>:<port>/
+b. For any host:
+	in HTTP protocol 
+		default-port is 80 
+	in HTTPS protocol 
+		default-port is 443
+c. This means: 
+	if there is an URL in HTTP protocol like
+		http://www.xyz.com/ then it would be translated by browser as
+		http://www.xyz.com:80/
+	if there is an URL in HTTPS protocol like
+		https://www.xyz.com/ then it would be translated by browser as
+		https://www.xyz.com:443/
+
+Steps:
 1. Suppose there is an application: /var/www/html/2018/test
-2. You have created a virtual-host to map url:http://test.local.com/ with your application using conf file like /etc/apache2/sites-available/test.local.com.conf
+2. You have created a virtual-host to map URL:http://test.local.com/ with your application using conf file like /etc/apache2/sites-available/test.local.com.conf
 3. Like /etc/apache2/sites-available/test.local.com.conf, all other conf files use port 80 as following:
 	<VirtualHost *:80>
-4. Replace this port:80 with some other unique port. It might be any random unique number like 8085, 9091, 9287, etc. as you want.
-5. Save this file /etc/apache2/sites-available/test.local.com.conf and restart Apache server.
-6. Suppose port no. as set in previous step, is like 9091 in place of 80 in file /etc/apache2/sites-available/test.local.com.conf, so now you can access the application /var/www/html/2018/test using url:http://<server-ip>:<port-no> like http://127.0.0.1:9091
-7. All other applications on server would continue to be accessible using their virtual-host URL like http://mg226.local.com/ with shared port 80. 
+4. Replace this default port:80 with some other unique/dedicated port. It might be any random unique number like 8085, 9091, 9287, etc. as you want.
+5. Suppose we have chosen port:9091, consequently /etc/apache2/sites-available/test.local.com.conf would look like as following:
+	<VirtualHost *:9091>
+		ServerAdmin webmaster@test.local.com
+		DocumentRoot /var/www/html/2018/test
+
+		ServerName test.local.com
+		ServerAlias www.test.local.com
+
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		# To keep and track apache error log project-wise is more beneficial instead of keeping all applications/projects 
+		# apache error log in a single file keep, so above apache error log path might keep as following:
+		# ErrorLog /var/www/html/2018/test/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+	</VirtualHost>
+6. Save this file /etc/apache2/sites-available/test.local.com.conf
+7. Open file /etc/ports.conf and add/record above mentioned port 9091 here as following:
+	Listen 80
+	Listen 9091
+
+	<IfModule ssl_module>
+		Listen 443
+	</IfModule>
+
+	<IfModule mod_gnutls.c>
+		Listen 443
+	</IfModule> 
+8. Save this file.
+9. Open file /etc/hosts and add/record here our new virtual host test.local.com mapped with current machine/system/server IP as following:
+	127.0.0.1	localhost
+	127.0.0.1       test.local.com
+10.Save this file and restart Apache server
+11.Now access your application/project using followings:
+	Virtual host URL:
+		http://test.local.com:9091/
+	IP based URL:
+		http://127.0.0.1:9091/
+   Note: Now this application/project would not be accessible by
+		http://test.local.com/
+	 as it means URL:
+		http://test.local.com:80/
+	 and test.local.com is now available on a separate/unique/dedicated port 9091, not on default port 80. 
 
 /* ====================================================================================================================== */
 
