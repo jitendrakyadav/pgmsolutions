@@ -101,8 +101,7 @@ Steps:
 		ServerAlias www.test.local.com
 
 		ErrorLog ${APACHE_LOG_DIR}/error.log
-		# To keep and track apache error log project-wise is more beneficial instead of keeping all applications/projects 
-		# apache error log in a single file keep, so above apache error log path might keep as following:
+		# To keep and track apache error log project-wise is more beneficial instead of keeping all applications/projects apache error log in a single file keep, so above apache error log path might keep as following:
 		# ErrorLog /var/www/html/2018/test/error.log
 		CustomLog ${APACHE_LOG_DIR}/access.log combined
 	</VirtualHost>
