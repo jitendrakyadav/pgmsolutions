@@ -36,6 +36,7 @@ git remote add origin https://github.com/jitendrakyadav/hello-world.git
 
 /*** If origin is not updated after firing above command again and again, then remove origin first & then use above command ***/
 git rm origin
+git remote rm origin
 
 /*** output: origin ***/
 git remote
