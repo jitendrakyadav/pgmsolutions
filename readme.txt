@@ -70,6 +70,11 @@ cd -   /* i.e. "cd dash"; "dash" symbol => also referred as "hyphen" or "subtrac
 /*** Short command to move into their home directory ***/
 "cd ~" or "cd"	/* Now you would find yourself in directory /home/jitendra for me as I had logined with username 'jitendra' */
 
+/*** Delete nth line from any file ***/
+sed -i 'nd' <file-name>	/* sed is an stream editor, for more details, use commands: 'man sed' or 'sed --help' */
+sed -i '1d' xyz.txt	/* Delete only 1st line of file xyz.txt */
+sed -i '2d' xyz.txt	/* Delete only 2nd line of file xyz.txt */ 
+
 /*** Create a directory and any parents(-p argument) that don't already exist. Following will create both directories i.e. trainingapp directory along with it's parent directory jitendray ***/
 mkdir -p /var/www/html/jitendray/trainingapp
 sudo mkdir -p /var/www/html/jitendray/trainingapp
