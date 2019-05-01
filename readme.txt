@@ -3,7 +3,7 @@ Create Virtual Host in Ubuntu: Look/Read into following website:
 https://lowendbox.com/blog/how-to-setup-apache-virtual-hosts-on-ubuntu-16-04/	[when webserver: apache2]
 Above website print-screens: setup-apache-virtual-hosts-on-ubuntu-1.png, setup-apache-virtual-hosts-on-ubuntu-2.jpg, setup-apache-virtual-hosts-on-ubuntu-3.jpg, setup-apache-virtual-hosts-on-ubuntu-4.jpg
 
-https://tecadmin.net/setup-nginx-virtual-hosts-on-ubuntu/     			[when webserver: nginx]
+https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04	[when webserver: nginx]
 
 Create Virtual Host in CentOS 6:
 https://youtu.be/MR24rVosDhM							[when webserver: apache] 
