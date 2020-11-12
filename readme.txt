@@ -22,8 +22,11 @@ git checkout master  //or 'git checkout -b master' -b for forcefully
 git merge new_feature
 or
 /**
- * The --no-ff flag causes the merge to always create a new commit object, even if the merge could be performed with a fast-forward. 
- * This avoids losing information about the historical existence of a feature branch and groups together all commits that together added the feature.
+ * The --no-ff flag causes the merge to always create a new commit object, even if the merge could be 
+ * performed with a fast-forward. 
+ * This avoids losing information about the historical existence of a feature branch and groups together all 
+ * commits that together added the feature.
+ *
  * Reference: https://nvie.com/posts/a-successful-git-branching-model/
  */
 git merge --no-ff new_feature
