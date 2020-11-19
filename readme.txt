@@ -30,16 +30,19 @@
    But, I would like to use following naming conventions for above mentioned branches:
       A. For master branch: Named it as "master"
       B. For develop branch: Named it as "develop"
-      C. For feature branches: Named it as "feature/<jira-feature-or-issue-id>-<a-short-description-in-3-4-words-what-type-of-things-going-to-happen-in-this-branch-separated-by-hyphen>"
+      C. For feature branches: Named it as "feature/<jira-feature-or-issue-id>-<a-short-description
+         -in-3-4-words-what-type-of-things-going-to-happen-in-this-branch-separated-by-hyphen>"
          Example: feature/EMMS-900 or feature/EMMS-900-compare-url-changes
          If exact jira-id is there, then you can ignore to add short-description in branch-name
 	 as jira-issue-id has it's own dedicated page on jira to explain/describe everying in detail 
 	 regarding associated feature or bug/issue.
       D. For release branches: Named it as "release/<version-no>"
          Example: release/1.0.0
-      E. For hotfix branches: Named it as "hotfix/<jira-raised-issue-id-by-qa>-<a-short-description-in-3-4-words-what-type-of-things-going-to-happen-in-this-branch-separated-by-hyphen>"
+      E. For hotfix branches: Named it as "hotfix/<jira-raised-issue-id-by-qa>-<a-short-description
+         -in-3-4-words-what-type-of-things-going-to-happen-in-this-branch-separated-by-hyphen>"
          Example: hotfix/EMMS-956 or hotfix/EMMS-956-fetch-correct-base-url-on-production
-      F. For bugfix branches: Named it as "bugfix/<jira-raised-issue-id-by-qa>-<a-short-description-in-3-4-words-what-type-of-things-going-to-happen-in-this-branch-separated-by-hyphen>"
+      F. For bugfix branches: Named it as "bugfix/<jira-raised-issue-id-by-qa>-<a-short-description
+         -in-3-4-words-what-type-of-things-going-to-happen-in-this-branch-separated-by-hyphen>"
          Example: bugfix/EMMS-1300 or bugfix/EMMS-1300-plp-canonical-issue
 
       Note: While make commit, always mention <jira-issue-id> in commit message like as following:
@@ -110,8 +113,8 @@
 	       -b is used to do the same forcefully */
       b. After creating bugfix branch, complete your task and create PR to review and merge the 
          same to develop branch.
-      d. Bugfix branch originates from develop branch and merge back to develop branch
-      e. Lifetime: Bugfix branch exists as long as fixing the bug is in progress.
+      c. Bugfix branch originates from develop branch and merge back to develop branch
+      d. Lifetime: Bugfix branch exists as long as fixing the bug is in progress.
    F. To do a hotfix: We create this branch when there emerges some urgent/blocker bug/issue 
       on production.
       a. Cut a branch from master branch like as following when you are present inside master branch:
@@ -122,11 +125,11 @@
 	       -b is used to do the same forcefully */
       b. After creating hotfix/myhotfixbranch branch, complete your task and create PR to review and 
          merge the same to master branch.
-      d. Hotfix branch originates from master branch and merge back to master branch as well as to develop branch.
-      e. The one exception to the rule here is that, when a release branch currently exists, the hotfix 
+      c. Hotfix branch originates from master branch and merge back to master branch as well as to develop branch.
+      d. The one exception to the rule here is that, when a release branch currently exists, the hotfix 
          changes need to be merged into that release branch, instead of develop. 
          Back-merging the hotfix into the release branch will eventually result in the hotfix being merged 
 	 into develop too, when the release branch is finished. 
 	 If work in develop immediately requires this hotfix and cannot wait for the release branch to be 
 	 finished, we may safely merge the hotfix into develop.
-      f. Lifetime: Hotfix branch exists as long as fixing the bug is in progress.
+      e. Lifetime: Hotfix branch exists as long as fixing the bug is in progress.
