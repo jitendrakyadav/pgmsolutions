@@ -33,68 +33,81 @@ git merge --no-ff new_feature
 
 Case Study: 
 1. I have created a readme.txt file in master branch.
-2. Open readme.txt file and added in first line "Hi", save file, added in git and then commit the same. Let's assume commit-id is here "commit-1"
-3. Open readme.txt file and added in second line "Jitendra", save file, added in git and then commit the same. Let's assume commit-id is here "commit-2"
-4. Open readme.txt file and added in third line "Kumar", save file, added in git and then commit the same. Let's assume commit-id is here "commit-3"
-5. Open readme.txt file and added in fourth line "Yadav", save file, added in git and then commit the same. Let's assume commit-id is here "commit-4"
+2. Open readme.txt file and added in first line "Hi", save file, added in git and then commit the same. 
+   Let's assume commit-id is here "commit-1"
+3. Open readme.txt file and added in second line "Jitendra", save file, added in git and then commit the same. 
+   Let's assume commit-id is here "commit-2"
+4. Open readme.txt file and added in third line "Kumar", save file, added in git and then commit the same. 
+   Let's assume commit-id is here "commit-3"
+5. Open readme.txt file and added in fourth line "Yadav", save file, added in git and then commit the same. 
+   Let's assume commit-id is here "commit-4"
    Open readme.txt file, it's content is as following:
-   Hi
-   Jitendra
-   Kumar
-   Yadav
+      Hi
+      Jitendra
+      Kumar
+      Yadav
 
 6. Created another branch "second_branch" from this master branch. 
-7. Open readme.txt file and added in fifth line "How", save file, added in git and then commit the same. Let's assume commit-id is here "commit-5"
-8. Open readme.txt file and added in sixth line "are", save file, added in git and then commit the same. Let's assume commit-id is here "commit-6"
-9. Open readme.txt file and added in seventh line "you", save file, added in git and then commit the same. Let's assume commit-id is here "commit-7"
+7. Open readme.txt file and added in fifth line "How", save file, added in git and then commit the same. 
+   Let's assume commit-id is here "commit-5"
+8. Open readme.txt file and added in sixth line "are", save file, added in git and then commit the same. 
+   Let's assume commit-id is here "commit-6"
+9. Open readme.txt file and added in seventh line "you", save file, added in git and then commit the same. 
+   Let's assume commit-id is here "commit-7"
    Open readme.txt file, it's content is as following:
-   Hi
-   Jitendra
-   Kumar
-   Yadav
-   How
-   are
-   you
+      Hi
+      Jitendra
+      Kumar
+      Yadav
+      How
+      are
+      you
 
 10. Now checkout to branch master again by using following command:
-    git checkout master
+      git checkout master
     remember, here are total 4 commits and last one is "commit-4" and readme.txt content is:
-    Hi
-    Jitendra
-    Kumar
-    Yadav
+      Hi
+      Jitendra
+      Kumar
+      Yadav
 
 11. Now merge second_branch in master using command as following:
     git merge second_branch
 12. Now observe master branch:
     Total no of commits is still 4 and still last commit id in this branch is "commit-4"
     and readme.txt content is now:
-    Hi
-    Jitendra
-    Kumar
-    Yadav
-    How
-    are
-    you
+      Hi
+      Jitendra
+      Kumar
+      Yadav
+      How
+      are
+      you
 
-    This means - second_branch merged into master but no separate new merge commit id has been created i.e. now "commit-4" denotes last changes in master branch as well as merged second branch changes. 
+    This means - second_branch merged into master but no separate new merge commit id has been 
+    created i.e. now "commit-4" denotes last changes in master branch as well as merged second branch changes. 
     Forget 11th and 12th points as above, let's consider a different case:
 11. Now merge second_branch in master using command as following:
-    git merge --no-ff second_branch
+      git merge --no-ff second_branch
 12. Now observe master branch:
     Total no of commits is now 7 and the last commit id in this branch after merging is "commit-7"
     and readme.txt content is now:
-    Hi
-    Jitendra
-    Kumar
-    Yadav
-    How
-    are
-    you
+      Hi
+      Jitendra
+      Kumar
+      Yadav
+      How
+      are
+      you
 
-    This means - second_branch merged into master and all commits of second_branch are preserved in master branch i.e. this time not all changes of second_branch (i.e. "commit-5", "commit-6", "commit-7") are merged on last commit of master branch "commit-4" although these all 3 new commits are preserved separately in master branch while merging.
-    Advantage: When merge using "--no-ff", and if there emerges some major issue in master branch after merging, we can remove changes of second_branch easily from master branch by setting HEAD again on "commit-4" by using command as following:
-    git reset --hard commit-4
+    This means - second_branch merged into master and all commits of second_branch are preserved 
+    in master branch i.e. this time not all changes of second_branch (i.e. "commit-5", "commit-6", 
+    "commit-7") are merged on last commit of master branch "commit-4" although these all 3 new commits 
+    are preserved separately in master branch while merging.
+    Advantage: When merge using "--no-ff", and if there emerges some major issue in master branch after 
+    merging, we can remove changes of second_branch easily from master branch by setting HEAD again on 
+    "commit-4" by using command as following:
+      git reset --hard commit-4
 
 
 /*** After successful merging, delete new_feature branch ***/
