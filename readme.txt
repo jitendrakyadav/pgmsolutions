@@ -64,7 +64,7 @@
          c. "git checkout mybranch" or "git checkout develop"	
 	    /* As develop is the integration branch and most updated one */
          d. "git pull origin mybranch" or "git pull origin develop"
-         e. Cut your branch from this "develop" branch and complete your task
+         e. Cut your branch from this "develop" branch and complete your task.
 
 6. Branching Strategy: Follow as per in a-successful-git-branching-model-chart.pdf
    A. Git, by default, provides already created "master" branch with infinite lifetime.
