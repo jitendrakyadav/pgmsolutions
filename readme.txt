@@ -4,6 +4,31 @@ git stash --help
 /*** Create new branch from 'master' branch: currently we are in 'master' branch ***/
 git branch new_feature
 
+
+
+
+/***
+ * Git tag - Tagging
+ *
+ * Reference: https://git-scm.com/book/en/v2/Git-Basics-Tagging
+ */
+Git has the ability to tag specific points (commit or commit-id like "90c95ab0d787cf83e5cadfa30145f10b88eccf7d") 
+in a repository’s history. 
+Mainly, people use this functionality to mark release points (v1.0, v2.0 or 1.0.0, 1.1.0, 1.1.1 and so on).
+It acts like a pointer i.e. a particular git tag points to a particular commit-id.
+
+Difference between git tag vs branch:
+The difference between tags and branches are that a branch always points to the top of a development line 
+and will change when a new commit is pushed whereas a tag will not change. Thus tags are more useful 
+to "tag" a specific version and the tag will then always stay on that version if we don't change it manually.
+
+/* Create Tag */
+
+
+
+
+
+
 /*** Get what changes have been made in files from last commit which are in stage-1 i.e. working folder in current branch. Newly created files(i.e. "Untracked files" from git repository, means those who were never part of git repository yet) would be excluded from this list(as the files are new, so need not to use "git diff" to get differences from previous version of the same files). ***/
 git diff
 /* Get what changes have been made in a file from last commit, where <file-name> is in stage-1 i.e. working folder. Newly created files(i.e. "Untracked files" from git repository, means those who were never part of git repository yet) would not be eligible for this command(as the whole file is new, so need not to use "git diff" to get difference from previous version of the same file). */
