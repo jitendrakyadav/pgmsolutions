@@ -18,14 +18,41 @@ Mainly, people use this functionality to mark release points (v1.0, v2.0 or 1.0.
 It acts like a pointer i.e. a particular git tag points to a particular commit-id.
 
 Difference between git tag vs branch:
-The difference between tags and branches are that a branch always points to the top of a development line 
-and will change when a new commit is pushed whereas a tag will not change. Thus tags are more useful 
-to "tag" a specific version and the tag will then always stay on that version if we don't change it manually.
+The difference between tags and branches are that a branch always points to the top of a development 
+line (i.e. the last commit) and will change when a new commit is pushed whereas a tag will not change. 
+Thus tags are more useful to "tag" a specific version and the tag will then always stay on that version 
+if we don't change it manually.
 
 /* Create Tag */
+There are 2 types of tags: But we have to create our tag always in annotated way.
+1. Lightweight Tags: 
+   A. Tag creation syntax:
+         git tag <version-no>
+	 git tag 1.1.0		/* It will pick the last commit-id in the current branch to tag */
 
+	 git tag <version-no> <commit-id>
+	 git tag 1.2.1 59f7ac2f2104707de98da69704ae483343546ae0
+   B. A lightweight tag is very much like a branch that doesn’t change — it’s just a pointer to a specific commit. 
+   C. It just keep the information about attached commit i.e. what is commit-id, commit's author name, mail-id, 
+      it's creation date-time, commit message and what changes have been made in that particular commit.
+      Please look/observe following print-screens:
+         a. what-information-a-lightweight-tag-keep.png
+	 b. what-information-a-git-show-commit-id-keep.png
+      Here we can easily see, lightweight tag keep information just about attached commit-id, nothing else.
+   D. But it doesn't keep information about it's own i.e. who has created the tag (author name), his mail-id, 
+      tag creation date-time, tag creation message/comment.
 
+2. Annotated Tags:
+   A. Tag creation syntax:
+         git tag -a <version-no> -m "<some tag message or comment>"	/* Here -a denotes for annotation */
+	 git tag -a 1.2.2 -m "Version 1.2.2 released"	/* It will pick the last commit-id in the current branch to tag */
 
+	 git tag -a <version-no> <commit-id> -m "<some tag message or comment>"
+	 git tag -a 1.2.3 59f7ac2f2104707de98da69704ae483343546ae0 -m "Version 1.2.3 released"
+   B. Annotated tag is stored as a full object in the Git database. 
+   C. It keeps the information which a lightweight tag has, additionally it contains all information about 
+      tag as well, like tagger name, his email, tag creation date-time & tag message/comment.	   
+      Example: what-information-a-annotated-tag-keep.png
 
 
 
