@@ -4,9 +4,6 @@ git stash --help
 /*** Create new branch from 'master' branch: currently we are in 'master' branch ***/
 git branch new_feature
 
-
-
-
 /***
  * Git tag - Tagging
  *
@@ -23,7 +20,7 @@ line (i.e. the last commit) and will change when a new commit is pushed whereas 
 Thus tags are more useful to "tag" a specific version and the tag will then always stay on that version 
 if we don't change it manually.
 
-/* Create Tag */
+/*** Create Tag ***/
 There are 2 types of tags: But we have to create our tag always in annotated way.
 1. Lightweight Tags: 
    A. Tag creation syntax:
@@ -54,6 +51,111 @@ There are 2 types of tags: But we have to create our tag always in annotated way
       tag as well, like tagger name, his email, tag creation date-time & tag message/comment.	   
       Example: what-information-a-annotated-tag-keep.png
 
+Listing Tags:
+1. If we want just listing all available tags:
+      git tag
+      Output:
+      1.1.0
+      1.1.1
+      1.2.0
+      1.2.1
+      1.2.2
+2. If we want listing tags as well as filter the same:
+      git tag -l 1.2*
+      or
+      git tag -l "1.2*"
+      Output:
+      1.2.0
+      1.2.1
+      1.2.2
+
+Sorting Tags:
+1. Sorting in descending order:
+      git tag -l --sort=-v:refname
+      Output:
+      1.2.2
+      1.2.1
+      1.2.0
+      1.1.1
+      1.1.0
+
+      git tag -l --sort=-v:refname "1.2*"
+      Output:
+      1.2.2
+      1.2.1
+      1.2.0
+
+2. Sorting in ascending order:
+      git tag -l --sort=v:refname
+      Output:
+      1.1.0
+      1.1.1
+      1.2.0
+      1.2.1
+      1.2.2
+
+      git tag -l --sort-v:refname "1.2*"
+      Output:
+      1.2.0
+      1.2.1
+      1.2.2
+
+Note: "refname" => sort in a lexicographic (लेक्सकोग्रैफिक) order
+
+Checking out Tags:
+Use the same way/method with which weeckout a branch.
+1. Checkout from a branch to a tag:
+      git checkout 1.2.3
+2. Checkout from a tag to a branch:
+   A. Use traditional way:
+         git checkout second_branch 
+   B. When you are on a tag like 1.2.3, you can make some code experiment i.e. can add some new code, test the 
+      same and make multiple commits. But these commits will not be recorded under any branch. Suppose we are 
+      on tag 1.2.3 and it points to commit commit-id-3 but we now have added some code and made 2 more commits 
+      commit-id-33, commit-id-34. Now:
+      a. If we do as below to checkout any branch for the current tag 1.2.3
+            git switch <branch-name>
+	    git cswitch second_branch
+         and again come to tag using following as usual:
+	    git checkout 1.2.3
+	 we will come to know that previously created commits commit-id-33, commit-id-34 have been disappeared 
+	 i.e. not visible these extra commits under this tag nor unser any branch. So, when we are on any tag, 
+	 we can make any no. of code-experiments and no tension as tag will always continued to point to commit commit-id-3
+      b. Now, suppose, we are on tag and made many code experiment and added 2-3 commits as well. Now experiment
+         has become successful and we now want to keep these changes. Then we will do as following:
+	    git switch -c <new-branch-name>
+	    git switch -c fifth_branch
+	 Now fifth_branch will contain the commits upto the commit to which tag 1.2.3 points i.e. commit-id-3 
+	 as well as additional commits commit-id-33 & commit-id-34. Now we might rebase this fifth_branch with
+	 our integration branch i.e. develop branch and merge back to develop branch.
+3. Remember, we can jump from latest tag to just previous stable tag or previous to previous tag if we find the 
+   latest tag is unstable, git system will instantly resume the older tag stable code version.
+4. Suppose second_branch has 5 commits commit-id-1, commit-id-2, commit-id-3, commit-id-4 & commit-id-5.
+   We tagged the commit-id-3 as 1.2.3 (tag-identifier). We can cut a branch from any tag like here from 1.2.3 too 
+   (instead of from any branch) and checkout to same newly created branch on same time as following:
+      git checkout -b <new-branch-name> <tag-identifier>
+      git checkout -b sixth_branch 1.2.3
+   Then sixth_branch will contains the commits upto the commit to which tag 1.2.3 points i.e. commit-id-3. It will 
+   not include the remaining commits i.e. commit-id-4 & commit-id-5 which had been created after commit-id-3 for same 
+   branch second_branch.
+
+Push tags to remote version control system i.e. remote Git system: 
+Use the same way/method with which we push a branch on remote.
+1. If there is a single tag to push on remote:
+      git push origin <version-no>
+      git push origin 1.2.2
+2. If there are more than 1 tag and you want to push all tags in one go:
+      git push origin --tags
+
+Delete tag from local as well as from remote:
+Use the same way/method with which we delete branch from local and from remote.
+1. First delete tag from local:
+      git tag -d <tag-identifier>
+      git tag -d 1.2.2
+2. Push deleted tag to remote to delete the same from remote repository as well:
+      git push origin :<tag-identifier>
+      git push origin :1.2.2
+      Note: Here colon(:) denotes negation i.e. it shows we want to push deleted tag instead of created tag.
 
 
 /*** Get what changes have been made in files from last commit which are in stage-1 i.e. working folder in current branch. Newly created files(i.e. "Untracked files" from git repository, means those who were never part of git repository yet) would be excluded from this list(as the files are new, so need not to use "git diff" to get differences from previous version of the same files). ***/
