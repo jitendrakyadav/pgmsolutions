@@ -474,7 +474,7 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 	*.scss linguist-vendored
 You might consider repository mg226's .gitattributes file as well.
 
-/*** Display commits just with commit-id & their message/comment ***/
+/*** Display all commits with just one liner detail (having commit-id & commit message/comment) for each commit ***/
 1. git log --pretty=oneline
    Output:
    9d1aef951e41dbebe3066e03d3e15ce951d9b0bd 9th line added
