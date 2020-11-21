@@ -51,6 +51,15 @@ There are 2 types of tags: But we have to create our tag always in annotated way
       tag as well, like tagger name, his email, tag creation date-time & tag message/comment.	   
       Example: what-information-a-annotated-tag-keep.png
 
+Edit a Tag:
+   Suppose we have created a tag as below:
+      git tag -a 1.1.1 0b4c4e821006fc7653aef6264a792f751406762d -m "Version 1.1.1 released"
+   Now, we get to know that we have created tag with wrong commit-id. Now, we can edit/modify our tag to point 
+   to another correct commit-id (with updated tag message/comment as well if we want to change, otherwise keep 
+   the same message as previously if we don't want to change) as following:
+      git tag -a -f 1.1.1 59f7ac2f2104707de98da69704ae483343546ae0 -m "Version 1.1.1 released now"
+   Note: Here -f => denotes forcefully; if we don't use -f here, it will show fatal error telling you tag already exist.
+
 Listing Tags:
 1. If we want just listing all available tags:
       git tag
