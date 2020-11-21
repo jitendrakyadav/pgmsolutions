@@ -25,7 +25,7 @@ There are 2 types of tags: But we have to create our tag always in annotated way
 1. Lightweight Tags: 
    A. Tag creation syntax:
          git tag <version-no>
-	 git tag 1.1.0		/* It will pick the last commit-id in the current branch to tag */
+	 git tag 1.1.0		//It will pick the last commit-id in the current branch to tag
 
 	 git tag <version-no> <commit-id>
 	 git tag 1.2.1 59f7ac2f2104707de98da69704ae483343546ae0
@@ -41,8 +41,9 @@ There are 2 types of tags: But we have to create our tag always in annotated way
 
 2. Annotated Tags:
    A. Tag creation syntax:
-         git tag -a <version-no> -m "<some tag message or comment>"	/* Here -a denotes for annotation */
-	 git tag -a 1.2.2 -m "Version 1.2.2 released"	/* It will pick the last commit-id in the current branch to tag */
+         git tag -a <version-no> -m "<some tag message or comment>"	//Here -a denotes for annotation
+	 git tag -a 1.2.2 -m "Version 1.2.2 released"	
+	 //It will pick the last commit-id in the current branch to tag
 
 	 git tag -a <version-no> <commit-id> -m "<some tag message or comment>"
 	 git tag -a 1.2.3 59f7ac2f2104707de98da69704ae483343546ae0 -m "Version 1.2.3 released"
@@ -130,7 +131,8 @@ Use the same way/method with which we checkout a branch.
 	    git checkout 1.2.3
 	 we will come to know that previously created commits commit-id-33, commit-id-34 have been disappeared 
 	 i.e. not visible these extra commits under this tag nor under any branch. So, when we are on any tag, 
-	 we can make any no. of code-experiments and no tension as tag will always continued to point to commit commit-id-3
+	 we can make any no. of code-experiments and no tension as tag will always continued to point to 
+	 commit commit-id-3
       b. Now, suppose, we are on tag and made many code experiment and added 2-3 commits as well. Now experiment
          has become successful and we now want to keep these changes. Then we will do as following:
 	    git switch -c <new-branch-name>
@@ -141,8 +143,8 @@ Use the same way/method with which we checkout a branch.
 3. Remember, we can jump from latest tag to just previous stable tag or previous to previous tag if we find the 
    latest tag is unstable, git system will instantly resume the older tag stable code version.
 4. Suppose second_branch has 5 commits commit-id-1, commit-id-2, commit-id-3, commit-id-4 & commit-id-5.
-   We tagged the commit-id-3 as 1.2.3 (tag-identifier). We can cut a branch from any tag like here from 1.2.3 too 
-   (instead of from any branch) and checkout to same newly created branch on same time as following:
+   We tagged the commit-id-3 as 1.2.3 (tag-identifier). We can cut a branch from any tag like here from 1.2.3 
+   too (instead of from any branch) and checkout to same newly created branch on same time as following:
       git checkout -b <new-branch-name> <tag-identifier>
       git checkout -b sixth_branch 1.2.3
    Then sixth_branch will contains the commits upto the commit to which tag 1.2.3 points i.e. commit-id-3. 
