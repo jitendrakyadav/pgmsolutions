@@ -474,6 +474,31 @@ vim .git/info/exclude      /* write your rules here to ignore files just as in .
 	*.scss linguist-vendored
 You might consider repository mg226's .gitattributes file as well.
 
+/*** Display commits just with commit-id & their message/comment ***/
+1. git log --pretty=oneline
+   Output:
+   9d1aef951e41dbebe3066e03d3e15ce951d9b0bd 9th line added
+   59f7ac2f2104707de98da69704ae483343546ae0 8th line added
+   fb390d11240787eeb994c06e564b92f3c351c066 7th line added
+   0b4c4e821006fc7653aef6264a792f751406762d 6th line added
+   60985da55d991fe9c9c194ab1bcf551a060e2b30 5th line added
+   ec6c07bf425721e807b6e2970a55220f4e465e79 4th line added
+   da441c11611b8bbe027ca84feb54f77d2e288a83 3rd line added
+   3c012ae1e045c0ca9bc3ae9eb5bee37fb4803036 2nd line added
+   a2ad136047ddc73556cde83f463c924d409eb2b2 1st line added
+   1d44b676549a7e1a7db668748fb186c9a5f5b651 6th line added
+   914828e923e07fb7a7e4dc84a613b2ea26972fc1 5th line added
+   84bd54229dff4d3834a19c1165099a9e4755384c 4th line added
+   4507077d5e9a3203d217a43ea329ca51471f2c02 3rd line added
+   b3c84e458ceb95459373af21cba07d5a32155ef6 2nd line added
+   e73293b6e72980fd72fa0562a1323c8f188ff3c7 First line added
+
+2. git log -3 --pretty=oneline
+   Output:
+   9d1aef951e41dbebe3066e03d3e15ce951d9b0bd 9th line added
+   59f7ac2f2104707de98da69704ae483343546ae0 8th line added
+   fb390d11240787eeb994c06e564b92f3c351c066 7th line added
+
 /*** Find the git commits, that introduced a string or removed the string in current branch ***/
 git log -S "Hello World!"
 /** Find the git commits, that introduced a string or removed the string in any branch of repository **/
