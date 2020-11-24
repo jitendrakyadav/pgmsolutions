@@ -596,3 +596,135 @@ Output: blob
 4. In the left menu, click "Branches" tab.
 5. Here you can see/set your repository default branch.
 
+/*** 
+ * What is Git Cherry Pick 
+ *
+ * Reference: https://gitbetter.substack.com/p/how-to-use-git-cherry-pick-effectively
+ */
+Git cherry-pick is one of the powerful & useful commands in Git that helps you to copy, paste commit(s) from one branch 
+to another. Note that cherry-pick will copy the commits so that the original commit will still be present in 
+the source branch.
+Most developers agree/consider cherry-picking is a bad practice that can cause problems like having duplicate commits 
+in multiple branches, messing up with the git history, and others. That's why traditional (branch to branch) 
+merges are preferred instead.
+
+Use Cases:
+Git cherry-pick is not always bad practice. In some particular scenarios, it is very useful.
+1. Git cherry-pick can be useful for undoing changes i.e. the changes which were not desired there. Like you made 
+   some commits in wrong branch. Now you can checkout to right branch and cherry-pick those commits to your 
+   desired branch. Further, you could remove those commits from previous/wrong branch by using command like:
+   git reset --hard <commit-id>
+   Here <commit-id> is the commit-id of your wrong branch to which you force your Git HEAD to point now just 
+   before new commits added to the wrong branch.   
+2. Other use case like you would not need the entire branch to be merged (because the whole branch with all 
+   commits might be unstable or client currently want to release only 1 feature out of 4 where all 4 features
+   code has been already merged to the current branch) but you need only particular commits. Then you can 
+   cherry-pick those commits from current branch to your branch.
+
+/*** How to cherry-pick (copy & paste commit(s) from one branch to another) ***/
+   Firstly, checkout to the branch where you want to paste the required commit-id as following:
+
+   git checkout second_branch	/* Previously, you were in master branch */
+   git cherry-pick <commit-id>
+   Example:
+   git cherry-pick e73293b6e72980fd72fa0562a1323c8f188ff3c7	
+   /* Now e73293... commit-id (from master branch) would be present in second_branch as well */
+
+/*** How to cherry-pick a series of commits ***/
+   Firstly, checkout to the branch where you want to paste the required commit-id as following:
+
+   git checkout second_branch	/* Previously, you were in master branch */
+   git cherry-pick <commit-id-2>..<commit-id-4>	
+   /**
+    * There are 3 commit-ids in master branch: <commit-id-2>, <commit-id-3>, <commit-id-4> to be cherry picked 
+    * in second_branch. As per above command, now <commit-id-3> & <commit-id-4> would be present in second_branch 
+    * as well, but note <commit-id-2> will be excluded.
+    *
+    * But if you add a caret (^) in above command then second_branch would contain <commit-id-2>, <commit-id-3>
+    * as well as <commit-id-4> i.e. all 3 commits.
+    */
+   git cherry-pick <commit-id-2>^..<commit-id-4>	
+   git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6^..2f490166b71bf5827a0395e0391be556c0aa47ef
+
+/*** Cherry pick a commit-id but it should not commit the changes, only stage all the changes ***/
+   git cherry-pick -n <commit-id>
+   git cherry-pick -n 6d948c7d55648c2762056207d149dcf272bad3f6
+   /** 
+    * It will get the commit 6d948.. changes in target branch (i.e. in second_branch) in stage state, we would 
+    * manually need to commit the changes.
+    * 
+    * As we know, firstly changes are in un-stage state, looks in red color
+    * After "git add", they entered to stage state, look in green color
+    * After it "git commit" commit the changes and changes are now became part of git repository
+    */
+
+/*** How we deal with conflict while git cherry-pick ***/
+   Suppose you have fired following command to cherry-pick a commit in master branch to second_branch:
+   git cherry-pick <commit-id-3>
+   This results a conflict, occured in readme.txt; now you have 2 options:
+   1. git cherry-pick --abort
+      It will abort and roll back your current <commit-id-3> cherry-pick process and now everything will be in 
+      previous state i.e. before fired the above "git cherry-pick <commit-id-3>" command.
+   2. Firstly, resolve conflicts in files and commit the same. Now fire the following command:
+      git cherry-pick --continue
+      If again conflicts come, repeat the same process until no conflicts found and hence "git cherry-pick 
+      <commit-id-3>" is successful now.
+
+Case Study:
+   1. We are in master branch and It has 4 commits. Please look in print-screen 
+      git-cherry-pick/list-of-all-commits-in-master-branch.png
+   2. git tag -a 1.1.0 e73293b6e72980fd72fa0562a1323c8f188ff3c7 -m "Version 1.1.0 is ready"
+      i.e. tag the first commit of master branch as 1.1.0
+   3. git checkout -b second_branch 1.1.0
+      i.e. create a branch from tag 1.1.0, since we have created second_branch from tag 1.1.0 which points to 
+      first commit of master branch that's why second_branch will contain only first commit of master branch.
+      Please look in print-screen git-cherry-pick/create_second_branch_from_tag_1.1.0.png
+   4. git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6
+      i.e. try to cherry-pick of second commit of master branch in second_branch. Please look in print-screen 
+      test-cherry-pick-command.png
+      Note: we have cherry-picked commit 6d948c7d55648c2762056207d149dcf272bad3f6 from master branch but when it
+      cherry-pick (copy/paste) to second_branch, it has a different commit-id ee5d882fd1839f453005e4770f6faa83ad0af1c6
+      but with same commit-message.
+   5. git reset --hard e73293b6e72980fd72fa0562a1323c8f188ff3c7
+      i.e. removed last cherry-picked commit from second_branch, now it contains again only 1 commit i.e. first 
+      commit of master branch.
+      git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6^..2f490166b71bf5827a0395e0391be556c0aa47ef
+      i.e. tried to cherry-pick a series of commits (6d948c7d55648c2762056207d149dcf272bad3f6, 
+      9a26ab511d8234f61a36037729c4371bbdfc8346, 2f490166b71bf5827a0395e0391be556c0aa47ef) of master branch. 
+      Please look in print-screen test-cherry-pick-command-for-a-no-of-commits.png
+      Note: For all cherry-picked 3 commits of master branch, second_branch has all corresponding 3 commits in 
+      second_branch but with different commit-ids although commit-messages are same.
+   6. git reset --hard e73293b6e72980fd72fa0562a1323c8f188ff3c7
+      i.e. removed last cherry-picked commits from second_branch, now it contains again only 1 commit i.e. first 
+      commit of master branch.
+      git cherry-pick -n 6d948c7d55648c2762056207d149dcf272bad3f6
+      i.e. tried to cherry-pick second commit of master branch to second_branch but instructed to Git (with help 
+      of -n option) to just keep the changes in stage state instead of commit the same in second_branch.
+      Please look in print-screen test-cherry-pick-command-with--n-option.png; Here as well as in above cases, 
+      obviously, commit-id of second_branch is different from master branch for same changes.
+   7. git reset --hard e73293b6e72980fd72fa0562a1323c8f188ff3c7
+      i.e. removed last cherry-picked commit from second_branch, now it contains again only 1 commit i.e. first
+      commit of master branch.
+      git cherry-pick 9a26ab511d8234f61a36037729c4371bbdfc8346
+      i.e. tried to cherry-pick third commit (skipping the second commit) of master branch. This results into 
+      conflict generation. 
+      Please look in print-screen conflict-generated.png
+      Now we will resolve conflict, commit the changes and again continue the remaining 
+      cherry-pick process with --continue option to complete the same. Please look in print-screen 
+      git-cherry-pick/test-cherry-pick-command-with-resolving-conflict-and---continue-option.png
+
+      git reset --hard e73293b6e72980fd72fa0562a1323c8f188ff3c7
+      i.e. removed last cherry-picked commit from second_branch, now it contains again only 1 commit i.e. first
+      commit of master branch.
+      git cherry-pick 9a26ab511d8234f61a36037729c4371bbdfc8346
+      i.e. tried to cherry-pick third commit (skipping the second commit) of master branch. This results into
+      conflict generation. 
+      Please look in print-screen conflict-generated.png
+      Now instead of resolving conflict and continue the same, abort the current cherry-pick
+      process to roll back the same as due to conflict, we are not interested in it more.
+      git cherry-pick --abort
+      Please look in print-screen test-cherry-pick-command-with---abort-option-when-conflict-occurs.png
+
+      
+
+
