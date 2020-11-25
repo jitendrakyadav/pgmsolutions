@@ -631,7 +631,7 @@ Git cherry-pick is not always bad practice. In some particular scenarios, it is 
    /* Now e73293... commit-id (from master branch) would be present in second_branch as well */
 
 /*** How to cherry-pick a series of commits ***/
-   Firstly, checkout to the branch where you want to paste the required commit-id as following:
+   Firstly, checkout to the branch where you want to paste the required commit-ids as following:
 
    git checkout second_branch	/* Previously, you were in master branch */
    git cherry-pick <commit-id-2>..<commit-id-4>	
@@ -647,6 +647,7 @@ Git cherry-pick is not always bad practice. In some particular scenarios, it is 
    git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6^..2f490166b71bf5827a0395e0391be556c0aa47ef
 
 /*** Cherry pick a commit-id but it should not commit the changes, only stage all the changes ***/
+   git checkout second_branch	/* Previously, you were in master branch */
    git cherry-pick -n <commit-id>
    git cherry-pick -n 6d948c7d55648c2762056207d149dcf272bad3f6
    /** 
@@ -659,13 +660,17 @@ Git cherry-pick is not always bad practice. In some particular scenarios, it is 
     */
 
 /*** How we deal with conflict while git cherry-pick ***/
-   Suppose you have fired following command to cherry-pick a commit in master branch to second_branch:
+   Suppose you have fired following command to cherry-pick a commit, available in master branch to second_branch:
+
+   git checkout second_branch	/* Previously, you were in master branch */
    git cherry-pick <commit-id-3>
+   git cherry-pick 9a26ab511d8234f61a36037729c4371bbdfc8346
+
    This results a conflict, occured in readme.txt; now you have 2 options:
    1. git cherry-pick --abort
       It will abort and roll back your current <commit-id-3> cherry-pick process and now everything will be in 
       previous state i.e. before fired the above "git cherry-pick <commit-id-3>" command.
-   2. Firstly, resolve conflicts in files and commit the same. Now fire the following command:
+   2. Resolve conflicts in files and commit the same; after it, fire the following command:
       git cherry-pick --continue
       If again conflicts come, repeat the same process until no conflicts found and hence "git cherry-pick 
       <commit-id-3>" is successful now.
@@ -681,7 +686,7 @@ Case Study:
       Please look in print-screen git-cherry-pick/create_second_branch_from_tag_1.1.0.png
    4. git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6
       i.e. try to cherry-pick of second commit of master branch in second_branch. Please look in print-screen 
-      test-cherry-pick-command.png
+      git-cherry-pick/test-cherry-pick-command.png
       Note: we have cherry-picked commit 6d948c7d55648c2762056207d149dcf272bad3f6 from master branch but when it
       cherry-pick (copy/paste) to second_branch, it has a different commit-id ee5d882fd1839f453005e4770f6faa83ad0af1c6
       but with same commit-message.
@@ -691,7 +696,7 @@ Case Study:
       git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6^..2f490166b71bf5827a0395e0391be556c0aa47ef
       i.e. tried to cherry-pick a series of commits (6d948c7d55648c2762056207d149dcf272bad3f6, 
       9a26ab511d8234f61a36037729c4371bbdfc8346, 2f490166b71bf5827a0395e0391be556c0aa47ef) of master branch. 
-      Please look in print-screen test-cherry-pick-command-for-a-no-of-commits.png
+      Please look in print-screen git-cherry-pick/test-cherry-pick-command-for-a-no-of-commits.png
       Note: For all cherry-picked 3 commits of master branch, second_branch has all corresponding 3 commits in 
       second_branch but with different commit-ids although commit-messages are same.
    6. git reset --hard e73293b6e72980fd72fa0562a1323c8f188ff3c7
@@ -700,15 +705,15 @@ Case Study:
       git cherry-pick -n 6d948c7d55648c2762056207d149dcf272bad3f6
       i.e. tried to cherry-pick second commit of master branch to second_branch but instructed to Git (with help 
       of -n option) to just keep the changes in stage state instead of commit the same in second_branch.
-      Please look in print-screen test-cherry-pick-command-with--n-option.png; Here as well as in above cases, 
-      obviously, commit-id of second_branch is different from master branch for same changes.
+      Please look in print-screen git-cherry-pick/test-cherry-pick-command-with--n-option.png; Here, as in above cases, 
+      obviously, commit-id of second_branch will be different from master branch for same changes.
    7. git reset --hard e73293b6e72980fd72fa0562a1323c8f188ff3c7
       i.e. removed last cherry-picked commit from second_branch, now it contains again only 1 commit i.e. first
       commit of master branch.
       git cherry-pick 9a26ab511d8234f61a36037729c4371bbdfc8346
       i.e. tried to cherry-pick third commit (skipping the second commit) of master branch. This results into 
       conflict generation. 
-      Please look in print-screen conflict-generated.png
+      Please look in print-screen git-cherry-pick/conflict-generated.png
       Now we will resolve conflict, commit the changes and again continue the remaining 
       cherry-pick process with --continue option to complete the same. Please look in print-screen 
       git-cherry-pick/test-cherry-pick-command-with-resolving-conflict-and---continue-option.png
@@ -719,12 +724,34 @@ Case Study:
       git cherry-pick 9a26ab511d8234f61a36037729c4371bbdfc8346
       i.e. tried to cherry-pick third commit (skipping the second commit) of master branch. This results into
       conflict generation. 
-      Please look in print-screen conflict-generated.png
+      Please look in print-screen git-cherry-pick/conflict-generated.png
       Now instead of resolving conflict and continue the same, abort the current cherry-pick
       process to roll back the same as due to conflict, we are not interested in it more.
       git cherry-pick --abort
-      Please look in print-screen test-cherry-pick-command-with---abort-option-when-conflict-occurs.png
+      Please look in print-screen git-cherry-pick/test-cherry-pick-command-with---abort-option-when-conflict-occurs.png
 
-      
+Conclusion and my suggestions: 
+   1. No doubt, cherry-pick is a powerful git command, but in practical, don't use this command in your day to 
+      day task as it's very dangerous to use and is a bad practice to use it frequently, instead use branch 
+      merging (as it's easy & safe as no tension of occuring duplicate changes (in future) with different commits 
+      in git history). My suggestion is, only use it in "Use Case - 1" as mentioned above.
+   2. If there is compulsion and no way remains without using it, please use it with caution as following:
+      Suppose there are 4 features needed to develop, these all has been developed and code are available in 
+      branch release/1.1.0 in form of many commits (assume total 40 commits). 
+      Case 1: Client says, I want to release only 1 feature (like feature-1 with 8-10 commits) out of these 4 
+              right now. So now, instead of roll back these 3 features commits from release branch which are near 
+	      30-32 commits, just do followings:
+	      Suppose your last release version was 1.0.0 then create another branch like 
+	      release/1.1.0-limited-features from this tag 1.0.0 as following:
+	      git checkout -b release/1.1.0-limited-features 1.0.0
+	      cherry-pick those 8 or 10 commits related with only feature-1 from release/1.1.0 to 
+	      release/1.1.0-limited-features; test this branch and now you might move further for release with 
+	      this release/1.1.0-limited-features branch.
+      Case 2: Client says, I want to release only 3 features (like feature-1, feature-2 & feature-4 with 30-32 
+              commits out of total 40 commits) out of these 4. In this case, as maximum features are needed to 
+	      release so it's not a wise decision to cherry-pick these 30 or 32 commits out of 40 in separate 
+	      branch as many conflicts may arise and thus later it might be risky. So, best decision is here, 
+	      roll back feature-3 with 8 or 10 commits, test again the branch release/1.1.0 and now move further 
+	      for release.
 
 
