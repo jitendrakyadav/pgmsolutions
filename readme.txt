@@ -643,7 +643,7 @@ Git cherry-pick is not always bad practice. In some particular scenarios, it is 
     * But if you add a caret (^) in above command then second_branch would contain <commit-id-2>, <commit-id-3>
     * as well as <commit-id-4> i.e. all 3 commits.
     *
-    * One most important thing to remember: <commit-id-2> must be older than <commit-id-4>
+    * One most important thing to remember: Here, <commit-id-2> must be older than <commit-id-4>
     */
    git cherry-pick <commit-id-2>^..<commit-id-4>	
    git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6^..2f490166b71bf5827a0395e0391be556c0aa47ef
