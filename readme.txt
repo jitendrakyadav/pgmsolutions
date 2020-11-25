@@ -642,6 +642,8 @@ Git cherry-pick is not always bad practice. In some particular scenarios, it is 
     *
     * But if you add a caret (^) in above command then second_branch would contain <commit-id-2>, <commit-id-3>
     * as well as <commit-id-4> i.e. all 3 commits.
+    *
+    * One most important thing to remember: <commit-id-2> must be older than <commit-id-4>
     */
    git cherry-pick <commit-id-2>^..<commit-id-4>	
    git cherry-pick 6d948c7d55648c2762056207d149dcf272bad3f6^..2f490166b71bf5827a0395e0391be556c0aa47ef
@@ -744,14 +746,14 @@ Conclusion and my suggestions:
 	      Suppose your last release version was 1.0.0 then create another branch like 
 	      release/1.1.0-limited-features from this tag 1.0.0 as following:
 	      git checkout -b release/1.1.0-limited-features 1.0.0
-	      cherry-pick those 8 or 10 commits related with only feature-1 from release/1.1.0 to 
-	      release/1.1.0-limited-features; test this branch and now you might move further for release with 
-	      this release/1.1.0-limited-features branch.
+	      cherry-pick those 8 or 10 commits, related with only feature-1 from release/1.1.0 branch to 
+	      release/1.1.0-limited-features branch; test this branch and now you might move further for release 
+	      with this release/1.1.0-limited-features branch.
       Case 2: Client says, I want to release only 3 features (like feature-1, feature-2 & feature-4 with 30-32 
               commits out of total 40 commits) out of these 4. In this case, as maximum features are needed to 
 	      release so it's not a wise decision to cherry-pick these 30 or 32 commits out of 40 in separate 
-	      branch as many conflicts may arise and thus later it might be risky. So, best decision is here, 
-	      roll back feature-3 with 8 or 10 commits, test again the branch release/1.1.0 and now move further 
-	      for release.
+	      branch as many conflicts may arise and thus it will be time taking and later it might be risky. So, 
+	      best decision is here, roll back feature-3 with only 8 or 10 commits, test again the branch 
+	      release/1.1.0 and now move further for release.
 
 
