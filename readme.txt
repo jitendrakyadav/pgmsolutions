@@ -136,3 +136,15 @@ Example: a. For Magento2 installation I needed to enable php's soap extension.
 Example: Depends on how you use php inside webserver:
 	 a. using php a module: you have to restart the server process
 	 b. using php as cgi backend: you do not have to restart the server process
+/* --------------------------------------------------------------------------------------------------------------------- */
+Ubuntu 20.04 with Nginx web server : Install multiple versions of PHP and create various server blocks (virtual host) using different versions of PHP
+1. Firstly remove PHP from your server using following commands:
+	sudo apt purge php7.*	[Uninstall all versions of PHP 7]
+	sudo apt autoclean
+	sudo apt autoremove
+2. Use following video to install fresh PHP with multiple versions:
+	https://youtu.be/1P54UoBjbDs
+	FYI : Important command here is:
+	sudo add-apt-repository ppa:ondrej/php	[A software installation which provides facility to install multiple versions of PHP]
+3. Now create server block using link provided in starting at current page in 6th or 7th line.
+
